@@ -4,10 +4,10 @@ CC = g++
 # Compiler flags
 CFLAGS = -c
 
-skeleton: skeleton.cpp
-	$(CC) skeleton.cpp -o spam
+all: spam
 
-all: skeleton
+spam: skeleton/skeleton.cpp
+	$(CC) skeleton/skeleton.cpp -o spam
 
 clean:
 	rm -Rf *.o spam
