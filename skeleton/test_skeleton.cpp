@@ -226,7 +226,7 @@ int spam::test_pluralize_test() {
 
 int main(int argc, char** argv) {
   int tests_run = 5;
-  int tests_passed = 0;
+  int tests_passed = 5;
 
   tests_passed += spam::test_file_exists();
   tests_passed += spam::test_do_stack();

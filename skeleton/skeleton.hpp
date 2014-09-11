@@ -1,8 +1,8 @@
 #ifndef ReturnConstants
 #define ReturnConstants 1
 
-#define SUCCESS 1
-#define FAIL 0
+#define SUCCESS 0
+#define FAIL -1
 #define ARGUMENT_ERROR -10
 #define IO_ERROR -20
 
