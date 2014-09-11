@@ -1,4 +1,4 @@
-#import "skeleton.hpp"
+#include "skeleton.hpp"
 
 // I consulted the following resources for help:
 // http://www.cplusplus.com/reference/fstream/ifstream/open/
@@ -91,17 +91,17 @@ int spam::do_help() {
 
 int main(int argc, char** argv) {
   if (argc > 0) {
-    if (std::strcmp(argv[1], "stack") == 0
-     || std::strcmp(argv[1], "s") == 0) {
+    if (strcmp(argv[1], "stack") == 0
+     || strcmp(argv[1], "s") == 0) {
       spam::do_stack(argc, argv);
     }
-    else if (std::strcmp(argv[1], "accumulator") == 0
-          || std::strcmp(argv[1], "a") == 0) {
+    else if (strcmp(argv[1], "accumulator") == 0
+          || strcmp(argv[1], "a") == 0) {
       spam::do_accumulator(argc, argv);
     }
-    else if (std::strcmp(argv[1], "help") == 0
-          || std::strcmp(argv[1], "-h") == 0
-          || std::strcmp(argv[1], "--help") == 0) {
+    else if (strcmp(argv[1], "help") == 0
+          || strcmp(argv[1], "-h") == 0
+          || strcmp(argv[1], "--help") == 0) {
       spam::do_help();
     }
     else {
