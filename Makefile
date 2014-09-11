@@ -1,9 +1,13 @@
 # Compiler
 CC = g++ --std=c++11
 
-default: spam
+default: clean spam
 
-all: spam test
+all: clean spam test
+
+travis: clean test
+	./skeleton/test
+	./memory/test
 
 test: test-memory test-skeleton
 
