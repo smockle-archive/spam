@@ -1,18 +1,33 @@
 #include "memory.hpp"
-#include <iostream>
-#include <string.h>
 
 using namespace std;
 
 Memory::Memory() {
-  
+
 };
 
-bool Memory::store(char type, char* line) {
-  return false;
+bool Memory::store(int address, char* line) {
+  if(address >= S_BASE_ADDR) {
+    s[address - S_BASE_ADDR] = line;
+    return true;
+  }
+  else if(address >= T_BASE_ADDR) {
+    t[address - T_BASE_ADDR] = line;
+    return true;
+  }
+  else if(address >= D_BASE_ADDR) {
+    d[address - D_BASE_ADDR] = line;
+    return true;
+  }
+  else return false;
 }
 
 char* Memory::read(int address) {
+  if(address < 0) {
+    cout << "Error: negative addresses are not allowed. Address given was ";
+    cout << address << endl;
+  }
+
   if(address >= S_BASE_ADDR) {
     return s[address - S_BASE_ADDR];
   }

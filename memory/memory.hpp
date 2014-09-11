@@ -1,5 +1,7 @@
 #ifndef BufferConstants
 
+#define BufferConstants 0
+
 #define DBUF_SIZE 256
 #define TBUF_SIZE 256
 #define STCK_SIZE 256
@@ -8,6 +10,9 @@
 #define T_BASE_ADDR 512
 #define S_BASE_ADDR 768
 
+#define TYPE_DATA 0
+#define TYPE_TEXT 1
+#define TYPE_STCK 2
 /*
  * Instruction encoding details:
  * won't be relevant until we
@@ -23,6 +28,9 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
+#include <iostream>
+#include <string.h>
+
 class Memory {
 private:
   char* d[DBUF_SIZE] = {}; /* Data buffer */
@@ -30,7 +38,7 @@ private:
   char* s[STCK_SIZE] = {}; /* Stack buffer */
 public:
   Memory(); /* Constructor */
-  bool store (char type, char* line);
+  bool store (int type, char* line);
   char* read (int address);
   void  dump ();
 };
