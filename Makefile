@@ -1,16 +1,20 @@
 # Compiler
 CC = g++
 
-# Compiler flags
-CFLAGS = -c
+default: spam
 
-all: spam
+all: spam test
 
-spam: skeleton/skeleton.cpp
+test: test-memory test-skeleton
+
+spam:
 	$(CC) skeleton/skeleton.cpp -o spam
 
-test-mem:
+test-memory:
 	$(CC) memory/test.cpp memory/memory.cpp -o memory/test
 
+test-skeleton:
+	$(CC) skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
+
 clean:
-	rm -Rf *.o spam
+	rm -Rf *.o spam test */test
