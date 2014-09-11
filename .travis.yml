@@ -1,0 +1,2 @@
+language: cpp
+script: make clean && make test && ./skeleton/test && ./memory/test

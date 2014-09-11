@@ -253,5 +253,5 @@ int main(int argc, char** argv) {
     std::cout << "\t" << tests_failed << " tests failed." << std::endl;
   }
 
-  return SUCCESS;
+  return (tests_failed == 0) ? SUCCESS: FAIL;
 }
