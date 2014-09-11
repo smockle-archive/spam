@@ -8,6 +8,8 @@ namespace spam {
   int test_do_stack();
   int test_do_accumulator();
   int test_do_help();
+  int test_pluralize_test();
+  std::string pluralize_test(int i);
 }
 
 #endif
