@@ -196,25 +196,25 @@ std::string spam::pluralize_test(int i) {
 
 int spam::test_pluralize_test() {
   // Test a negative number.
-  if (std::strcmp(spam::pluralize_test(-4).c_str(), "tests") != 0) {
+  if (strcmp(spam::pluralize_test(-4).c_str(), "tests") != 0) {
     std::cerr << COLOR_ERROR << " test_pluralize_test() failed. The failing subtest is \"Test a negative number\"." << std::endl;
     return FAIL;
   }
 
   // Test zero.
-  if (std::strcmp(spam::pluralize_test(0).c_str(), "tests") != 0) {
+  if (strcmp(spam::pluralize_test(0).c_str(), "tests") != 0) {
     std::cerr << COLOR_ERROR << " test_pluralize_test() failed. The failing subtest is \"Test zero\"." << std::endl;
     return FAIL;
   }
 
   // Test one.
-  if (std::strcmp(spam::pluralize_test(1).c_str(), "test") != 0) {
+  if (strcmp(spam::pluralize_test(1).c_str(), "test") != 0) {
     std::cerr << COLOR_ERROR << " test_pluralize_test() failed. The failing subtest is \"Test one\"." << std::endl;
     return FAIL;
   }
 
   // Test a positive number.
-  if (std::strcmp(spam::pluralize_test(4).c_str(), "tests") != 0) {
+  if (strcmp(spam::pluralize_test(4).c_str(), "tests") != 0) {
     std::cerr << COLOR_ERROR << " test_pluralize_test() failed. The failing subtest is \"Test a positive number\"." << std::endl;
     return FAIL;
   }
