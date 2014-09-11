@@ -80,7 +80,11 @@ int main(int argc, char ** argv) {
   cout << "RESULTS:" << endl;
   cout << "\t" << run << " tests run." << endl;
   cout << "\t" << COLOR_GREEN << passing << " tests passed." << COLOR_STOP << endl;
-  cout << "\t" << COLOR_RED << failing << " tests failed." << COLOR_STOP << endl;
+  cout << "\t" <<
+    ((failing == 0) ? "" : COLOR_RED)
+    << failing << " tests failed." <<
+    ((failing == 0) ? "" : COLOR_STOP)
+    << endl;
 
   if(isVerbose) cout << "%%%%%%%% END TEST %%%%%%%%" << endl << endl;
 
