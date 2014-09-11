@@ -2,12 +2,10 @@
 
 // I consulted the following resources for help:
 
-using namespace spam;
-
-int test_file_exists() {
+int spam::test_file_exists() {
   // Test with missing file.
   // (First verify missing file doesn't exist.)
-  if (file_exists("SHIBBOLETH_missing.s")) {
+  if (spam::file_exists("SHIBBOLETH_missing.s")) {
     std::cerr << "Error: test_file_exists() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
@@ -18,7 +16,7 @@ int test_file_exists() {
   input.open ("SHIBBOLETH_input.s");
   input << "# SAMPLE FILE\n";
   input.close();
-  if (!file_exists("SHIBBOLETH_input.s")) {
+  if (!spam::file_exists("SHIBBOLETH_input.s")) {
     std::cerr << "Error: test_file_exists() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
     return FAIL;
   }
@@ -28,7 +26,7 @@ int test_file_exists() {
   return SUCCESS;
 }
 
-int test_do_stack() {
+int spam::test_do_stack() {
   // Test zero arguments.
   //
 
@@ -58,7 +56,7 @@ int test_do_stack() {
   return SUCCESS;
 }
 
-int test_do_accumulator() {
+int spam::test_do_accumulator() {
   // Test zero arguments.
   //
 
@@ -88,7 +86,7 @@ int test_do_accumulator() {
   return SUCCESS;
 }
 
-int test_do_help() {
+int spam::test_do_help() {
   // Verify returns true.
 
   // All tests passed.
@@ -100,10 +98,10 @@ int main(int argc, char** argv) {
   int tests_run = 4;
   int tests_passed = 0;
 
-  tests_passed += test_file_exists();
-  tests_passed += test_do_stack();
-  tests_passed += test_do_accumulator();
-  tests_passed += test_do_help();
+  tests_passed += spam::test_file_exists();
+  tests_passed += spam::test_do_stack();
+  tests_passed += spam::test_do_accumulator();
+  tests_passed += spam::test_do_help();
 
   std::cout << "RESULTS:" << std::endl;
   std::cout << "\t" << tests_run << " tests run." << std::endl;
