@@ -1,17 +1,28 @@
 #include "memory.hpp"
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
 Memory::Memory() {
-  std::fill(d, d + DBUF_SIZE, 0);
-  std::fill(t, t + TBUF_SIZE, 0);
-  std::fill(s, s + STCK_SIZE, 0);
+  
 };
 
 bool Memory::store(char type, char* line) {
-
   return false;
+}
+
+char* Memory::read(int address) {
+  if(address >= S_BASE_ADDR) {
+    return s[address - S_BASE_ADDR];
+  }
+  if(address >= T_BASE_ADDR) {
+    return t[address - T_BASE_ADDR];
+  }
+  if(address >= D_BASE_ADDR) {
+    return d[address - D_BASE_ADDR];
+  }
+  return (char*)'\n';
 }
 
 void Memory::dump() {
