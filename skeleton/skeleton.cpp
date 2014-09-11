@@ -25,8 +25,8 @@ int spam::do_stack(int argc, char** argv) {
 
   // Verify correctness of first argument,
   // i.e. was the stack method called?
-  if (std::strcmp(argv[1], "stack") != 0
-   && std::strcmp(argv[1], "s") != 0) {
+  if (strcmp(argv[1], "stack") != 0
+   && strcmp(argv[1], "s") != 0) {
      #ifndef TEST
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
      #endif
@@ -56,8 +56,8 @@ int spam::do_accumulator(int argc, char** argv) {
 
   // Verify correctness of first argument,
   // i.e. was the accumulator method called?
-  if (std::strcmp(argv[1], "accumulator") != 0
-   && std::strcmp(argv[1], "a") != 0) {
+  if (strcmp(argv[1], "accumulator") != 0
+   && strcmp(argv[1], "a") != 0) {
      #ifndef TEST
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
      #endif
