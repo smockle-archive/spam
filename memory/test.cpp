@@ -84,5 +84,5 @@ int main(int argc, char ** argv) {
 
   if(isVerbose) cout << "%%%%%%%% END TEST %%%%%%%%" << endl << endl;
 
-  return (failing == 0) ? SUCCESS : FAILURE;
+  return (failing == 0) ? SUCCESS : FAIL;
 }
