@@ -1,5 +1,5 @@
 # Compiler
-CC = g++
+CC = g++ --std=c++11
 
 default: spam
 

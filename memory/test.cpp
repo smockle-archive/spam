@@ -17,10 +17,11 @@ int main(int argc, char ** argv) {
 
   Memory m;
 
+  cout << endl << "%%%%%%%% TESTING MEMORY %%%%%%%%" << endl << endl;
   cout << "=== Is the memory properly being cleared? ===" << endl;
-  if(isVerbose) cout << "Memory m content dump:" << endl << endl;
+  if(isVerbose) cout << "Memory m content dump:" << endl;
   if(isVerbose) m.dump();
-  cout << "assert (d[0], t[0], s[0] == 0) : ";
+  cout << "assert (each array has a 0 at its base address) : ";
   isDataClear  = (m.read(D_BASE_ADDR) == 0);
   isTextClear  = (m.read(T_BASE_ADDR) == 0);
   isStackClear = (m.read(S_BASE_ADDR) == 0);
@@ -31,6 +32,7 @@ int main(int argc, char ** argv) {
     if(!isTextClear)  cout << "- text"  << endl;
     if(!isStackClear) cout << "- stack" << endl;
   }
+  cout << "================================" << endl;
   cout << endl;
 
   cout << "=== Can we write to memory properly? ===" << endl;
@@ -40,6 +42,10 @@ int main(int argc, char ** argv) {
   if(isVerbose) cout << "memory @ T_BASE_ADDR: " << c << endl;
   cout << "assert (\"hello world\" is present in the text buffer) : ";
   cout << ((strcmp(c, "hello world") == 0) ? "true" : "false") << endl;
+  cout << "================================" << endl;
+  cout << endl;
+
+  cout << "%%%%%%%% END TEST %%%%%%%%" << endl << endl;
 
   return 0;
 }
