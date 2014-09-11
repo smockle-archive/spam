@@ -41,10 +41,8 @@ char* Memory::read(int address) {
 }
 
 void Memory::dump() {
-  cout << "d:" << endl;
-  cout << d << endl << endl;
-  cout << "t:" << endl;
-  cout << t << endl << endl;
-  cout << "s:" << endl;
-  cout << s << endl << endl;
+  cout << "d:" << d << endl;
+  cout << "t:" << t << endl;
+  cout << "s:" << s << endl;
+  cout << endl;
 }
