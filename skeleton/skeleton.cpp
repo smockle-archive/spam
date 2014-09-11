@@ -17,22 +17,28 @@ bool spam::file_exists(std::string filename) {
 int spam::do_stack(int argc, char** argv) {
   // Verify number of arguments.
   if (argc < 3) {
+    #ifndef TEST
     std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
+    #endif
     return ARGUMENT_ERROR;
   }
 
   // Verify correctness of first argument,
   // i.e. was the stack method called?
-  if (strcmp(argv[1], "stack") != 0
-   && strcmp(argv[1], "s") != 0) {
+  if (std::strcmp(argv[1], "stack") != 0
+   && std::strcmp(argv[1], "s") != 0) {
+     #ifndef TEST
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
+     #endif
      return ARGUMENT_ERROR;
   }
 
   // Verify correctness of second argument,
   // i.e. verify file exists.
   if (!spam::file_exists(argv[2])) {
+    #ifndef TEST
     std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    #endif
     return IO_ERROR;
   }
 
@@ -42,22 +48,28 @@ int spam::do_stack(int argc, char** argv) {
 int spam::do_accumulator(int argc, char** argv) {
   // Verify number of arguments.
   if (argc < 3) {
+    #ifndef TEST
     std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
+    #endif
     return ARGUMENT_ERROR;
   }
 
   // Verify correctness of first argument,
   // i.e. was the accumulator method called?
-  if (strcmp(argv[1], "accumulator") != 0
-   && strcmp(argv[1], "a") != 0) {
+  if (std::strcmp(argv[1], "accumulator") != 0
+   && std::strcmp(argv[1], "a") != 0) {
+     #ifndef TEST
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
+     #endif
      return ARGUMENT_ERROR;
   }
 
   // Verify correctness of second argument,
   // i.e. verify file exists.
   if (!file_exists(argv[2])) {
+    #ifndef TEST
     std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    #endif
     return IO_ERROR;
   }
 
@@ -65,10 +77,12 @@ int spam::do_accumulator(int argc, char** argv) {
 }
 
 int spam::do_help() {
+  #ifndef TEST
   std::cout << "Commands:" << std::endl;
   std::cout << "\tspam stack <input_file>" << std::endl;
   std::cout << "\tspam accumulator <input_file>" << std::endl;
   std::cout << "\tspam help" << std::endl;
+  #endif
 
   return SUCCESS;
 }
