@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string.h>
 #include "memory.hpp"
-#include "../skeleton/skeleton.hpp"
 
 using namespace std;
 
