@@ -4,7 +4,7 @@
 #include "skeleton.hpp"
 
 namespace spam {
-  bool test_file_exists();
+  int test_file_exists();
   int test_do_stack();
   int test_do_accumulator();
   int test_do_help();

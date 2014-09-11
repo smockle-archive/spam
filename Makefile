@@ -14,7 +14,7 @@ test-memory:
 	$(CC) memory/test.cpp memory/memory.cpp -o memory/test
 
 test-skeleton:
-	$(CC) skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
+	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
 
 clean:
 	rm -Rf *.o spam test */test
