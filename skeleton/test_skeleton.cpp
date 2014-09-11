@@ -1,4 +1,4 @@
-#import "test_skeleton.hpp"
+#include "test_skeleton.hpp"
 
 // I consulted the following resources for help:
 // http://stackoverflow.com/questions/10337248/what-does-the-g-d-flag-do

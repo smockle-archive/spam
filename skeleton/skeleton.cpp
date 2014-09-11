@@ -1,4 +1,4 @@
-#import "skeleton.hpp"
+#include "skeleton.hpp"
 
 // I consulted the following resources for help:
 // http://www.cplusplus.com/reference/fstream/ifstream/open/
@@ -23,8 +23,8 @@ int spam::do_stack(int argc, char** argv) {
 
   // Verify correctness of first argument,
   // i.e. was the stack method called?
-  if (std::strcmp(argv[1], "stack") != 0
-   && std::strcmp(argv[1], "s") != 0) {
+  if (strcmp(argv[1], "stack") != 0
+   && strcmp(argv[1], "s") != 0) {
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
      return ARGUMENT_ERROR;
   }
@@ -48,8 +48,8 @@ int spam::do_accumulator(int argc, char** argv) {
 
   // Verify correctness of first argument,
   // i.e. was the accumulator method called?
-  if (std::strcmp(argv[1], "accumulator") != 0
-   && std::strcmp(argv[1], "a") != 0) {
+  if (strcmp(argv[1], "accumulator") != 0
+   && strcmp(argv[1], "a") != 0) {
      std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
      return ARGUMENT_ERROR;
   }
@@ -77,17 +77,17 @@ int spam::do_help() {
 
 int main(int argc, char** argv) {
   if (argc > 0) {
-    if (std::strcmp(argv[1], "stack") == 0
-     || std::strcmp(argv[1], "s") == 0) {
+    if (strcmp(argv[1], "stack") == 0
+     || strcmp(argv[1], "s") == 0) {
       spam::do_stack(argc, argv);
     }
-    else if (std::strcmp(argv[1], "accumulator") == 0
-          || std::strcmp(argv[1], "a") == 0) {
+    else if (strcmp(argv[1], "accumulator") == 0
+          || strcmp(argv[1], "a") == 0) {
       spam::do_accumulator(argc, argv);
     }
-    else if (std::strcmp(argv[1], "help") == 0
-          || std::strcmp(argv[1], "-h") == 0
-          || std::strcmp(argv[1], "--help") == 0) {
+    else if (strcmp(argv[1], "help") == 0
+          || strcmp(argv[1], "-h") == 0
+          || strcmp(argv[1], "--help") == 0) {
       spam::do_help();
     }
     else {
