@@ -40,6 +40,7 @@ int Stack::run() {
       pc = (end() ? -1 : pc);
     }
   }
+  std::cout << "End stack run." << std::endl;
   return SUCCESS;
 }
 

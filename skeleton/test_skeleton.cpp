@@ -47,9 +47,8 @@ int spam::TestSkeleton::test_do_memory() {
   input << ".text\n";
   input << "PUSH X\n";
   input << "PUSH Y\n";
-  input << "POP  X\n";
-  input << "END\n";
-  input << "\0";
+  input << "POP X\n";
+  input << "END";
   input.close();
   if (skeleton.do_memory("SHIBBOLETH_input.s") == IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test with existing file\"." << std::endl;
@@ -58,13 +57,15 @@ int spam::TestSkeleton::test_do_memory() {
 
   // Test that we read in and stored the lines we thought we did.
 
-  //std::cout << skeleton.memory->read(D_BASE_ADDR) << std::endl;
+  std::cout << "DEBUG (db=" << D_BASE_ADDR << ", tb=" << T_BASE_ADDR << "):" << std::endl;
+  std::cout << skeleton.memory->read(D_BASE_ADDR) << std::endl;
+  std::cout << skeleton.memory->read(T_BASE_ADDR) << std::endl;
 
-  if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "3\n") != 0
-   || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "4\n") != 0
-   || strcmp(skeleton.memory->read(T_BASE_ADDR),     "PUSH X\n") != 0
-   || strcmp(skeleton.memory->read(T_BASE_ADDR + 1), "PUSH Y\n") != 0
-   || strcmp(skeleton.memory->read(T_BASE_ADDR + 2), "POP  X\n") != 0) {
+  if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "3") != 0
+   || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "4") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR),     "push x") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR + 1), "push y") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR + 2), "pop x") != 0) {
      std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test that we read in and stored the lines we thought we did\"." << std::endl;
      return FAIL;
    }

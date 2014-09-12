@@ -46,11 +46,12 @@ int spam::Skeleton::do_memory(std::string filename) {
 
     if (buffer == 'd') {
       memory->store(mem_d_addr, &line[0]);
-      std::cout << "DEBUG: " << memory->read(mem_d_addr) << std::endl;
+      std::cout << "DEBUG: (d@" << mem_d_addr << ", db=" << D_BASE_ADDR << "): " << &line[0] << std::endl;
+      std::cout << "DEBUG: (did we actually store that?): " << *memory->read(mem_d_addr) << std::endl;
+      if(mem_d_addr > D_BASE_ADDR) std::cout << "DEBUG: (what's before it?): " << *memory->read(mem_d_addr - 1) << std::endl;
       mem_d_addr++;
     } else if (buffer == 't') {
       memory->store(mem_t_addr, &line[0]);
-      std::cout << "DEBUG: " << memory->read(mem_t_addr) << std::endl;
       mem_t_addr++;
     }
   }

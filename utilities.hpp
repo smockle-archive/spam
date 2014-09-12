@@ -10,6 +10,8 @@
   #define T_BASE_ADDR 512
   #define S_BASE_ADDR 768
 
+  #define E_LEN 32
+
   /*
    * Instruction encoding details:
    * won't be relevant until we
