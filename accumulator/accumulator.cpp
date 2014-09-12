@@ -6,11 +6,13 @@
 // http://stackoverflow.com/questions/10847237/how-to-convert-from-int-to-char
 
 spam::Accumulator::Accumulator() {
-  a = 0;
+  self = 0;
+  pc = 0;
 };
 
 spam::Accumulator::Accumulator(Memory * mp) {
-  a = 0;
+  self = 0;
+  pc = 0;
   memory = *mp;
 };
 
@@ -27,7 +29,7 @@ int spam::Accumulator::load(int address) {
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {
-    a = atoi(value.c_str());
+    self = atoi(value.c_str());
   } else {
     #ifndef TEST
     std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
@@ -47,7 +49,7 @@ int spam::Accumulator::store(int address) {
     return ARGUMENT_ERROR;
   }
 
-  std::string s = std::to_string(a);
+  std::string s = std::to_string(self);
   memory.store(address, (char *) s.c_str());
 
   return SUCCESS;
@@ -66,7 +68,7 @@ int spam::Accumulator::add(int address) {
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {
-    a = a + atoi(value.c_str());
+    self = self + atoi(value.c_str());
   } else {
     #ifndef TEST
     std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
@@ -90,7 +92,7 @@ int spam::Accumulator::multiply(int address) {
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {
-    a = a * atoi(value.c_str());
+    self = self * atoi(value.c_str());
   } else {
     #ifndef TEST
     std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
@@ -101,6 +103,22 @@ int spam::Accumulator::multiply(int address) {
   return SUCCESS;
 }
 
+int spam::Accumulator::run() {
+  // Process Memory.d (variables)
+  int x = valueof(memory.read(X_ADDR));
+  int a = valueof(memory.read(A_ADDR));
+  int b = valueof(memory.read(B_ADDR));
+  int c = valueof(memory.read(C_ADDR));
+
+  // Process Memory.t (commands)
+  std::string command = "";
+  pc = T_BASE_ADDR;
+  while (pc > -1) {
+    command = "";
+  }
+}
+
 int spam::Accumulator::end() {
+  pc = -1;
   return SUCCESS;
 }

@@ -82,10 +82,10 @@ int spam::TestAccumulator::test_accumulator_add() {
   }
 
   // Verify sum correctness.
-  accumulator.a = 0;
+  accumulator.self = 0;
   accumulator.memory.store(TEST_ADDRESS, (char *) "1");
   accumulator.add(TEST_ADDRESS);
-  if (accumulator.a != 1) {
+  if (accumulator.self != 1) {
     std::cerr << COLOR_ERROR << " test_accumulator_add() failed. The failing subtest is \"Verify sum correctness\"." << std::endl;
     return FAIL;
   }
@@ -123,10 +123,10 @@ int spam::TestAccumulator::test_accumulator_multiply() {
   }
 
   // Verify product correctness.
-  accumulator.a = 2;
+  accumulator.self = 2;
   accumulator.memory.store(TEST_ADDRESS, (char *) "3");
   accumulator.multiply(TEST_ADDRESS);
-  if (accumulator.a != 6) {
+  if (accumulator.self != 6) {
     std::cerr << COLOR_ERROR << " test_accumulator_multiply() failed. The failing subtest is \"Verify product correctness\"." << std::endl;
     return FAIL;
   }

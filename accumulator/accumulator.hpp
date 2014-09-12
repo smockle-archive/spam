@@ -7,7 +7,8 @@
 namespace spam {
   class Accumulator {
     public:
-      int a;
+      int self;
+      int pc;
       Memory memory;
 
       Accumulator();
@@ -16,6 +17,7 @@ namespace spam {
       int store(int address);
       int add(int address);
       int multiply(int address);
+      int run();
       int end();
   };
 }

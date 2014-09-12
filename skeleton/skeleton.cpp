@@ -30,7 +30,7 @@ int spam::Skeleton::do_memory(std::string filename) {
   int mem_t_addr = T_BASE_ADDR;
   int mem_d_addr = D_BASE_ADDR;
   char buffer = 'z';
-  
+
   for (std::string line; getline(input, line);) {
     line = trim(tolower(line));
 
