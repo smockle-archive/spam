@@ -1,7 +1,7 @@
 #ifndef TEST_SKELETON_H
 #define TEST_SKELETON_H
 
-#define TEST_ADDRESS 100
+#define TEST_ADDRESS 300
 
 #include "accumulator.hpp"
 #include "../skeleton/test_skeleton.hpp"

@@ -1,6 +1,6 @@
 # Compiler
 CC = g++ --std=c++11
-# CC = clang --std=c++11
+##CC = clang --std=c++11
 
 default: clean spam
 

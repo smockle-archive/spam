@@ -1,13 +1,15 @@
 #include "test_accumulator.hpp"
 
 int spam::TestAccumulator::test_accumulator_load() {
+std::cout << "DEBUG: 100" << std::endl;
   // Test negative address.
   if (accumulator.load(-4) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_load() failed. The failing subtest is \"Test negative address\"." << std::endl;
     return FAIL;
   }
 
-  // Test positive address.
+  // Test positive address.accumulator.a = 0;
+  accumulator.memory.store(TEST_ADDRESS, (char *) "SHIBBOLETH");
   if (accumulator.load(TEST_ADDRESS) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_load() failed. The failing subtest is \"Test postive address\"." << std::endl;
     return FAIL;
