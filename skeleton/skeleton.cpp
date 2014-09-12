@@ -25,12 +25,28 @@ int spam::Skeleton::do_memory(std::string filename) {
     return IO_ERROR;
   }
 
-  // Read file line-by-line into memory.
+  // Read file line-by-line into the correct memory sections.
   std::ifstream input(filename);
-  int mem_addr = T_BASE_ADDR;
+  int mem_t_addr = T_BASE_ADDR;
+  int mem_d_addr = D_BASE_ADDR;
+  char buffer = 'z';
+  
   for (std::string line; getline(input, line);) {
-    memory->store(mem_addr, &line[0]);
-    mem_addr++;
+    line = trim(tolower(line));
+
+    if (line.compare(".data") == 0) {
+      buffer = 'd';
+    } else if (line.compare(".text") == 0) {
+      buffer = 't';
+    }
+
+    if (buffer == 'd') {
+      memory->store(mem_d_addr, &line[0]);
+      mem_d_addr++;
+    } else if (buffer == 't') {
+      memory->store(mem_t_addr, &line[0]);
+      mem_t_addr++;
+    }
   }
 
   return SUCCESS;

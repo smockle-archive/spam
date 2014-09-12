@@ -26,6 +26,17 @@
 
 #endif
 
+#ifndef BufferFunctions
+#define BufferFunctions
+  #include <iostream>
+  #include <string>
+
+  static inline int valueof(std::string &s) {
+    return atoi(s.substr(s.find(" ")).c_str());
+  }
+
+#endif
+
 #ifndef ReturnConstants
 #define ReturnConstants 1
 
@@ -49,5 +60,49 @@
   #define COLOR_ERROR "\033[0;31mError:\033[0m"
   #define COLOR_EXCEPTION "\033[0;33mError:\033[0m"
   #define COLOR_SUCCESS "\033[0;32mSuccess:\033[0m"
+
+#endif
+
+// SOURCE: http://stackoverflow.com/a/217605/1923134
+#ifndef StringTrim
+#define StringTrim
+
+  #include <algorithm>
+  #include <functional>
+  #include <cctype>
+  #include <locale>
+
+  // trim from start
+  static inline std::string &ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
+  }
+
+  // trim from end
+  static inline std::string &rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+    return s;
+  }
+
+  // trim from both ends
+  static inline std::string &trim(std::string &s) {
+    return ltrim(rtrim(s));
+  }
+
+#endif
+
+#ifndef StringToLower
+#define StringToLower
+  #include <iostream>
+  #include <string>
+
+  static inline std::string &tolower(std::string &s) {
+    int i = 0;
+    for (char c : s) {
+      s[i] = std::tolower(c);
+      i++;
+    }
+    return s;
+  }
 
 #endif
