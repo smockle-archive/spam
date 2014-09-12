@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../utilties.hpp"
+#include "../utilities.hpp"
 #include "../memory/memory.hpp"
 
 namespace spam {
