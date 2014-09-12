@@ -33,6 +33,7 @@
   #define FAIL -1
   #define ARGUMENT_ERROR -10
   #define IO_ERROR -20
+  #define TYPE_ERROR -30
 
 #endif
 

@@ -10,6 +10,7 @@ travis: clean test
 	./memory/test
 	./skeleton/test
 	./stack/test
+	./accumulator/test
 
 test: test-memory test-skeleton test-accumulator test-stack
 
@@ -23,7 +24,7 @@ test-skeleton:
 	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp memory/memory.cpp -o skeleton/test
 
 test-accumulator:
-	$(CC) -D TEST accumulator/test_accumulator.cpp memory/memory.cpp -o accumulator/test
+	$(CC) -D TEST accumulator/test_accumulator.cpp accumulator/accumulator.cpp memory/memory.cpp -o accumulator/test
 
 test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test

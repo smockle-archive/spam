@@ -4,15 +4,19 @@
 #include "../skeleton/skeleton.hpp"
 #include <regex>
 
-class Accumulator {
-  int a;
+namespace spam {
+  class Accumulator {
+    public:
+      int a;
+      Memory memory;
 
-  Accumulator(Memory memory);
-  int load(int address);
-  int store(int address);
-  int add(int address);
-  int multiply(int address);
-  int end();
-};
+      Accumulator();
+      int load(int address);
+      int store(int address);
+      int add(int address);
+      int multiply(int address);
+      int end();
+  };
+}
 
 #endif
