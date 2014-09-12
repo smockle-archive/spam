@@ -115,7 +115,10 @@ int spam::Accumulator::run() {
   pc = T_BASE_ADDR;
   while (pc >= T_BASE_ADDR) {
     command = memory.read(pc);
-    std::cout << command << std::endl;
+    command = trim(tolower(command));
+    if (command.compare("end") == 0) {
+      end();
+    }
     pc++;
   }
 
