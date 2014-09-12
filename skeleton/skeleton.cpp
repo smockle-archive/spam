@@ -36,15 +36,21 @@ int spam::Skeleton::do_memory(std::string filename) {
 
     if (line.compare(".data") == 0) {
       buffer = 'd';
+      continue;
     } else if (line.compare(".text") == 0) {
       buffer = 't';
+      continue;
+    } else if (line.compare("") == 0) {
+      continue;
     }
 
     if (buffer == 'd') {
       memory->store(mem_d_addr, &line[0]);
+      std::cout << "DEBUG: " << memory->read(mem_d_addr) << std::endl;
       mem_d_addr++;
     } else if (buffer == 't') {
       memory->store(mem_t_addr, &line[0]);
+      std::cout << "DEBUG: " << memory->read(mem_d_addr) << std::endl;
       mem_t_addr++;
     }
   }
