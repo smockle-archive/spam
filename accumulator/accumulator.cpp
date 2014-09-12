@@ -116,6 +116,8 @@ int spam::Accumulator::run() {
   while (pc > -1) {
     command = "";
   }
+
+  return SUCCESS;
 }
 
 int spam::Accumulator::end() {
