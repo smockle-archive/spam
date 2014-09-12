@@ -17,3 +17,5 @@ STOR B
 LOAD C
 ADD  B
 ADD  A
+
+END
