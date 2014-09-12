@@ -21,6 +21,9 @@
   #define B_ADDR 258
   #define C_ADDR 259
 
+  #define Y_ADDR 257
+  #define Z_ADDR 258
+
   #define INST_SIZE 32
   #define OPCODE_SIZE 8
   #define ADDR_SIZE 24
@@ -54,7 +57,7 @@
 #endif
 
 #ifndef Utilities
-#define Utilities
+#define Utilities 1
 
   #include <algorithm>
   #include <functional>
@@ -66,23 +69,23 @@
   namespace spam {
     // SOURCE: http://stackoverflow.com/a/217605/1923134
     // trim from start
-    std::string ltrim(std::string s) {
+    inline std::string ltrim(std::string s) {
       s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
       return s;
     }
 
     // trim from end
-    std::string rtrim(std::string s) {
+    inline std::string rtrim(std::string s) {
       s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
       return s;
     }
 
     // trim from both ends
-    std::string trim(std::string s) {
+    inline std::string trim(std::string s) {
       return ltrim(rtrim(s));
     }
 
-    std::string tolower(std::string s) {
+    inline std::string tolower(std::string s) {
       int i = 0;
       for (char c : s) {
         s[i] = std::tolower(c);
@@ -91,7 +94,7 @@
       return s;
     }
 
-    int valueof(std::string s) {
+    inline int valueof(std::string s) {
       return atoi(s.substr(s.find(" ")).c_str());
     }
   }
