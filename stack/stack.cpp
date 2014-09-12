@@ -1,5 +1,11 @@
 #include "stack.hpp"
 
+#define PUSH "push"
+#define POP  "pop"
+#define ADD  "add"
+#define MUL  "mul"
+#define END  "end"
+
 Stack::Stack() { }
 
 Stack::Stack(Memory * mp) {
@@ -7,8 +13,34 @@ Stack::Stack(Memory * mp) {
 }
 
 int Stack::run() {
+  int    pc = 0;
+  int    addr;
+  char * op;
 
-  return FAIL;
+  std::string instr;
+
+  while(pc >= 0) {
+    instr = m.read(T_BASE_ADDR);
+    op = (char * )instr.substr(0, instr.find(" ")).c_str(); //may need to be find() - 1
+    addr = spam::valueof(m.read(T_BASE_ADDR));
+
+    if (strcmp(op, PUSH) == 0) {
+      push(addr);
+    }
+    else if (strcmp(op, POP) == 0) {
+      pop(addr);
+    }
+    else if (strcmp(op, ADD) == 0) {
+      add();
+    }
+    else if (strcmp(op, MUL) == 0) {
+      mul();
+    }
+    else if (strcmp(op, END) == 0) {
+      pc = (end() ? -1 : pc);
+    }
+  }
+  return SUCCESS;
 }
 
 bool Stack::push(int a) {
