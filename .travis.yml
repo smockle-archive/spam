@@ -14,4 +14,4 @@ notifications:
       - clay@smockle.com
       - milieu@javakat.io
     on_success: change # default: change
-    on_failure: always # default: always
+    on_failure: change # default: always
