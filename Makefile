@@ -6,8 +6,9 @@ default: clean spam
 all: clean spam test
 
 travis: clean test
-	./skeleton/test
 	./memory/test
+	./skeleton/test
+	./stack/test
 
 test: test-memory test-skeleton test-accumulator test-stack
 
@@ -25,7 +26,6 @@ test-accumulator:
 
 test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
-	./stack/test
 
 clean:
 	rm -Rf *.o spam test */test
