@@ -39,17 +39,17 @@ int main(int argc, char** argv) {
 
   if (tests_run > 0) {
     std::cout << "RESULTS:" << std::endl;
-    std::cout << "\t" << tests_run << " " << spam::pluralize_test(tests_run) << " run." << std::endl;
+    std::cout << "\t" << tests_run << " " << (tests_run != 1 ? "tests" : "test")  << " run." << std::endl;
   }
 
   if (tests_passed > 0) {
-    std::cout << "\t" << COLOR_GREEN << tests_passed << " " << spam::pluralize_test(tests_passed) << " passed." << COLOR_STOP << std::endl;
+    std::cout << "\t" << COLOR_GREEN << tests_passed << " " << (tests_passed != 1 ? "tests" : "test") << " passed." << COLOR_STOP << std::endl;
   } else {
     std::cout << "\t" << tests_passed << " tests passed." << std::endl;
   }
 
   if (tests_failed > 0) {
-    std::cout << "\t" << COLOR_RED << tests_failed << " " << spam::pluralize_test(tests_failed) << " failed." << COLOR_STOP << std::endl;
+    std::cout << "\t" << COLOR_RED << tests_failed << " " << (tests_failed != 1 ? "tests" : "test") << " failed." << COLOR_STOP << std::endl;
   } else {
     std::cout << "\t" << tests_failed << " tests failed." << std::endl;
   }

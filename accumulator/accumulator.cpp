@@ -1,4 +1,4 @@
-#import "accumulator.hpp"
+#include "accumulator.hpp"
 
 // I consulted the following resources for help:
 // http://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c

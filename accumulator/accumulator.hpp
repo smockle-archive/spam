@@ -1,8 +1,8 @@
 #ifndef ACCUMULATOR_H
 #define ACCUMULATOR_H
 
-#import "../skeleton/skeleton.hpp"
-#import <regex>
+#include "../skeleton/skeleton.hpp"
+#include <regex>
 
 class Accumulator {
   int a;
