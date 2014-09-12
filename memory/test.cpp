@@ -23,10 +23,9 @@ int main(int argc, char ** argv) {
 
   Memory m;
 
-
-  isDataClear  = (m.read(D_BASE_ADDR) == 0);
-  isTextClear  = (m.read(T_BASE_ADDR) == 0);
-  isStackClear = (m.read(S_BASE_ADDR) == 0);
+  isDataClear  = (strcmp(m.read(D_BASE_ADDR), "\0") == 0);
+  isTextClear  = (strcmp(m.read(T_BASE_ADDR), "\0") == 0);
+  isStackClear = (strcmp(m.read(S_BASE_ADDR), "\0") == 0);
 
   isAllClear = (isDataClear && isTextClear && isStackClear);
 
