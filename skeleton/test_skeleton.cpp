@@ -17,6 +17,8 @@ int spam::TestSkeleton::test_file_exists() {
   std::ofstream input;
   input.open ("SHIBBOLETH_input.s");
   input << "# SAMPLE FILE\n";
+  input << ".text\n";
+  input << "END\n";
   input.close();
   if (!skeleton.file_exists("SHIBBOLETH_input.s")) {
     std::cerr << COLOR_ERROR << " test_file_exists() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
@@ -46,6 +48,7 @@ int spam::TestSkeleton::test_do_memory() {
   input << "PUSH X\n";
   input << "PUSH Y\n";
   input << "POP  X\n";
+  input << "END\n";
   input << "\0";
   input.close();
   if (skeleton.do_memory("SHIBBOLETH_input.s") == IO_ERROR) {
@@ -135,6 +138,8 @@ int spam::TestSkeleton::test_do_stack() {
   std::ofstream input;
   input.open ("SHIBBOLETH_input.s");
   input << "# SAMPLE FILE\n";
+  input << ".text\n";
+  input << "END\n";
   input.close();
   char* argn[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_input.s" };
   if (skeleton.do_stack(3, argn) == IO_ERROR) {
@@ -210,6 +215,8 @@ int spam::TestSkeleton::test_do_accumulator() {
   std::ofstream input;
   input.open ("SHIBBOLETH_input.s");
   input << "# SAMPLE FILE\n";
+  input << ".text\n";
+  input << "END\n";
   input.close();
   char* argn[] = { (char*) "spam", (char*) "accumulator", (char*) "SHIBBOLETH_input.s" };
   if (skeleton.do_accumulator(3, argn) == IO_ERROR) {
