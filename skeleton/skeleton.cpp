@@ -4,6 +4,7 @@
 // http://www.cplusplus.com/reference/fstream/ifstream/open/
 // http://www.cplusplus.com/reference/cstring/strcmp/
 // http://www.cplusplus.com/forum/unices/36461/
+// http://stackoverflow.com/questions/7868936/c-read-file-line-by-line
 
 bool spam::file_exists(std::string filename) {
   std::ifstream ifs;
@@ -12,6 +13,25 @@ bool spam::file_exists(std::string filename) {
   exists = ifs.good();
   ifs.close();
   return exists;
+}
+
+int spam::do_memory(std::string filename) {
+  // Verify correctness of argument,
+  // i.e. verify file exists.
+  if (!spam::file_exists(filename)) {
+    #ifndef TEST
+    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    #endif
+    return IO_ERROR;
+  }
+
+  // Read file line-by-line into memory.
+  std::ifstream input(filename);
+  for (std::string line; getline(input, line);) {
+    memory.store(0, &line[0]);
+  }
+
+  return SUCCESS;
 }
 
 int spam::do_stack(int argc, char** argv) {

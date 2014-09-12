@@ -28,6 +28,19 @@ int spam::test_file_exists() {
   return SUCCESS;
 }
 
+int spam::test_do_memory() {
+  // Test with missing file.
+  // (First verify missing file doesn't exist.)
+  if (spam::do_memory("SHIBBOLETH_missing.s") != IO_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test with missing file\"." << std::endl;
+    return FAIL;
+  }
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_do_memory() passed." << std::endl;
+  return SUCCESS;
+}
+
 int spam::test_do_stack() {
   // Test zero arguments.
   //
@@ -225,10 +238,11 @@ int spam::test_pluralize_test() {
 }
 
 int main(int argc, char** argv) {
-  int tests_run = 5;
-  int tests_passed = 5;
+  int tests_run = 6;
+  int tests_passed = 6;
 
   tests_passed += spam::test_file_exists();
+  tests_passed += spam::test_do_memory();
   tests_passed += spam::test_do_stack();
   tests_passed += spam::test_do_accumulator();
   tests_passed += spam::test_do_help();

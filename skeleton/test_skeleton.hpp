@@ -5,6 +5,7 @@
 
 namespace spam {
   int test_file_exists();
+  int test_do_memory();
   int test_do_stack();
   int test_do_accumulator();
   int test_do_help();

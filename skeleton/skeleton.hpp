@@ -5,10 +5,15 @@
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+
 #include "../utilties.hpp"
+#include "../memory/memory.hpp"
 
 namespace spam {
+  Memory memory;
+
   bool file_exists(std::string filename);
+  int do_memory(std::string filename);
   int do_stack(int argc, char** argv);
   int do_accumulator(int argc, char** argv);
   int do_help();
