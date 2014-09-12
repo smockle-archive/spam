@@ -113,8 +113,10 @@ int spam::Accumulator::run() {
   // Process Memory.t (commands)
   std::string command = "";
   pc = T_BASE_ADDR;
-  while (pc > -1) {
-    command = "";
+  while (pc >= T_BASE_ADDR) {
+    command = memory.read(pc);
+    std::cout << command << std::endl;
+    pc++;
   }
 
   return SUCCESS;

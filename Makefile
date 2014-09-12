@@ -15,7 +15,7 @@ travis: clean test
 test: test-memory test-skeleton test-accumulator test-stack
 
 spam:
-	$(CC) skeleton/skeleton.cpp memory/memory.cpp -o spam
+	$(CC) skeleton/skeleton.cpp memory/memory.cpp accumulator/accumulator.cpp stack/stack.cpp -o spam
 
 test-memory:
 	$(CC) -D TEST memory/test.cpp memory/memory.cpp -o memory/test
