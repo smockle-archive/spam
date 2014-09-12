@@ -209,6 +209,10 @@ int spam::test_mul() {
     std::cout << "mul() misaligned the stack pointer." << std::endl;
     return -1;
   }
-
   return 0;
+}
+
+int spam::test_end(){
+  Stack s;
+  return (!s.end() ? SUCCESS : FAIL)
 }
