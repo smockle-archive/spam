@@ -1,9 +1,3 @@
-#include <string.h>
-#include <iostream>
-
-#include "stack.hpp"
-#include "../utilities.hpp"
-
 #include "test.hpp"
 
 #define X 3
@@ -49,7 +43,7 @@ int spam::test_push() {
   Stack s;
 
   char* memline;
-  memline = s.m.read(X_ADDR);
+  // memline = s.m.read(X_ADDR);
 
   if(!s.push(X_ADDR)) {
     std::cout << COLOR_RED << "Error: " << COLOR_STOP;
