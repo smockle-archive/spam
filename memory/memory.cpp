@@ -9,6 +9,8 @@ bool Memory::store(int address, char* line) {
   }
   else if(address >= T_BASE_ADDR) {
     t[address - T_BASE_ADDR] = line;
+    cout << "DEBUG MEM (@" << address << " /t["<< address - T_BASE_ADDR << "]/: " << line << ")" << endl;
+    cout << "DEBUG MEM (t[" << address - T_BASE_ADDR <<"]: " << t[address - T_BASE_ADDR] << ")" << endl;
     return true;
   }
   else if(address >= D_BASE_ADDR) {

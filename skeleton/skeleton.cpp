@@ -50,7 +50,7 @@ int spam::Skeleton::do_memory(std::string filename) {
       mem_d_addr++;
     } else if (buffer == 't') {
       memory->store(mem_t_addr, &line[0]);
-      std::cout << "DEBUG: " << memory->read(mem_d_addr) << std::endl;
+      std::cout << "DEBUG: " << memory->read(mem_t_addr) << std::endl;
       mem_t_addr++;
     }
   }
