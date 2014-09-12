@@ -8,21 +8,21 @@ int spam::TestAccumulator::test_accumulator_load() {
   }
 
   // Test positive address.accumulator.a = 0;
-  accumulator.memory->store(TEST_ADDRESS, (char *) "SHIBBOLETH");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "SHIBBOLETH");
   if (accumulator.load(TEST_ADDRESS) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_load() failed. The failing subtest is \"Test postive address\"." << std::endl;
     return FAIL;
   }
 
   // Test value that can't be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "SHIBBOLETH");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "SHIBBOLETH");
   if (accumulator.load(TEST_ADDRESS) != TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_load() failed. The failing subtest is \"Test value that can't be converted to integer\"." << std::endl;
     return FAIL;
   }
 
   // Test value that can be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "1");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "1");
   if (accumulator.load(TEST_ADDRESS) == TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_load() failed. The failing subtest is \"Test value that can be converted to integer\"." << std::endl;
     return FAIL;
@@ -65,14 +65,14 @@ int spam::TestAccumulator::test_accumulator_add() {
   }
 
   // Test value that can't be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "SHIBBOLETH");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "SHIBBOLETH");
   if (accumulator.add(TEST_ADDRESS) != TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_add() failed. The failing subtest is \"Test value that can't be converted to integer\"." << std::endl;
     return FAIL;
   }
 
   // Test value that can be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "1");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "1");
   if (accumulator.add(TEST_ADDRESS) == TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_add() failed. The failing subtest is \"Test value that can be converted to integer\"." << std::endl;
     return FAIL;
@@ -80,7 +80,7 @@ int spam::TestAccumulator::test_accumulator_add() {
 
   // Verify sum correctness.
   accumulator.a = 0;
-  accumulator.memory->store(TEST_ADDRESS, (char *) "1");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "1");
   accumulator.add(TEST_ADDRESS);
   if (accumulator.a != 1) {
     std::cerr << COLOR_ERROR << " test_accumulator_add() failed. The failing subtest is \"Verify sum correctness\"." << std::endl;
@@ -106,14 +106,14 @@ int spam::TestAccumulator::test_accumulator_multiply() {
   }
 
   // Test value that can't be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "SHIBBOLETH");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "SHIBBOLETH");
   if (accumulator.multiply(TEST_ADDRESS) != TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_multiply() failed. The failing subtest is \"Test value that can't be converted to integer\"." << std::endl;
     return FAIL;
   }
 
   // Test value that can be converted to integer.
-  accumulator.memory->store(TEST_ADDRESS, (char *) "3");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "3");
   if (accumulator.multiply(TEST_ADDRESS) == TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_multiply() failed. The failing subtest is \"Test value that can be converted to integer\"." << std::endl;
     return FAIL;
@@ -121,7 +121,7 @@ int spam::TestAccumulator::test_accumulator_multiply() {
 
   // Verify product correctness.
   accumulator.a = 2;
-  accumulator.memory->store(TEST_ADDRESS, (char *) "3");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "3");
   accumulator.multiply(TEST_ADDRESS);
   if (accumulator.a != 6) {
     std::cerr << COLOR_ERROR << " test_accumulator_multiply() failed. The failing subtest is \"Verify product correctness\"." << std::endl;
