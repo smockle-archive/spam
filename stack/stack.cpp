@@ -1,7 +1,4 @@
-#include "stack-sim.hpp"
-#include "../skeleton/skeleton.hpp"
-
-using namespace std;
+#include "stack.hpp"
 
 #ifdef TEST
 
@@ -11,18 +8,18 @@ using namespace std;
 
 #endif
 
-bool StackSim::push(int a) {
+bool Stack::push(int a) {
   return false;
 }
-bool StackSim::pop() {
+bool Stack::pop (int a) {
   return false;
 }
-bool StackSim::add(int a, int b) {
+bool Stack::add () {
   return false;
 }
-bool StackSim::mul(int a, int b) {
+bool Stack::mul () {
   return false;
 }
-bool StackSim::end() {
+bool Stack::end () {
   return false;
 }
