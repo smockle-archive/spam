@@ -1,5 +1,16 @@
 #include "stack.hpp"
 
+Stack::Stack() { }
+
+Stack::Stack(Memory * mp) {
+  m = *mp;
+}
+
+int Stack::run() {
+
+  return FAIL;
+}
+
 bool Stack::push(int a) {
   sp++;
   m.store(S_BASE_ADDR + sp, m.read(a));

@@ -9,13 +9,16 @@ public:
   int sp = -1; // stack pointer
   Memory m;
 
+  Stack();
+  Stack(Memory * mp);
+
   bool push(int a);
   bool pop (int a);
   bool add ();
   bool mul ();
   bool end ();
 
-  void run();
+  int run();
 };
 
 #endif
