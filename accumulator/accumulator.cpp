@@ -112,16 +112,51 @@ int spam::Accumulator::run() {
 
   // Process Memory.t (commands)
   std::string command = "";
+  std::string argument = "";
+  int arg = -1;
+
   pc = T_BASE_ADDR;
   while (pc >= T_BASE_ADDR) {
-    command = memory.read(pc);
-    command = trim(tolower(command));
-    if (command.compare("end") == 0) {
+    // Get MIPS command string from Memory.t at position pc.
+    command = trim(tolower(memory.read(pc)));
+
+    // Split MIPS command string into MIPS command and MIPS argument.
+    if (command.find(" ") != std::string::npos) {
+      argument = command.substr(command.find(" ")).c_str();
+      command = command.substr(0, command.find(" ")).c_str();
+    }
+
+    // Match MIPS argument with spam::Accumulator argument
+    if (argument.compare("x") == 0) {
+      arg = x;
+    } else if (argument.compare("a") == 0) {
+      arg = a;
+    } else if (argument.compare("b") == 0) {
+      arg = b;
+    } else if (argument.compare("c") == 0) {
+      arg = c;
+    }
+
+    // Match MIPS command with spam::Accumulator command
+    if (command.compare("load") == 0) {
+      load(arg);
+    } else if (command.compare("stor") == 0) {
+      store(arg);
+    } else if (command.compare("add") == 0) {
+      add(arg);
+    } else if (command.compare("mul") == 0) {
+      multiply(arg);
+    } else if (command.compare("end") == 0) {
       end();
     }
+
+    // Prepare for next command
+    command = "";
+    argument = "";
     pc++;
   }
 
+  // All commands have executed
   return SUCCESS;
 }
 
