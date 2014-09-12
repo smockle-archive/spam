@@ -2,10 +2,6 @@
 
 using namespace std;
 
-Memory::Memory() {
-
-};
-
 bool Memory::store(int address, char* line) {
   if(address >= S_BASE_ADDR) {
     s[address - S_BASE_ADDR] = line;
@@ -26,6 +22,7 @@ char* Memory::read(int address) {
   if(address < 0) {
     cout << "Error: negative addresses are not allowed. Address given was ";
     cout << address << endl;
+    return (char*)'\n';
   }
 
   if(address >= S_BASE_ADDR) {

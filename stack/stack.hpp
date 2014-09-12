@@ -1,3 +1,6 @@
+#ifndef STACK_H
+#define STACK_H
+
 #include "../utilities.hpp"
 #include "../memory/memory.hpp"
 
@@ -14,3 +17,5 @@ public:
 
   void run();
 };
+
+#endif

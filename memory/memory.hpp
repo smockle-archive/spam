@@ -11,7 +11,6 @@ private:
   char* t[TBUF_SIZE] = {}; /* Text buffer */
   char* s[STCK_SIZE] = {}; /* Stack buffer */
 public:
-  Memory(); /* Constructor */
   bool store (int address, char* line);
   char* read (int address);
   void  dump ();

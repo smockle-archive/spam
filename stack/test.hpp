@@ -1,5 +1,7 @@
-#ifndef TEST_STACKSIM_H
-#define TEST_STACKSIM_H
+#ifndef TEST_STACK_H
+#define TEST_STACK_H
+
+#include "stack.hpp"
 
 #include <string.h>
 #include <iostream>
@@ -8,6 +10,7 @@
 #include "../utilities.hpp"
 
 namespace spam {
+  int test_init();
   int test_push();
   int test_pop();
   int test_add();

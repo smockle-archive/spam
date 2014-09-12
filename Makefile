@@ -20,8 +20,9 @@ test-memory:
 test-skeleton:
 	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
 
-test-stack:
-	$(CC) stack/test.cpp stack/stack.cpp -o stack/test
+test-stack: 
+	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
+	./stack/test
 
 clean:
 	rm -Rf *.o spam test */test
