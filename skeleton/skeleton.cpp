@@ -85,6 +85,7 @@ int spam::Skeleton::do_stack(int argc, char** argv) {
 
   // Initialize stack.
   Stack stack(memory);
+  stack.run();
 
   return SUCCESS;
 }
@@ -122,6 +123,7 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
 
   // Initialize stack.
   Accumulator accumulator(memory);
+  accumulator.run();
 
   return SUCCESS;
 }
