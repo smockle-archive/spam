@@ -1,5 +1,6 @@
 # Compiler
 CC = g++ --std=c++11
+# CC = clang --std=c++11
 
 default: clean spam
 
@@ -16,13 +17,13 @@ spam:
 	$(CC) skeleton/skeleton.cpp -o spam
 
 test-memory:
-	$(CC) memory/test.cpp memory/memory.cpp -o memory/test
+	$(CC) -D TEST memory/test.cpp memory/memory.cpp -o memory/test
 
 test-skeleton:
-	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
+	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp memory/memory.cpp -o skeleton/test
 
 test-accumulator:
-	$(CC) -D TEST accumulator/test_accumulator.cpp -o accumulator/test
+	$(CC) -D TEST accumulator/test_accumulator.cpp memory/memory.cpp -o accumulator/test
 
 test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
