@@ -28,7 +28,7 @@ int spam::do_memory(std::string filename) {
   // Read file line-by-line into memory.
   std::ifstream input(filename);
   for (std::string line; getline(input, line);) {
-  //  memory.store(0, &line[0]);
+    memory.store(0, &line[0]);
   }
 
   return SUCCESS;

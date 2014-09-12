@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "../utilities.hpp"
-//#include "../memory/memory.hpp"
+#include "../memory/memory.hpp"
 
 namespace spam {
-//  Memory memory;
+  Memory memory;
 
   bool file_exists(std::string filename);
   int do_memory(std::string filename);
