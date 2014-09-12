@@ -27,8 +27,10 @@ int spam::Skeleton::do_memory(std::string filename) {
 
   // Read file line-by-line into memory.
   std::ifstream input(filename);
+  int mem_addr = T_BASE_ADDR;
   for (std::string line; getline(input, line);) {
-    memory.store(0, &line[0]);
+    memory->store(mem_addr, &line[0]);
+    mem_addr++;
   }
 
   return SUCCESS;
@@ -62,6 +64,12 @@ int spam::Skeleton::do_stack(int argc, char** argv) {
     return IO_ERROR;
   }
 
+  // Load file into memory.
+  do_memory(argv[2]);
+
+  // Initialize stack.
+  Stack stack(memory);
+
   return SUCCESS;
 }
 
@@ -92,6 +100,12 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
     #endif
     return IO_ERROR;
   }
+
+  // Load file into memory.
+  do_memory(argv[2]);
+
+  // Initialize stack.
+  Accumulator accumulator(memory);
 
   return SUCCESS;
 }

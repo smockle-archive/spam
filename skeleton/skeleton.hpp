@@ -7,11 +7,13 @@
 #include <string.h>
 #include "../utilities.hpp"
 #include "../memory/memory.hpp"
+#include "../stack/stack.hpp"
+#include "../accumulator/accumulator.hpp"
 
 namespace spam {
   class Skeleton {
     public:
-      Memory memory;
+      Memory * memory = new Memory();
 
       bool file_exists(std::string filename);
       int do_memory(std::string filename);

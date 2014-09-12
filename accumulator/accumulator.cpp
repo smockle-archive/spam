@@ -5,8 +5,9 @@
 // http://www.cplusplus.com/forum/general/13135/
 // http://stackoverflow.com/questions/10847237/how-to-convert-from-int-to-char
 
-spam::Accumulator::Accumulator() {
+spam::Accumulator::Accumulator(Memory * mp) {
   a = 0;
+  memory = mp;
 };
 
 int spam::Accumulator::load(int address) {
@@ -18,7 +19,7 @@ int spam::Accumulator::load(int address) {
     return ARGUMENT_ERROR;
   }
 
-  std::string value = memory.read(address);
+  std::string value = memory->read(address);
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {
@@ -43,7 +44,7 @@ int spam::Accumulator::store(int address) {
   }
 
   std::string s = std::to_string(a);
-  memory.store(address, (char *) s.c_str());
+  memory->store(address, (char *) s.c_str());
 
   return SUCCESS;
 }
@@ -57,7 +58,7 @@ int spam::Accumulator::add(int address) {
     return ARGUMENT_ERROR;
   }
 
-  std::string value = memory.read(address);
+  std::string value = memory->read(address);
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {
@@ -81,7 +82,7 @@ int spam::Accumulator::multiply(int address) {
     return ARGUMENT_ERROR;
   }
 
-  std::string value = memory.read(address);
+  std::string value = memory->read(address);
 
   // Verify value can be converted to integer.
   if (std::regex_match(value, std::regex("[0-9]+"))) {

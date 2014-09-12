@@ -11,6 +11,7 @@ namespace spam {
     public:
       Accumulator accumulator;
 
+      TestAccumulator();
       int test_accumulator_load();
       int test_accumulator_store();
       int test_accumulator_add();
