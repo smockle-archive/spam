@@ -9,7 +9,7 @@ travis: clean test
 	./skeleton/test
 	./memory/test
 
-test: test-memory test-skeleton test-stack
+test: test-memory test-skeleton test-accumulator test-stack
 
 spam:
 	$(CC) skeleton/skeleton.cpp -o spam
@@ -20,7 +20,10 @@ test-memory:
 test-skeleton:
 	$(CC) -D TEST skeleton/test_skeleton.cpp skeleton/skeleton.cpp -o skeleton/test
 
-test-stack: 
+test-accumulator:
+	$(CC) -D TEST accumulator/test_accumulator.cpp -o accumulator/test
+
+test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
 	./stack/test
 
