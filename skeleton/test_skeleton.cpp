@@ -4,10 +4,10 @@
 // http://stackoverflow.com/questions/10337248/what-does-the-g-d-flag-do
 // http://stackoverflow.com/questions/347949/convert-stdstring-to-const-char-or-char
 
-int spam::test_file_exists() {
+int spam::TestSkeleton::test_file_exists() {
   // Test with missing file.
   // (First verify missing file doesn't exist.)
-  if (spam::file_exists("SHIBBOLETH_missing.s")) {
+  if (skeleton.file_exists("SHIBBOLETH_missing.s")) {
     std::cerr << COLOR_ERROR << " test_file_exists() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
@@ -18,7 +18,7 @@ int spam::test_file_exists() {
   input.open ("SHIBBOLETH_input.s");
   input << "# SAMPLE FILE\n";
   input.close();
-  if (!spam::file_exists("SHIBBOLETH_input.s")) {
+  if (!skeleton.file_exists("SHIBBOLETH_input.s")) {
     std::cerr << COLOR_ERROR << " test_file_exists() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
     return FAIL;
   }
@@ -28,10 +28,10 @@ int spam::test_file_exists() {
   return SUCCESS;
 }
 
-int spam::test_do_memory() {
+int spam::TestSkeleton::test_do_memory() {
   // Test with missing file.
   // (First verify missing file doesn't exist.)
-  if (spam::do_memory("SHIBBOLETH_missing.s") != IO_ERROR) {
+  if (skeleton.do_memory("SHIBBOLETH_missing.s") != IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
@@ -41,11 +41,11 @@ int spam::test_do_memory() {
   return SUCCESS;
 }
 
-int spam::test_do_stack() {
+int spam::TestSkeleton::test_do_stack() {
   // Test zero arguments.
   //
   char* argv[0];
-  if (spam::do_stack(0, argv) != ARGUMENT_ERROR) {
+  if (skeleton.do_stack(0, argv) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test zero arguments\"." << std::endl;
     return FAIL;
   }
@@ -53,7 +53,7 @@ int spam::test_do_stack() {
   // Test one argument.
   // spam
   char* argh[] = { (char*) "spam" };
-  if (spam::do_stack(1, argh) != ARGUMENT_ERROR) {
+  if (skeleton.do_stack(1, argh) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test one argument\"." << std::endl;
     return FAIL;
   }
@@ -61,7 +61,7 @@ int spam::test_do_stack() {
   // Test two arguments.
   // spam stack
   char* argi[] = { (char*) "spam", (char*) "stack" };
-  if (spam::do_stack(2, argi) != ARGUMENT_ERROR) {
+  if (skeleton.do_stack(2, argi) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test two arguments\"." << std::endl;
     return FAIL;
   }
@@ -69,7 +69,7 @@ int spam::test_do_stack() {
   // Test three arguments.
   // spam stack "SHIBBOLETH_input.s"
   char* argj[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_input.s" };
-  if (spam::do_stack(3, argj) == ARGUMENT_ERROR) {
+  if (skeleton.do_stack(3, argj) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test three arguments\"." << std::endl;
     return FAIL;
   }
@@ -77,7 +77,7 @@ int spam::test_do_stack() {
   // Test incorrect first argument.
   // spam missing ""
   char* argk[] = { (char*) "spam", (char*) "missing", (char*) "" };
-  if (spam::do_stack(3, argk) != ARGUMENT_ERROR) {
+  if (skeleton.do_stack(3, argk) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test incorrect first argument\"." << std::endl;
     return FAIL;
   }
@@ -85,7 +85,7 @@ int spam::test_do_stack() {
   // Test correct first argument.
   // spam stack ""
   char* argl[] = { (char*) "spam", (char*) "stack", (char*) "" };
-  if (spam::do_stack(3, argl) == ARGUMENT_ERROR) {
+  if (skeleton.do_stack(3, argl) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test correct first argument\"." << std::endl;
     return FAIL;
   }
@@ -93,7 +93,7 @@ int spam::test_do_stack() {
   // Test with missing file.
   // spam stack "SHIBBOLETH_missing.s"
   char* argm[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_missing.s" };
-  if (spam::do_stack(3, argm) != IO_ERROR) {
+  if (skeleton.do_stack(3, argm) != IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
@@ -106,7 +106,7 @@ int spam::test_do_stack() {
   input << "# SAMPLE FILE\n";
   input.close();
   char* argn[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_input.s" };
-  if (spam::do_stack(3, argn) == IO_ERROR) {
+  if (skeleton.do_stack(3, argn) == IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_stack() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
     return FAIL;
   }
@@ -116,11 +116,11 @@ int spam::test_do_stack() {
   return SUCCESS;
 }
 
-int spam::test_do_accumulator() {
+int spam::TestSkeleton::test_do_accumulator() {
   // Test zero arguments.
   //
   char* argv[0];
-  if (spam::do_accumulator(0, argv) != ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(0, argv) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test zero arguments\"." << std::endl;
     return FAIL;
   }
@@ -128,7 +128,7 @@ int spam::test_do_accumulator() {
   // Test one argument.
   // spam
   char* argh[] = { (char*) "spam" };
-  if (spam::do_accumulator(1, argh) != ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(1, argh) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test one argument\"." << std::endl;
     return FAIL;
   }
@@ -136,7 +136,7 @@ int spam::test_do_accumulator() {
   // Test two arguments.
   // spam stack
   char* argi[] = { (char*) "spam", (char*) "accumulator" };
-  if (spam::do_accumulator(2, argi) != ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(2, argi) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test two arguments\"." << std::endl;
     return FAIL;
   }
@@ -144,7 +144,7 @@ int spam::test_do_accumulator() {
   // Test three arguments.
   // spam stack "SHIBBOLETH_input.s"
   char* argj[] = { (char*) "spam", (char*) "accumulator", (char*) "SHIBBOLETH_input.s" };
-  if (spam::do_accumulator(3, argj) == ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(3, argj) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test three arguments\"." << std::endl;
     return FAIL;
   }
@@ -152,7 +152,7 @@ int spam::test_do_accumulator() {
   // Test incorrect first argument.
   // spam missing ""
   char* argk[] = { (char*) "spam", (char*) "missing", (char*) "" };
-  if (spam::do_accumulator(3, argk) != ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(3, argk) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test incorrect first argument\"." << std::endl;
     return FAIL;
   }
@@ -160,7 +160,7 @@ int spam::test_do_accumulator() {
   // Test correct first argument.
   // spam stack ""
   char* argl[] = { (char*) "spam", (char*) "accumulator", (char*) "" };
-  if (spam::do_accumulator(3, argl) == ARGUMENT_ERROR) {
+  if (skeleton.do_accumulator(3, argl) == ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test correct first argument\"." << std::endl;
     return FAIL;
   }
@@ -168,7 +168,7 @@ int spam::test_do_accumulator() {
   // Test with missing file.
   // spam stack "SHIBBOLETH_missing.s"
   char* argm[] = { (char*) "spam", (char*) "accumulator", (char*) "SHIBBOLETH_missing.s" };
-  if (spam::do_accumulator(3, argm) != IO_ERROR) {
+  if (skeleton.do_accumulator(3, argm) != IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
@@ -181,7 +181,7 @@ int spam::test_do_accumulator() {
   input << "# SAMPLE FILE\n";
   input.close();
   char* argn[] = { (char*) "spam", (char*) "accumulator", (char*) "SHIBBOLETH_input.s" };
-  if (spam::do_accumulator(3, argn) == IO_ERROR) {
+  if (skeleton.do_accumulator(3, argn) == IO_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_accumulator() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
     return FAIL;
   }
@@ -191,9 +191,9 @@ int spam::test_do_accumulator() {
   return SUCCESS;
 }
 
-int spam::test_do_help() {
+int spam::TestSkeleton::test_do_help() {
   // Verify returns true.
-  if (spam::do_help() != SUCCESS) {
+  if (skeleton.do_help() != SUCCESS) {
     std::cerr << COLOR_ERROR << " test_do_help() failed. The failing subtest is \"Verify returns true\"." << std::endl;
     return FAIL;
   }
@@ -207,7 +207,7 @@ std::string spam::pluralize_test(int i) {
   return (i != 1) ? "tests" : "test";
 }
 
-int spam::test_pluralize_test() {
+int spam::TestSkeleton::test_pluralize_test() {
   // Test a negative number.
   if (strcmp(spam::pluralize_test(-4).c_str(), "tests") != 0) {
     std::cerr << COLOR_ERROR << " test_pluralize_test() failed. The failing subtest is \"Test a negative number\"." << std::endl;
@@ -238,15 +238,17 @@ int spam::test_pluralize_test() {
 }
 
 int main(int argc, char** argv) {
+  spam::TestSkeleton testskeleton;
+
   int tests_run = 6;
   int tests_passed = 6;
 
-  tests_passed += spam::test_file_exists();
-  tests_passed += spam::test_do_memory();
-  tests_passed += spam::test_do_stack();
-  tests_passed += spam::test_do_accumulator();
-  tests_passed += spam::test_do_help();
-  tests_passed += spam::test_pluralize_test();
+  tests_passed += testskeleton.test_file_exists();
+  tests_passed += testskeleton.test_do_memory();
+  tests_passed += testskeleton.test_do_stack();
+  tests_passed += testskeleton.test_do_accumulator();
+  tests_passed += testskeleton.test_do_help();
+  tests_passed += testskeleton.test_pluralize_test();
 
   int tests_failed = tests_run - tests_passed;
 
