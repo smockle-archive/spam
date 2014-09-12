@@ -1,5 +1,8 @@
 #include "test_accumulator.hpp"
 
+spam::TestAccumulator::TestAccumulator() {
+}
+
 int spam::TestAccumulator::test_accumulator_load() {
   // Test negative address.
   if (accumulator.load(-4) != ARGUMENT_ERROR) {

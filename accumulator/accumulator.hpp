@@ -10,6 +10,7 @@ namespace spam {
       int a;
       Memory memory;
 
+      Accumulator();
       Accumulator(Memory * mp);
       int load(int address);
       int store(int address);

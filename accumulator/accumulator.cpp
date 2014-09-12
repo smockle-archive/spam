@@ -5,6 +5,10 @@
 // http://www.cplusplus.com/forum/general/13135/
 // http://stackoverflow.com/questions/10847237/how-to-convert-from-int-to-char
 
+spam::Accumulator::Accumulator() {
+  a = 0;
+};
+
 spam::Accumulator::Accumulator(Memory * mp) {
   a = 0;
   memory = *mp;
