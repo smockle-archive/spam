@@ -36,6 +36,35 @@ int spam::TestSkeleton::test_do_memory() {
     return FAIL;
   }
 
+  // Test with existing file.
+  std::ofstream input;
+  input.open ("SHIBBOLETH_input.s");
+  input << ".data\n";
+  input << "3\n";
+  input << "4\n";
+  input << ".text\n";
+  input << "PUSH X\n";
+  input << "PUSH Y\n";
+  input << "POP  X\n";
+  input << "\0";
+  input.close();
+  std::cout << "DEBUG 100" << std::endl;
+  if (skeleton.do_memory("SHIBBOLETH_input.s") == IO_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test with existing file\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test that we read in and stored the lines we thought we did.
+  if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "3\n") != 0
+   || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "3\n") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR),     "PUSH X\n") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR + 1), "PUSH Y\n") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR + 2), "POP  X\n") != 0) {
+     std::cerr << COLOR_ERROR << " test_do_memory() failed. The failing subtest is \"Test that we read in and stored the lines we thought we did\"." << std::endl;
+     return FAIL;
+   }
+
+
   // All tests passed.
   std::cout << COLOR_SUCCESS << " test_do_memory() passed." << std::endl;
   return SUCCESS;

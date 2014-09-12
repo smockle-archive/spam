@@ -75,26 +75,26 @@ int spam::test_push() {
   memline = s.m.read(X_ADDR);
 
   if(!s.push(X_ADDR)) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "push() returned false, true was expected." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " push() returned false, true was expected." << std::endl;
     return FAIL;
   }
 
   if(strcmp(memline, s.m.read(S_BASE_ADDR)) != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "push() failed to load " << memline << "onto the stack." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " push() failed to load " << memline << "onto the stack." << std::endl;
     return FAIL;
   }
 
   if(s.sp != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "push() failed to increment stack pointer." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " push() failed to increment stack pointer." << std::endl;
     return FAIL;
   }
 
   if(!s.push(Y_ADDR)) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "second push() returned false, true was expected." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " second push() returned false, true was expected." << std::endl;
     return FAIL;
   }
 
@@ -113,41 +113,41 @@ int spam::test_pop() {
 
   //if pop fails internally
   if(!s.pop(X_ADDR)) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() returned false, true was expected." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() returned false, true was expected." << std::endl;
     return FAIL;
   }
   //if the value we popped wasn't what we expected to pop
   if(strcmp(s.m.read(X_ADDR), s.m.read(Y_ADDR)) != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() stored " << s.m.read(X_ADDR) << "at X_ADDR, expected "
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() stored " << s.m.read(X_ADDR) << "at X_ADDR, expected "
      << s.m.read(Y_ADDR) << "." << std::endl;
     return FAIL;
   }
   //if the stack pointer is misaligned
   if(s.sp != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() misaligned the stack pointer." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() misaligned the stack pointer." << std::endl;
     return FAIL;
   }
 
   //if pop fails internally on a second try
   if(!s.pop(Z_ADDR)) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() returned false on the second run, true was expected." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() returned false on the second run, true was expected." << std::endl;
     return FAIL;
   }
   //if the value we popped wasn't what we expected to pop (3 isn't stored anymore)
   if(strcmp(s.m.read(Z_ADDR), "3") != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() stored " << s.m.read(X_ADDR) << "at X_ADDR, expected "
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() stored " << s.m.read(X_ADDR) << "at X_ADDR, expected "
      << s.m.read(Y_ADDR) << "." << std::endl;
     return FAIL;
   }
   //if the stack pointer is misaligned
   if(s.sp != -1) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "pop() misaligned the stack pointer." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " pop() misaligned the stack pointer." << std::endl;
     return FAIL;
   }
 
@@ -165,22 +165,22 @@ int spam::test_add() {
   s.push(Y_ADDR);
 
   if(!s.add()) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "add() failed internally. May not have had enough arguments." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " add() failed internally. May not have had enough arguments." << std::endl;
     return FAIL;
   }
 
   int sum = atoi(s.m.read(S_BASE_ADDR + s.sp));
   //if we didn't add them as numbers properly
   if(sum != 10) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "add() failed to add properly. (Result: " << sum << ")" << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " add() failed to add properly. (Result: " << sum << ")" << std::endl;
     return FAIL;
   }
   //if the stack pointer is misaligned
   if(s.sp != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "add() misaligned the stack pointer." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " add() misaligned the stack pointer." << std::endl;
     return FAIL;
   }
 
@@ -198,22 +198,22 @@ int spam::test_mul() {
   s.push(Y_ADDR);
 
   if(!s.mul()) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "mul() failed internally. May not have had enough arguments." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " mul() failed internally. May not have had enough arguments." << std::endl;
     return FAIL;
   }
 
   int product = atoi(s.m.read(S_BASE_ADDR + s.sp));
   //if we didn't multiply them as numbers properly
   if(product != 21) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "mul() failed to add properly. (Result: " << product << ")" << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " mul() failed to add properly. (Result: " << product << ")" << std::endl;
     return FAIL;
   }
   //if the stack pointer is misaligned
   if(s.sp != 0) {
-    std::cout << COLOR_RED << "Error: " << COLOR_STOP;
-    std::cout << "mul() misaligned the stack pointer." << std::endl;
+    std::cout << COLOR_ERROR;
+    std::cout << " mul() misaligned the stack pointer." << std::endl;
     return FAIL;
   }
   return SUCCESS;

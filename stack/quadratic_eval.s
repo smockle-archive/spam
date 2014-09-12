@@ -1,0 +1,21 @@
+.data
+X: 3
+A: 7
+B: 6
+C: 1
+
+.text
+PUSH X
+PUSH X
+PUSH A
+MUL
+MUL
+
+PUSH X
+PUSH B
+MUL
+
+PUSH C
+
+ADD
+ADD

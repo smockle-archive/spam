@@ -1,0 +1,19 @@
+.data
+X: 3
+A: 7
+B: 6
+C: 1
+
+.text
+LOAD X
+MUL  X
+MUL  A
+STOR A
+
+LOAD X
+MUL  B
+STOR B
+
+LOAD C
+ADD  B
+ADD  A
