@@ -96,7 +96,9 @@
 
     inline int valueof(std::string s) {
       if (s.find(" ") == std::string::npos) {
+        #ifndef TEST
         std::cout << COLOR_EXCEPTION << " valueof() was passed a string without spaces. Data is usually in the form \"X: 3\"." << std::endl;
+        #endif
         return FAIL;
       }
       return atoi(s.substr(s.find(" ")).c_str());
