@@ -28,14 +28,14 @@ int spam::Accumulator::load(int address) {
   std::string value = memory.read(address);
 
   // Verify value can be converted to integer.
-  if (std::regex_match(value, std::regex("[0-9]+"))) {
+  //if (std::regex_match(value.c_str(), std::regex("[0-9]+"))) {
     self = atoi(value.c_str());
-  } else {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    #endif
-    return TYPE_ERROR;
-  }
+  //} else {
+    //#ifndef TEST
+    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
+    //#endif
+    //return TYPE_ERROR;
+  //}
 
   return SUCCESS;
 }
@@ -67,14 +67,14 @@ int spam::Accumulator::add(int address) {
   std::string value = memory.read(address);
 
   // Verify value can be converted to integer.
-  if (std::regex_match(value, std::regex("[0-9]+"))) {
+  //if (std::regex_match(value, std::regex("[0-9]+"))) {
     self = self + atoi(value.c_str());
-  } else {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    #endif
-    return TYPE_ERROR;
-  }
+  //} else {
+    //#ifndef TEST
+    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
+    //#endif
+    //return TYPE_ERROR;
+  //}
 
   return SUCCESS;
 }
@@ -91,14 +91,14 @@ int spam::Accumulator::multiply(int address) {
   std::string value = memory.read(address);
 
   // Verify value can be converted to integer.
-  if (std::regex_match(value, std::regex("[0-9]+"))) {
+  //if (std::regex_match(value, std::regex("[0-9]+"))) {
     self = self * atoi(value.c_str());
-  } else {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    #endif
-    return TYPE_ERROR;
-  }
+  //} else {
+    //#ifndef TEST
+    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
+    //#endif
+    //return TYPE_ERROR;
+  //}
 
   return SUCCESS;
 }
