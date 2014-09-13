@@ -35,10 +35,10 @@ this late and had to do some refactoring.
 
 * C++ segfaults (with no stack trace or anything useful for debugging) when you address
 anything outside of an array, or access anything undecalared. This cost us lots of time
-#debugging.
+debugging.
 
 * We had lots of issues with including the correct header files and with setting up our
-Makefile properly. We added #ifndef TEST in several places to prevent duplicate main
+Makefile properly. We added `#ifndef TEST` in several places to prevent duplicate main
 functions. We added references to cpp files to the Makefile to prevent missing symbol
 errors.
 
