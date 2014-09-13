@@ -13,52 +13,56 @@ Stack::Stack(Memory * mp) {
 }
 
 int Stack::run() {
-  int    safety = 0;
-  int    addr;
-  char * op;
+// Process Memory.t (commands)
+std::string command = "";
+std::string argument = "";
+int arg = -1;
 
-  std::string instr;
+pc = T_BASE_ADDR;
+while (pc >= T_BASE_ADDR) {
+  // Get MIPS command string from Memory.t at position pc.
+  command = spam::trim(spam::tolower(m.read(pc)));
 
-  while(pc >= 0 && pc < m.lineCount) {
-    instr = m.read(T_BASE_ADDR + pc++);
-    std::cout << instr << std::endl;
-    if (strcmp((char *)instr.c_str(), MUL) == 0
-     || strcmp((char *)instr.c_str(), ADD) == 0
-     || strcmp((char *)instr.c_str(), END) == 0) {
-       op = (char *)instr.c_str();
-    }
-    else if (instr.find(" ") == std::string::npos) {
-      //safety++;
-      continue;
-    } else {
-        std::cout << "DEBUG: instr = " << instr << std::endl;
-        op = (char * )(instr.substr(0, 1).c_str()); //may need to be find() - 1
-        addr = spam::valueof(instr.substr(instr.find(" ")));
-    }
-
-    std::cout << "DEBUG: op = " << op << std::endl;
-
-    if (strcmp(op, PUSH) == 0) {
-      push(addr);
-    }
-    else if (strcmp(op, POP) == 0) {
-      pop(addr);
-    }
-    else if (strcmp(op, ADD) == 0) {
-      add();
-    }
-    else if (strcmp(op, MUL) == 0) {
-      mul();
-    }
-    else if (strcmp(op, END) == 0) {
-      end();
-    }
-    else {
-      std::cout << COLOR_ERROR << " Invalid instruction." << std::endl;
-    }
+  // Split MIPS command string into MIPS command and MIPS argument.
+  if (command.find(" ") != std::string::npos) {
+    argument = spam::trim(command.substr(command.find(" ")).c_str());
+    command = command.substr(0, command.find(" ")).c_str();
   }
 
-  return SUCCESS;
+  // Match MIPS argument with spam::Accumulator argument
+  if (argument.compare("x") == 0) {
+    arg = X_ADDR;
+  } else if (argument.compare("a") == 0) {
+    arg = A_ADDR;
+  } else if (argument.compare("b") == 0) {
+    arg = B_ADDR;
+  } else if (argument.compare("c") == 0) {
+    arg = C_ADDR;
+  }
+
+  // Match MIPS command with spam::Accumulator command
+  if (command.compare("push") == 0) {
+    push(arg);
+  } else if (command.compare("pop") == 0) {
+    pop(arg);
+  } else if (command.compare("add") == 0) {
+    add();
+  } else if (command.compare("mul") == 0) {
+    mul();
+  } else if (command.compare("end") == 0) {
+    end();
+  }
+
+
+
+  // Prepare for next command
+  command = "";
+  argument = "";
+  pc++;
+}
+
+// All commands have executed
+return SUCCESS;
 }
 
 bool Stack::push(int a) {
