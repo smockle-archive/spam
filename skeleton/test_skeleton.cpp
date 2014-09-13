@@ -56,11 +56,6 @@ int spam::TestSkeleton::test_do_memory() {
   }
 
   // Test that we read in and stored the lines we thought we did.
-
-  std::cout << "DEBUG (db=" << D_BASE_ADDR << ", tb=" << T_BASE_ADDR << "):" << std::endl;
-  std::cout << skeleton.memory->read(D_BASE_ADDR) << std::endl;
-  std::cout << skeleton.memory->read(T_BASE_ADDR) << std::endl;
-
   if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "3") != 0
    || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "4") != 0
    || strcmp(skeleton.memory->read(T_BASE_ADDR),     "push x") != 0
@@ -77,6 +72,7 @@ int spam::TestSkeleton::test_do_memory() {
 }
 
 int spam::TestSkeleton::test_do_stack() {
+
   // Test zero arguments.
   //
   char* argv[0];

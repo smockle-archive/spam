@@ -14,15 +14,20 @@ Stack::Stack(Memory * mp) {
 
 int Stack::run() {
   int    pc = 0;
+  int    safety = 0;
   int    addr;
   char * op;
 
   std::string instr;
 
-  while(pc >= 0) {
-    instr = m.read(T_BASE_ADDR);
+  while(pc >= 0 && pc < m.lineCount) {
+    instr = m.read(T_BASE_ADDR + pc++);
+    if (instr.find(" ") == std::string::npos) {
+      safety++;
+      continue;
+    }
     op = (char * )instr.substr(0, instr.find(" ")).c_str(); //may need to be find() - 1
-    addr = spam::valueof(m.read(T_BASE_ADDR));
+    addr = spam::valueof(instr.substr(instr.find(" ")));
 
     if (strcmp(op, PUSH) == 0) {
       push(addr);
@@ -40,7 +45,7 @@ int Stack::run() {
       pc = (end() ? -1 : pc);
     }
   }
-  std::cout << "End stack run." << std::endl;
+
   return SUCCESS;
 }
 
@@ -50,11 +55,11 @@ bool Stack::push(int a) {
   return (strcmp(m.read(a), m.read(S_BASE_ADDR + sp)) == 0);
 }
 bool Stack::pop (int a) {
-  char * tmp = m.read(S_BASE_ADDR + sp); //just for proving it worked
+  std::string tmp = m.read(S_BASE_ADDR + sp); //just for proving it worked
   m.store(a, m.read(S_BASE_ADDR + sp));
   m.store(S_BASE_ADDR + sp, (char *)"\0");
   sp--;
-  return (strcmp(m.read(a), tmp) == 0);
+  return (strcmp(m.read(a), tmp.c_str()) == 0);
 }
 bool Stack::add () {
   if(sp < 1) return false;

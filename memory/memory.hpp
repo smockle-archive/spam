@@ -12,6 +12,8 @@ private:
   std::string t[TBUF_SIZE] = {}; /* Text buffer */
   std::string s[STCK_SIZE] = {}; /* Stack buffer */
 public:
+  int lineCount;
+
   bool store (int address, char* line);
   char* read (int address);
   void  dump ();
