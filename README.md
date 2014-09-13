@@ -41,3 +41,6 @@ anything outside of an array, or access anything undecalared. This cost us lots 
 Makefile properly. We added #ifndef TEST in several places to prevent duplicate main
 functions. We added references to cpp files to the Makefile to prevent missing symbol
 errors.
+
+* The version of g++ on Travis CI was 4.6, which caused errors (we were using 4.8). We
+had to figure out how to install g++ 4.8 in the Travis CI environment.
