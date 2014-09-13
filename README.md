@@ -14,7 +14,7 @@ Project 1
 Compilation
 ===========
 Our program is called spam.
-To build our program, run `make spam`.
+To build our program, run `make`.
 To build our tests, run `make test`.
 
 

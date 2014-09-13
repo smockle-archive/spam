@@ -30,4 +30,4 @@ test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
 
 clean:
-	rm -Rf *.o spam test */test
+	rm -Rf *.o spam test */test SHIBBOLETH*
