@@ -80,7 +80,9 @@ int spam::test_push() {
     return FAIL;
   }
 
-  if(strcmp(memline, s.m.read(S_BASE_ADDR)) != 0) {
+  std::string tmp = s.m.read(S_BASE_ADDR);
+
+  if(strcmp(memline, (char *)trim(tmp).c_str()) != 0) {
     std::cout << COLOR_ERROR;
     std::cout << " push() failed to load " << memline << "onto the stack." << std::endl;
     return FAIL;

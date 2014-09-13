@@ -7,6 +7,7 @@
 class Stack {
 public:
   int sp = -1; // stack pointer
+  int pc = 0; // program counter
   Memory m;
 
   Stack();

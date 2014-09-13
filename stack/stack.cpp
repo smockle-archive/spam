@@ -13,7 +13,6 @@ Stack::Stack(Memory * mp) {
 }
 
 int Stack::run() {
-  int    pc = 0;
   int    safety = 0;
   int    addr;
   char * op;
@@ -22,12 +21,22 @@ int Stack::run() {
 
   while(pc >= 0 && pc < m.lineCount) {
     instr = m.read(T_BASE_ADDR + pc++);
-    if (instr.find(" ") == std::string::npos) {
-      safety++;
-      continue;
+    std::cout << instr << std::endl;
+    if (strcmp((char *)instr.c_str(), MUL) == 0
+     || strcmp((char *)instr.c_str(), ADD) == 0
+     || strcmp((char *)instr.c_str(), END) == 0) {
+       op = (char *)instr.c_str();
     }
-    op = (char * )instr.substr(0, instr.find(" ")).c_str(); //may need to be find() - 1
-    addr = spam::valueof(instr.substr(instr.find(" ")));
+    else if (instr.find(" ") == std::string::npos) {
+      //safety++;
+      continue;
+    } else {
+        std::cout << "DEBUG: instr = " << instr << std::endl;
+        op = (char * )(instr.substr(0, 1).c_str()); //may need to be find() - 1
+        addr = spam::valueof(instr.substr(instr.find(" ")));
+    }
+
+    std::cout << "DEBUG: op = " << op << std::endl;
 
     if (strcmp(op, PUSH) == 0) {
       push(addr);
@@ -42,7 +51,10 @@ int Stack::run() {
       mul();
     }
     else if (strcmp(op, END) == 0) {
-      pc = (end() ? -1 : pc);
+      end();
+    }
+    else {
+      std::cout << COLOR_ERROR << " Invalid instruction." << std::endl;
     }
   }
 
@@ -51,11 +63,15 @@ int Stack::run() {
 
 bool Stack::push(int a) {
   sp++;
-  m.store(S_BASE_ADDR + sp, m.read(a));
-  return (strcmp(m.read(a), m.read(S_BASE_ADDR + sp)) == 0);
+  std::string tmp = m.read(a);
+  m.store(S_BASE_ADDR + sp, (char *)(" " + tmp).c_str());
+  std::cout << "DEBUG: (push) tmp: " << tmp << std::endl;
+  std::cout << "DEBUG: (push) m.read: " << m.read(S_BASE_ADDR + sp) << std::endl;
+  return (strcmp((char * )(" " + tmp).c_str(), m.read(S_BASE_ADDR + sp)) == 0);
 }
 bool Stack::pop (int a) {
   std::string tmp = m.read(S_BASE_ADDR + sp); //just for proving it worked
+  std::cout << "DEBUG: (pop)  tmp: " << tmp << std::endl;
   m.store(a, m.read(S_BASE_ADDR + sp));
   m.store(S_BASE_ADDR + sp, (char *)"\0");
   sp--;
@@ -90,5 +106,7 @@ bool Stack::mul () {
   return true;
 }
 bool Stack::end () {
-  return false;
+  pc = -1;
+  std::cout << "Output: " << m.read(S_BASE_ADDR + sp) << std::endl;
+  return true;
 }
