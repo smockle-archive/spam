@@ -20,22 +20,13 @@ int spam::Accumulator::load(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer." << std::endl;
+    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer. (load, " << address << ")" << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
 
   std::string value = memory.read(address);
-
-  // Verify value can be converted to integer.
-  //if (std::regex_match(value.c_str(), std::regex("[0-9]+"))) {
-    self = atoi(value.c_str());
-  //} else {
-    //#ifndef TEST
-    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    //#endif
-    //return TYPE_ERROR;
-  //}
+  self = atoi(value.c_str());
 
   return SUCCESS;
 }
@@ -44,12 +35,12 @@ int spam::Accumulator::store(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer." << std::endl;
+    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer. (store)" << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
 
-  std::string s = std::to_string(self);
+  std::string s = " " + std::to_string(self);
   memory.store(address, (char *) s.c_str());
 
   return SUCCESS;
@@ -65,16 +56,7 @@ int spam::Accumulator::add(int address) {
   }
 
   std::string value = memory.read(address);
-
-  // Verify value can be converted to integer.
-  //if (std::regex_match(value, std::regex("[0-9]+"))) {
-    self = self + atoi(value.c_str());
-  //} else {
-    //#ifndef TEST
-    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    //#endif
-    //return TYPE_ERROR;
-  //}
+  self = self + atoi(value.c_str());
 
   return SUCCESS;
 }
@@ -89,26 +71,12 @@ int spam::Accumulator::multiply(int address) {
   }
 
   std::string value = memory.read(address);
-
-  // Verify value can be converted to integer.
-  //if (std::regex_match(value, std::regex("[0-9]+"))) {
-    self = self * atoi(value.c_str());
-  //} else {
-    //#ifndef TEST
-    //std::cout << COLOR_ERROR << " Value at memory address cannot be converted to an integer." << std::endl;
-    //#endif
-    //return TYPE_ERROR;
-  //}
+  self = self * atoi(value.c_str());
 
   return SUCCESS;
 }
 
 int spam::Accumulator::run() {
-  // Process Memory.d (variables)
-  int x = valueof(memory.read(X_ADDR));
-  int a = valueof(memory.read(A_ADDR));
-  int b = valueof(memory.read(B_ADDR));
-  int c = valueof(memory.read(C_ADDR));
 
   // Process Memory.t (commands)
   std::string command = "";
@@ -122,19 +90,19 @@ int spam::Accumulator::run() {
 
     // Split MIPS command string into MIPS command and MIPS argument.
     if (command.find(" ") != std::string::npos) {
-      argument = command.substr(command.find(" ")).c_str();
+      argument = trim(command.substr(command.find(" ")).c_str());
       command = command.substr(0, command.find(" ")).c_str();
     }
 
     // Match MIPS argument with spam::Accumulator argument
     if (argument.compare("x") == 0) {
-      arg = x;
+      arg = X_ADDR;
     } else if (argument.compare("a") == 0) {
-      arg = a;
+      arg = A_ADDR;
     } else if (argument.compare("b") == 0) {
-      arg = b;
+      arg = B_ADDR;
     } else if (argument.compare("c") == 0) {
-      arg = c;
+      arg = C_ADDR;
     }
 
     // Match MIPS command with spam::Accumulator command
@@ -150,6 +118,8 @@ int spam::Accumulator::run() {
       end();
     }
 
+
+
     // Prepare for next command
     command = "";
     argument = "";
@@ -162,5 +132,6 @@ int spam::Accumulator::run() {
 
 int spam::Accumulator::end() {
   pc = -1;
+  std::cout << "Output: " << self << std::endl;
   return SUCCESS;
 }
