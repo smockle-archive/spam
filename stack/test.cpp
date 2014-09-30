@@ -53,9 +53,9 @@ int spam::test_init() {
 
   Stack s;
 
-  s.m.store(X_ADDR, (char *)"3");
-  s.m.store(Y_ADDR, (char *)"7");
-  s.m.store(Z_ADDR, (char *)"6");
+  s.m.store(X_ADDR, (char *)"X: 3");
+  s.m.store(Y_ADDR, (char *)"Y: 7");
+  s.m.store(Z_ADDR, (char *)"Z: 6");
 
   char* memline;
   memline = s.m.read(X_ADDR);
@@ -67,9 +67,9 @@ int spam::test_push() {
 
   Stack s;
 
-  s.m.store(X_ADDR, (char *)"3");
-  s.m.store(Y_ADDR, (char *)"7");
-  s.m.store(Z_ADDR, (char *)"6");
+  s.m.store(X_ADDR, (char *)"X: 3");
+  s.m.store(Y_ADDR, (char *)"Y: 7");
+  s.m.store(Z_ADDR, (char *)"Z: 6");
 
   char* memline;
   memline = s.m.read(X_ADDR);
@@ -106,9 +106,9 @@ int spam::test_push() {
 int spam::test_pop() {
   Stack s;
 
-  s.m.store(X_ADDR, (char *)"3");
-  s.m.store(Y_ADDR, (char *)"7");
-  s.m.store(Z_ADDR, (char *)"6");
+  s.m.store(X_ADDR, (char *)"X: 3");
+  s.m.store(Y_ADDR, (char *)"Y: 7");
+  s.m.store(Z_ADDR, (char *)"Z: 6");
 
   s.push(X_ADDR);
   s.push(Y_ADDR);
@@ -159,9 +159,9 @@ int spam::test_pop() {
 int spam::test_add() {
   Stack s;
 
-  s.m.store(X_ADDR, (char *)"3");
-  s.m.store(Y_ADDR, (char *)"7");
-  s.m.store(Z_ADDR, (char *)"6");
+  s.m.store(X_ADDR, (char *)"X: 3");
+  s.m.store(Y_ADDR, (char *)"Y: 7");
+  s.m.store(Z_ADDR, (char *)"Z: 6");
 
   s.push(X_ADDR);
   s.push(Y_ADDR);
@@ -192,9 +192,9 @@ int spam::test_add() {
 int spam::test_mul() {
   Stack s;
 
-  s.m.store(X_ADDR, (char *)"3");
-  s.m.store(Y_ADDR, (char *)"7");
-  s.m.store(Z_ADDR, (char *)"6");
+  s.m.store(X_ADDR, (char *)"X: 3");
+  s.m.store(Y_ADDR, (char *)"Y: 7");
+  s.m.store(Z_ADDR, (char *)"Z: 6");
 
   s.push(X_ADDR);
   s.push(Y_ADDR);
@@ -224,5 +224,5 @@ int spam::test_mul() {
 //don't really think end is there for much except exiting
 int spam::test_end(){
   Stack s;
-  return (!s.end() ? SUCCESS : FAIL);
+  return (s.end() ? SUCCESS : FAIL);
 }

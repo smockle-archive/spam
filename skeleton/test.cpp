@@ -1,4 +1,4 @@
-#include "test_skeleton.hpp"
+#include "test.hpp"
 
 // I consulted the following resources for help:
 // http://stackoverflow.com/questions/10337248/what-does-the-g-d-flag-do
@@ -26,7 +26,7 @@ int spam::TestSkeleton::test_file_exists() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_file_exists() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " File existence test passed." << std::endl;
   return SUCCESS;
 }
 
@@ -42,8 +42,8 @@ int spam::TestSkeleton::test_do_memory() {
   std::ofstream input;
   input.open ("SHIBBOLETH_input.s");
   input << ".data\n";
-  input << "3\n";
-  input << "4\n";
+  input << "X: 3\n";
+  input << "Y: 4\n";
   input << ".text\n";
   input << "PUSH X\n";
   input << "PUSH Y\n";
@@ -57,13 +57,6 @@ int spam::TestSkeleton::test_do_memory() {
 
   // Test that we read in and stored the lines we thought we did.
 
-  std::cout << skeleton.memory->read(D_BASE_ADDR) << std::endl;
-  std::cout << skeleton.memory->read(D_BASE_ADDR + 1) << std::endl;
-  std::cout << skeleton.memory->read(T_BASE_ADDR) << std::endl;
-  std::cout << skeleton.memory->read(T_BASE_ADDR + 1) << std::endl;
-  std::cout << skeleton.memory->read(T_BASE_ADDR + 2) << std::endl;
-
-
   if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "3") != 0
    || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "4") != 0
    || strcmp(skeleton.memory->read(T_BASE_ADDR),     "push x") != 0
@@ -75,7 +68,7 @@ int spam::TestSkeleton::test_do_memory() {
 
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_do_memory() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " Memory test passed." << std::endl;
   return SUCCESS;
 }
 
@@ -153,7 +146,7 @@ int spam::TestSkeleton::test_do_stack() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_do_stack() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " Stack test passed." << std::endl;
   return SUCCESS;
 }
 
@@ -230,7 +223,7 @@ int spam::TestSkeleton::test_do_accumulator() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_do_accumulator() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " Accumulator test passed." << std::endl;
   return SUCCESS;
 }
 
@@ -242,7 +235,7 @@ int spam::TestSkeleton::test_do_help() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_do_help() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " Help display test passed." << std::endl;
   return SUCCESS;
 }
 
@@ -276,7 +269,7 @@ int spam::TestSkeleton::test_pluralize_test() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " test_pluralize_test() passed." << std::endl;
+  std::cout << COLOR_SUCCESS << " Pluralization test passed." << std::endl;
   return SUCCESS;
 }
 

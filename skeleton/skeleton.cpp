@@ -151,7 +151,6 @@ int main(int argc, char** argv) {
   spam::Skeleton skeleton;
 
   if (argc > 1) {
-    std::cout << "BBBB" << std::endl;
     if (strcmp(argv[1], "stack") == 0
      || strcmp(argv[1], "s") == 0) {
       skeleton.do_stack(argc, argv);

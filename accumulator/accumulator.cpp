@@ -132,6 +132,8 @@ int spam::Accumulator::run() {
 
 int spam::Accumulator::end() {
   pc = -1;
+  #ifndef TEST
   std::cout << "Output: " << self << std::endl;
+  #endif
   return SUCCESS;
 }

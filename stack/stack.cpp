@@ -73,6 +73,7 @@ bool Stack::push(int a) {
 }
 bool Stack::pop (int a) {
   std::string tmp = m.read(S_BASE_ADDR + sp); //just for proving it worked
+  tmp = tmp.substr(1);
   m.store(a, m.read(S_BASE_ADDR + sp));
   m.store(S_BASE_ADDR + sp, (char *)"\0");
   sp--;
@@ -108,6 +109,8 @@ bool Stack::mul () {
 }
 bool Stack::end () {
   pc = -1;
+  #ifndef TEST
   std::cout << "Output: " << m.read(S_BASE_ADDR + sp) << std::endl;
+  #endif
   return true;
 }

@@ -1,4 +1,4 @@
-#include "test_accumulator.hpp"
+#include "test.hpp"
 
 spam::TestAccumulator::TestAccumulator() {
 }
@@ -87,7 +87,7 @@ int spam::TestAccumulator::test_accumulator_add() {
 
   // Verify sum correctness.
   accumulator.self = 0;
-  accumulator.memory.store(TEST_ADDRESS, (char *) "1");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "X: 1");
   accumulator.add(TEST_ADDRESS);
   if (accumulator.self != 1) {
     std::cerr << COLOR_ERROR << " test_accumulator_add() failed. The failing subtest is \"Verify sum correctness\"." << std::endl;
@@ -120,7 +120,7 @@ int spam::TestAccumulator::test_accumulator_multiply() {
   }*/
 
   // Test value that can be converted to integer.
-  accumulator.memory.store(TEST_ADDRESS, (char *) "3");
+  accumulator.memory.store(TEST_ADDRESS, (char *) "X: 3");
   if (accumulator.multiply(TEST_ADDRESS) == TYPE_ERROR) {
     std::cerr << COLOR_ERROR << " test_accumulator_multiply() failed. The failing subtest is \"Test value that can be converted to integer\"." << std::endl;
     return FAIL;

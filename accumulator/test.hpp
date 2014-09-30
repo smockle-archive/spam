@@ -4,7 +4,7 @@
 #define TEST_ADDRESS 300
 
 #include "accumulator.hpp"
-#include "../skeleton/test_skeleton.hpp"
+#include "../utilities.hpp"
 
 namespace spam {
   class TestAccumulator {
