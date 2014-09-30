@@ -69,13 +69,10 @@ bool Stack::push(int a) {
   sp++;
   std::string tmp = m.read(a);
   m.store(S_BASE_ADDR + sp, (char *)(" " + tmp).c_str());
-  std::cout << "DEBUG: (push) tmp: " << tmp << std::endl;
-  std::cout << "DEBUG: (push) m.read: " << m.read(S_BASE_ADDR + sp) << std::endl;
   return (strcmp((char * )(" " + tmp).c_str(), m.read(S_BASE_ADDR + sp)) == 0);
 }
 bool Stack::pop (int a) {
   std::string tmp = m.read(S_BASE_ADDR + sp); //just for proving it worked
-  std::cout << "DEBUG: (pop)  tmp: " << tmp << std::endl;
   m.store(a, m.read(S_BASE_ADDR + sp));
   m.store(S_BASE_ADDR + sp, (char *)"\0");
   sp--;
