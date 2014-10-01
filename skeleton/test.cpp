@@ -228,9 +228,80 @@ int spam::TestSkeleton::test_do_accumulator() {
 }
 
 int spam::TestSkeleton::test_do_gpr() {
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << " test_do_gpr() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  // Test zero arguments.
+  //
+  char* argv[0];
+  if (skeleton.do_gpr(0, argv) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test zero arguments\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test one argument.
+  // spam
+  char* argh[] = { (char*) "spam" };
+  if (skeleton.do_gpr(1, argh) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test one argument\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test two arguments.
+  // spam stack
+  char* argi[] = { (char*) "spam", (char*) "gpr" };
+  if (skeleton.do_gpr(2, argi) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test two arguments\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test three arguments.
+  // spam stack "SHIBBOLETH_input.s"
+  char* argj[] = { (char*) "spam", (char*) "gpr", (char*) "SHIBBOLETH_input.s" };
+  if (skeleton.do_gpr(3, argj) == ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test three arguments\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test incorrect first argument.
+  // spam missing ""
+  char* argk[] = { (char*) "spam", (char*) "missing", (char*) "" };
+  if (skeleton.do_gpr(3, argk) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test incorrect first argument\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test correct first argument.
+  // spam stack ""
+  char* argl[] = { (char*) "spam", (char*) "gpr", (char*) "" };
+  if (skeleton.do_gpr(3, argl) == ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test correct first argument\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test with missing file.
+  // spam stack "SHIBBOLETH_missing.s"
+  char* argm[] = { (char*) "spam", (char*) "gpr", (char*) "SHIBBOLETH_missing.s" };
+  if (skeleton.do_gpr(3, argm) != IO_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test with missing file\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test with non-missing file.
+  // spam stack "SHIBBOLETH_input.s"
+  // (First create a file.)
+  std::ofstream input;
+  input.open ("SHIBBOLETH_input.s");
+  input << "# SAMPLE FILE\n";
+  input << ".text\n";
+  input << "END\n";
+  input.close();
+  char* argn[] = { (char*) "spam", (char*) "gpr", (char*) "SHIBBOLETH_input.s" };
+  if (skeleton.do_gpr(3, argn) == IO_ERROR) {
+    std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test with non-missing file\"." << std::endl;
+    return FAIL;
+  }
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " GPR test passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestSkeleton::test_do_help() {

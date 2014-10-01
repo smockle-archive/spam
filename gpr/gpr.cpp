@@ -58,7 +58,7 @@ int spam::GPR::run() {
   return FAIL;
 }
 
-int spam::Accumulator::end() {
+int spam::GPR::end() {
   pc = -1;
   #ifndef TEST
   std::cout << "Output: " << self << std::endl;

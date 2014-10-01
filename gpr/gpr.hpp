@@ -1,8 +1,8 @@
 #ifndef GPR_H
 #define GPR_H
 
-#import "../registry/registry.hpp"
-#import "../memory/memory.hpp"
+#include "../registry/registry.hpp"
+#include "../memory/memory.hpp"
 #include "../skeleton/skeleton.hpp"
 
 namespace spam {

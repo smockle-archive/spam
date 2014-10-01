@@ -58,6 +58,10 @@ int spam::Skeleton::do_memory(std::string filename) {
   return SUCCESS;
 }
 
+int spam::Skeleton::do_registry() {
+   registry = new Registry(); 
+}
+
 int spam::Skeleton::do_stack(int argc, char** argv) {
   // Verify number of arguments.
   if (argc < 3) {
@@ -135,7 +139,41 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
 }
 
 int spam::Skeleton::do_gpr(int argc, char** argv) {
-  return FAIL;
+  // Verify number of arguments.
+  if (argc < 3) {
+    #ifndef TEST
+    std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam gpr <input_file>\"." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Verify correctness of first argument,
+  // i.e. was the accumulator method called?
+  if (strcmp(argv[1], "gpr") != 0
+   && strcmp(argv[1], "g") != 0) {
+     #ifndef TEST
+     std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam gpr <input_file>\"." << std::endl;
+     #endif
+     return ARGUMENT_ERROR;
+  }
+
+  // Verify correctness of second argument,
+  // i.e. verify file exists.
+  if (!file_exists(argv[2])) {
+    #ifndef TEST
+    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    #endif
+    return IO_ERROR;
+  }
+
+  // Load file into memory.
+  do_memory(argv[2]);
+  do_registry();
+
+  GPR gpr(registry, memory);
+  gpr.run();
+
+  return SUCCESS;
 }
 
 int spam::Skeleton::do_help() {
