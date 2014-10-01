@@ -9,7 +9,6 @@ namespace spam {
   class GPR {
       private:
       public:
-        int self;
         int pc;
         Registry registry;
         Memory memory;

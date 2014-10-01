@@ -134,11 +134,16 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
   return SUCCESS;
 }
 
+int spam::Skeleton::do_gpr(int argc, char** argv) {
+  return FAIL;
+}
+
 int spam::Skeleton::do_help() {
   #ifndef TEST
   std::cout << "Commands:" << std::endl;
   std::cout << "\tspam stack <input_file>" << std::endl;
   std::cout << "\tspam accumulator <input_file>" << std::endl;
+  std::cout << "\tspam gpr <input_file>" << std::endl;
   std::cout << "\tspam help" << std::endl;
   #endif
 
@@ -158,6 +163,10 @@ int main(int argc, char** argv) {
     else if (strcmp(argv[1], "accumulator") == 0
           || strcmp(argv[1], "a") == 0) {
       skeleton.do_accumulator(argc, argv);
+    }
+    else if (strcmp(argv[1], "gpr") == 0
+          || strcmp(argv[1], "g") == 0) {
+      skeleton.do_gpr(argc, argv);
     }
     else if (strcmp(argv[1], "help") == 0
           || strcmp(argv[1], "-h") == 0

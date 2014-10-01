@@ -227,6 +227,12 @@ int spam::TestSkeleton::test_do_accumulator() {
   return SUCCESS;
 }
 
+int spam::TestSkeleton::test_do_gpr() {
+  // Tests failed. Tests have not been written yet.
+  std::cout << COLOR_ERROR << " test_do_gpr() failed. Tests have not been written yet." << std::endl;
+  return FAIL;
+}
+
 int spam::TestSkeleton::test_do_help() {
   // Verify returns true.
   if (skeleton.do_help() != SUCCESS) {
@@ -276,13 +282,14 @@ int spam::TestSkeleton::test_pluralize_test() {
 int main(int argc, char** argv) {
   spam::TestSkeleton testskeleton;
 
-  int tests_run = 6;
-  int tests_passed = 6;
+  int tests_run = 7;
+  int tests_passed = 7;
 
   tests_passed += testskeleton.test_file_exists();
   tests_passed += testskeleton.test_do_memory();
   tests_passed += testskeleton.test_do_stack();
   tests_passed += testskeleton.test_do_accumulator();
+  tests_passed += testskeleton.test_do_gpr();
   tests_passed += testskeleton.test_do_help();
   tests_passed += testskeleton.test_pluralize_test();
 

@@ -12,6 +12,7 @@ namespace spam {
       int test_do_memory();
       int test_do_stack();
       int test_do_accumulator();
+      int test_do_gpr();
       int test_do_help();
       int test_pluralize_test();
   };

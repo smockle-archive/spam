@@ -1,12 +1,10 @@
 #include "gpr.hpp"
 
 spam::GPR::GPR() {
-  self = 0;
   pc = 0;
 };
 
 spam::GPR::GPR(Registry * rp, Memory * mp) {
-  self = 0;
   pc = 0;
   registry = *rp;
   memory = *mp;

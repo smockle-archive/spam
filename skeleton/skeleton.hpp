@@ -19,6 +19,7 @@ namespace spam {
       int do_memory(std::string filename);
       int do_stack(int argc, char** argv);
       int do_accumulator(int argc, char** argv);
+      int do_gpr(int argc, char** argv);
       int do_help();
   };
 }
