@@ -26,6 +26,14 @@
   #define Y_ADDR 257
   #define Z_ADDR 258
 
+  #define T1_ADDR 0
+  #define T2_ADDR 1
+  #define T3_ADDR 2
+  #define T4_ADDR 3
+  #define V0_ADDR 29
+  #define A0_ADDR 30
+  #define A1_ADDR 31
+
   #define INST_SIZE 32
   #define OPCODE_SIZE 8
   #define ADDR_SIZE 24

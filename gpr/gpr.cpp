@@ -1,5 +1,8 @@
 #include "gpr.hpp"
 
+// I consulted the following resources for help:
+// http://www.cplusplus.com/doc/tutorial/control/
+
 spam::GPR::GPR() {
   pc = 0;
 };
@@ -18,7 +21,7 @@ int spam::GPR::b(char* label) {
   return FAIL;
 }
 
-int spam::GPR::beqz(int rsrc1, int rsrc2, char* label) {
+int spam::GPR::beqz(int rsrc, char* label) {
   return FAIL;
 }
 
@@ -30,11 +33,11 @@ int spam::GPR::bne(int rsrc1, int rsrc2, char* label) {
   return FAIL;
 }
 
-int spam::GPR::la(int rdest, int addr) {
+int spam::GPR::la(int rdest, char* variable) {
   return FAIL;
 }
 
-int spam::GPR::lb(int rdest, int addr) {
+int spam::GPR::lb(int rdest, int offset, int rsrc) {
   return FAIL;
 }
 
@@ -47,7 +50,19 @@ int spam::GPR::subi(int rdest, int rsrc, int imm) {
 }
 
 int spam::GPR::syscall() {
-  return FAIL;
+  int op = registry.load(V0_ADDR);
+  switch (op) {
+    case SYSCALL_CIN:
+      break;
+    case SYSCALL_COUT:
+      break;
+    case SYSCALL_END:
+      end();
+      break;
+    default:
+      return FAIL;
+  }
+  return op;
 }
 
 int spam::GPR::decode_label(char* label) {
