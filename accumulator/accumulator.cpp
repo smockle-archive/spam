@@ -118,8 +118,6 @@ int spam::Accumulator::run() {
       end();
     }
 
-
-
     // Prepare for next command
     command = "";
     argument = "";
