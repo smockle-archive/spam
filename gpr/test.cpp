@@ -7,30 +7,50 @@ int spam::TestGPR::test_gpr_addi() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_addi() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_b() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_b() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_beqz() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_beqz() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_bge() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_bge() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_bne() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_bne() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_la() {
@@ -43,36 +63,60 @@ int spam::TestGPR::test_gpr_lb() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_lb() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_li() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_li() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_subi() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_subi() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_syscall() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_syscall() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_decode_label() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_decode_label() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_end() {
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << " test_gpr_end() failed. Tests have not been written yet." << std::endl;
   return FAIL;
+
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << " test_accumulator_end() passed." << std::endl;
+  return SUCCESS;
 }
 
 int main(int argc, char** argv) {
