@@ -11,8 +11,9 @@ travis: clean test
 	./skeleton/test
 	./stack/test
 	./accumulator/test
+	./registry/test
 
-test: test-memory test-skeleton test-accumulator test-stack
+test: test-memory test-skeleton test-accumulator test-stack test-registry
 
 spam:
 	$(CC) skeleton/skeleton.cpp memory/memory.cpp accumulator/accumulator.cpp stack/stack.cpp -o spam
@@ -28,6 +29,9 @@ test-accumulator:
 
 test-stack:
 	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
+
+test-registry:
+	$(CC) registry/test.cpp registry/registry.cpp -o registry/test
 
 clean:
 	rm -Rf *.o spam test */test SHIBBOLETH*
