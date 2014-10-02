@@ -35,7 +35,7 @@ test-registry:
 	$(CC) -D TEST registry/test.cpp registry/registry.cpp -o registry/test
 
 test-skeleton:
-	$(CC) -D TEST skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp -o skeleton/test
+	$(CC) -D TEST skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o skeleton/test
 
 clean:
 	rm -Rf *.o spam test */test SHIBBOLETH*

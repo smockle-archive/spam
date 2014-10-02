@@ -1,13 +1,13 @@
 #ifndef GPR_H
 #define GPR_H
 
+#include "../registry/registry.hpp"
+#include "../memory/memory.hpp"
+#include "../skeleton/skeleton.hpp"
+
 #define SYSCALL_CIN 8
 #define SYSCALL_COUT 4
 #define SYSCALL_END 10
-
-#import "../registry/registry.hpp"
-#import "../memory/memory.hpp"
-#include "../skeleton/skeleton.hpp"
 
 namespace spam {
   class GPR {
