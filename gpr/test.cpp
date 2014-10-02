@@ -74,16 +74,30 @@ int spam::TestGPR::test_gpr_b() {
   // TODO: Write tests for gpr.b().
 
   // Test negative label address.
+  if (gpr.b(-1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_b() failed. The failing subtest is \"Test negative label address\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test positive label address outside range (<256 || >=512).
+  // Test positive label address outside range (<512 or >=768).
+  if (gpr.b(1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_b() failed. The failing subtest is \"Test positive label address outside range (<256 or >=512)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address for success.
+  if (gpr.b(T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_b() failed. The failing subtest is \"Test valid label address for success\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address, verify PC value changed.
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_b() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  gpr.pc = 1;
+  gpr.b(T_BASE_ADDR);
+  if (gpr.pc != T_BASE_ADDR) {
+    std::cerr << COLOR_ERROR << "test_gpr_b() failed. The failing subtest is \"Test valid label address, verify PC value changed\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_b() passed." << std::endl;
