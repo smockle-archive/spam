@@ -89,14 +89,44 @@ int spam::GPR::beqz(int rsrc, int label_addr) {
 }
 
 int spam::GPR::bge(int rsrc1, int rsrc2, int label_addr) {
+  // Warn on identical addresses.
   if (rsrc1 == rsrc2) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
 
-  return FAIL;
+  // Verify arguments.
+  if (rsrc1 < 0 || rsrc1 > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (rsrc2 < 0 || rsrc2 > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (label_addr < 512 || label_addr >= 768) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Branch if greater than or equal to.
+  if (registry.load(rsrc1) >= registry.load(rsrc2)) {
+    pc = label_addr;
+  }
+
+  return SUCCESS;
 }
 
 int spam::GPR::bne(int rsrc1, int rsrc2, int label_addr) {
+  // Warn on identical addresses.
+
   if (rsrc1 == rsrc2) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
@@ -108,6 +138,8 @@ int spam::GPR::la(int rdest, int variable_addr) {
 }
 
 int spam::GPR::lb(int rdest, int offset, int rsrc) {
+  // Warn on identical addresses.
+
   if (rdest == rsrc) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
