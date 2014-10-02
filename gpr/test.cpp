@@ -383,11 +383,62 @@ int spam::TestGPR::test_gpr_la() {
 }
 
 int spam::TestGPR::test_gpr_lb() {
-  // TODO: Write tests for gpr.lb().
+  // Test negative source register address.
+  if (gpr.lb(1, 1, -1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test negative source register address\"." << std::endl;
+    return FAIL;
+  }
 
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_lb() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  // Test negative destination register address.
+  if (gpr.lb(-1, 1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test negative destination register address\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test positive source register address outside range (>31).
+  if (gpr.lb(1, 1, 32) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test positive source register address (>31)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test positive destination register address outside range (>31).
+  if (gpr.lb(32, 1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test positive destination register address (>31)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test negative offset outside range (<-32,768).
+  if (gpr.lb(1, MIN_IMMEDIATE-1, 2) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test positive offset outside range (>32,767).
+  if (gpr.lb(1, MAX_IMMEDIATE+1, 2) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test positive immediate value outside range (>32,767)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test value of source register isn't a valid memory address (<256 or >=768).
+  gpr.registry.store(2, 5);
+  if (gpr.lb(1, 500, 2) != VALUE_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test value of source register isn't a valid memory address (<256 or >=768)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test sum of offset and value of source register isn't a valid memory address (<256 or >=768).
+  gpr.registry.store(2, 500);
+  if (gpr.lb(1, 500, 2) != VALUE_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test sum of offset and value of source register isn't a valid memory address (<256 or >=768)\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test valid for success (>=256 and <768).
+  gpr.registry.store(2, 5);
+  if (gpr.lb(1, 500, 2) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test valid for success (>=256 and <768)\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_lb() passed." << std::endl;
