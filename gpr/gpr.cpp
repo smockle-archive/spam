@@ -175,7 +175,6 @@ int spam::GPR::la(int rdest, int variable_addr) {
     #endif
     return ARGUMENT_ERROR;
   }
-
   registry.store(rdest, *memory.read(variable_addr));
   return SUCCESS;
 }

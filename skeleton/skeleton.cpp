@@ -129,6 +129,8 @@ int spam::Skeleton::do_memory(std::string filename) {
 
 int spam::Skeleton::do_registry() {
    registry = new Registry();
+   
+   return SUCCESS;
 }
 
 int spam::Skeleton::do_stack(int argc, char** argv) {

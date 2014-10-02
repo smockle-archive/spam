@@ -300,7 +300,7 @@ int spam::TestSkeleton::test_do_gpr() {
   }
 
   // All tests passed.
-  std::cout << COLOR_SUCCESS << " GPR test passed." << std::endl;
+  std::cout << COLOR_SUCCESS << "GPR test passed." << std::endl;
   return SUCCESS;
 }
 
