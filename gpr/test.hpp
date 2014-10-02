@@ -20,7 +20,6 @@ namespace spam {
       int test_gpr_li();
       int test_gpr_subi();
       int test_gpr_syscall();
-      int test_gpr_decode_label();
       int test_gpr_end();
   };
 }
