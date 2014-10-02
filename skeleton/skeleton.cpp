@@ -34,7 +34,14 @@ int spam::Skeleton::do_memory(std::string filename) {
   for (std::string line; getline(input, line);) {
     line = trim(tolower(line));
 
-    if (line.compare(".data") == 0) {
+    if (std::regex_match(line, std::regex("[a-zA-Z0-9][:]+"))) {
+      int stop = line.find(' ');
+      std::string label;
+      label = line.substr(0, (stop >= 0) ? stop : std::string::npos);
+      //loop through the entire program, replacing all instances of `label`
+      //with the current lineCount
+    }
+    else if (line.compare(".data") == 0) {
       buffer = 'd';
       continue;
     } else if (line.compare(".text") == 0) {
@@ -59,7 +66,7 @@ int spam::Skeleton::do_memory(std::string filename) {
 }
 
 int spam::Skeleton::do_registry() {
-   registry = new Registry(); 
+   registry = new Registry();
 }
 
 int spam::Skeleton::do_stack(int argc, char** argv) {
