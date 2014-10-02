@@ -161,7 +161,23 @@ int spam::GPR::bne(int rsrc1, int rsrc2, int label_addr) {
 }
 
 int spam::GPR::la(int rdest, int variable_addr) {
-  return FAIL;
+  // Verify arguments.
+  if (rdest < 0 || rdest > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (variable_addr < 256 || variable_addr >= 512) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Variable address must be in the range 256 to 512." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  registry.store(rdest, *memory.read(variable_addr));
+  return SUCCESS;
 }
 
 int spam::GPR::lb(int rdest, int offset, int rsrc) {
