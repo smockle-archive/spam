@@ -399,29 +399,63 @@ int spam::TestGPR::test_gpr_li() {
 }
 
 int spam::TestGPR::test_gpr_subi() {
-  // TODO: Write tests for gpr.subi().
-
   // Test negative source address.
+  if (gpr.subi(0, -1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test negative source address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative destination address.
+  if (gpr.subi(-1, 0, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test negative destination address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive source address outside range (>31).
+  if (gpr.subi(0, 32, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test positive source address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive destination address outside range (>31).
+  if (gpr.subi(32, 0, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test positive destination address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative immediate value outside range (<-32,768).
+  if (gpr.subi(0, 0, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive immediate value outside range (>32,767).
+  if (gpr.subi(0, 0, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test negative immediate value outside range (>32,769)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test difference exceeds range.
+  gpr.registry.store(0, MAX_IMMEDIATE-1);
+  if (gpr.subi(1, 0, MAX_IMMEDIATE-1) != VALUE_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test difference exceeds range\"." << std::endl;
+    return FAIL;
+  }
 
   // Test difference in range for success.
+  gpr.registry.store(0, 1);
+  if (gpr.subi(1, 0, 1) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test difference in range for success\"." << std::endl;
+    return FAIL;
+  }
 
   // Test difference in range for correctness.
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_subi() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  gpr.registry.store(0, 3);
+  gpr.subi(1, 0, 1);
+  if (gpr.registry.load(0) != 2) {
+    std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test difference in range for correctness\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_subi() passed." << std::endl;
