@@ -60,7 +60,7 @@ int spam::TestGPR::test_gpr_addi() {
   // Test sum in range for correctness.
   gpr.registry.store(0, 1);
   gpr.addi(1, 0, 1);
-  if (gpr.registry.load(0) != 2) {
+  if (gpr.registry.load(1) != 2) {
     std::cerr << COLOR_ERROR << "test_gpr_addi() failed. The failing subtest is \"Test sum in range for correctness\"." << std::endl;
     return FAIL;
   }
@@ -543,7 +543,7 @@ int spam::TestGPR::test_gpr_subi() {
   // Test difference in range for correctness.
   gpr.registry.store(0, 3);
   gpr.subi(1, 0, 1);
-  if (gpr.registry.load(0) != 2) {
+  if (gpr.registry.load(1) != 2) {
     std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test difference in range for correctness\"." << std::endl;
     return FAIL;
   }
