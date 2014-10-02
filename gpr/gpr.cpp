@@ -186,7 +186,41 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
 
-  return FAIL;
+  // Verify arguments.
+  if (rdest < 0 || rdest > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (offset < MIN_IMMEDIATE || offset > MAX_IMMEDIATE) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Immediate value must be in the range " << MIN_IMMEDIATE << " to " << MAX_IMMEDIATE << "." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (rsrc < 0 || rsrc > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Calculate sum.
+  int sum = registry.load(rsrc) + offset;
+
+  // Verify sum.
+  if (sum < 256 || sum >= 768) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Sum must be in the range 256 to 768." << std::endl;
+    #endif
+    return VALUE_ERROR;
+  }
+
+  registry.store(rdest, *memory.read(sum));
+  return SUCCESS;
 }
 
 int spam::GPR::li(int rdest, int imm) {

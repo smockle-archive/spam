@@ -373,7 +373,7 @@ int spam::TestGPR::test_gpr_la() {
   gpr.registry.store(1, 1);
   gpr.memory.store(D_BASE_ADDR, (char *) "10");
   gpr.la(1, D_BASE_ADDR);
-  if (gpr.registry.load(1) == atoi("10")) {
+  if (gpr.registry.load(1) != atoi("10")) {
     std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test valid variable address, verify register contains value of variable\"." << std::endl;
     return FAIL;
   }
@@ -420,13 +420,6 @@ int spam::TestGPR::test_gpr_lb() {
     return FAIL;
   }
 
-  // Test value of source register isn't a valid memory address (<256 or >=768).
-  gpr.registry.store(2, 5);
-  if (gpr.lb(1, 500, 2) != VALUE_ERROR) {
-    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test value of source register isn't a valid memory address (<256 or >=768)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test sum of offset and value of source register isn't a valid memory address (<256 or >=768).
   gpr.registry.store(2, 500);
   if (gpr.lb(1, 500, 2) != VALUE_ERROR) {
@@ -434,10 +427,19 @@ int spam::TestGPR::test_gpr_lb() {
     return FAIL;
   }
 
-  // Test valid for success (>=256 and <768).
-  gpr.registry.store(2, 5);
-  if (gpr.lb(1, 500, 2) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test valid for success (>=256 and <768)\"." << std::endl;
+  // Test valid memory address for success.
+  gpr.registry.store(2, 500);
+  if (gpr.lb(1, 5, 2) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test valid memory address for success\"." << std::endl;
+    return FAIL;
+  }
+
+  // Test valid memory address, verify register contains value at address.
+  gpr.memory.store(505, (char *) "10");
+  gpr.registry.store(2, 500);
+  gpr.lb(1, 5, 2);
+  if (gpr.registry.load(1) != atoi("10")) {
+    std::cerr << COLOR_ERROR << "test_gpr_lb() failed. The failing subtest is \"Test valid memory address, verify register contains value at address\"." << std::endl;
     return FAIL;
   }
 
