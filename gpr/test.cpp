@@ -375,23 +375,43 @@ int spam::TestGPR::test_gpr_lb() {
 }
 
 int spam::TestGPR::test_gpr_li() {
-  // TODO: Write tests for gpr.li().
-
   // Test negative register address.
+  if (gpr.li(-1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test negative register address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive register address outside range (>31).
+  if (gpr.li(32, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative immediate value outside range (<-32,768).
+  if (gpr.li(1, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive immediate value outside range (>32,767).
+  if (gpr.li(1, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test positive immediate value outside range (>32,767)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid register address, immediate value fits in register for success.
+  if (gpr.li(1, 10) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test valid register address, immediate value fits in register for success\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid register address, immediate value fits in register, verify register contains immediate value.
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_li() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  gpr.registry.store(1, 1);
+  gpr.li(1, 10);
+  if (gpr.registry.load(1) != 10) {
+    std::cerr << COLOR_ERROR << "test_gpr_li() failed. The failing subtest is \"Test valid register address, immediate value fits in register, verify register contains immediate value\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_li() passed." << std::endl;
