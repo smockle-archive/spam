@@ -20,7 +20,7 @@ int spam::Skeleton::do_memory(std::string filename) {
   // i.e. verify file exists.
   if (!spam::Skeleton::file_exists(filename)) {
     #ifndef TEST
-    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    std::cerr << COLOR_ERROR << "File not found. Check that the input file exists." << std::endl;
     #endif
     return IO_ERROR;
   }
@@ -62,7 +62,7 @@ int spam::Skeleton::do_stack(int argc, char** argv) {
   // Verify number of arguments.
   if (argc < 3) {
     #ifndef TEST
-    std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
+    std::cerr << COLOR_ERROR << "Not enough arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
@@ -72,7 +72,7 @@ int spam::Skeleton::do_stack(int argc, char** argv) {
   if (strcmp(argv[1], "stack") != 0
    && strcmp(argv[1], "s") != 0) {
      #ifndef TEST
-     std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
+     std::cerr << COLOR_ERROR << "Invalid arguments. Correct syntax is \"spam stack <input_file>\"." << std::endl;
      #endif
      return ARGUMENT_ERROR;
   }
@@ -81,7 +81,7 @@ int spam::Skeleton::do_stack(int argc, char** argv) {
   // i.e. verify file exists.
   if (!spam::Skeleton::file_exists(argv[2])) {
     #ifndef TEST
-    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    std::cerr << COLOR_ERROR << "File not found. Check that the input file exists." << std::endl;
     #endif
     return IO_ERROR;
   }
@@ -100,7 +100,7 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
   // Verify number of arguments.
   if (argc < 3) {
     #ifndef TEST
-    std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
+    std::cerr << COLOR_ERROR << "Not enough arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
@@ -110,7 +110,7 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
   if (strcmp(argv[1], "accumulator") != 0
    && strcmp(argv[1], "a") != 0) {
      #ifndef TEST
-     std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
+     std::cerr << COLOR_ERROR << "Invalid arguments. Correct syntax is \"spam accumulator <input_file>\"." << std::endl;
      #endif
      return ARGUMENT_ERROR;
   }
@@ -119,7 +119,7 @@ int spam::Skeleton::do_accumulator(int argc, char** argv) {
   // i.e. verify file exists.
   if (!file_exists(argv[2])) {
     #ifndef TEST
-    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    std::cerr << COLOR_ERROR << "File not found. Check that the input file exists." << std::endl;
     #endif
     return IO_ERROR;
   }
@@ -174,13 +174,13 @@ int main(int argc, char** argv) {
       skeleton.do_help();
     }
     else {
-      std::cout << COLOR_EXCEPTION << " Unknown argument: " << argv[1] << ". Run \"spam help\" for a list of valid options." << std::endl;
+      std::cout << COLOR_EXCEPTION << "Unknown argument: " << argv[1] << ". Run \"spam help\" for a list of valid options." << std::endl;
       skeleton.do_help();
       return ARGUMENT_ERROR;
     }
   }
   else {
-      std::cerr << COLOR_ERROR << " Must specify at least one argument. Run \"spam help\" for a list of valid options." << std::endl;
+      std::cerr << COLOR_ERROR << "Must specify at least one argument. Run \"spam help\" for a list of valid options." << std::endl;
       return ARGUMENT_ERROR;
   }
 

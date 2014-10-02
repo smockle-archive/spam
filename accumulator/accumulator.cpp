@@ -20,7 +20,7 @@ int spam::Accumulator::load(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer. (load, " << address << ")" << std::endl;
+    std::cout << COLOR_ERROR << "Memory address cannot be a negative integer. (load, " << address << ")" << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
@@ -35,7 +35,7 @@ int spam::Accumulator::store(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer. (store)" << std::endl;
+    std::cout << COLOR_ERROR << "Memory address cannot be a negative integer. (store)" << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
@@ -50,7 +50,7 @@ int spam::Accumulator::add(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer." << std::endl;
+    std::cout << COLOR_ERROR << "Memory address cannot be a negative integer." << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }
@@ -65,7 +65,7 @@ int spam::Accumulator::multiply(int address) {
   // Verify address is positive.
   if (address < 0) {
     #ifndef TEST
-    std::cout << COLOR_ERROR << " Memory address cannot be a negative integer." << std::endl;
+    std::cout << COLOR_ERROR << "Memory address cannot be a negative integer." << std::endl;
     #endif
     return ARGUMENT_ERROR;
   }

@@ -37,10 +37,10 @@ int spam::test_init() {
 
     int trash = r.r[0];
     if(trash != 0) {
-        std::cout << COLOR_ERROR << " Initialization test failed." << std::endl;
+        std::cout << COLOR_ERROR << "Initialization test failed." << std::endl;
         return FAIL;
     }
-    std::cout << COLOR_SUCCESS << " Initialization test passed." << std::endl;
+    std::cout << COLOR_SUCCESS << "Initialization test passed." << std::endl;
     return SUCCESS;
 }
 
@@ -56,7 +56,7 @@ int spam::test_store() {
     y = r.r[0];
 
     if(y != x) {
-        std::cout << COLOR_ERROR << " First-register store test failed." << std::endl;
+        std::cout << COLOR_ERROR << "First-register store test failed." << std::endl;
         return FAIL;
     }
 
@@ -69,10 +69,10 @@ int spam::test_store() {
     y = r.r[14];
 
     if(y != x) {
-        std::cout << COLOR_ERROR << " Fourteenth-register store test failed." << std::endl;
+        std::cout << COLOR_ERROR << "Fourteenth-register store test failed." << std::endl;
         return FAIL;
     }
-    std::cout << COLOR_SUCCESS << " Store test passed." << std::endl;
+    std::cout << COLOR_SUCCESS << "Store test passed." << std::endl;
     return SUCCESS;
 }
 
@@ -86,7 +86,7 @@ int spam::test_load() {
     y = r.load(0);
 
     if(y != x) {
-        std::cout << COLOR_ERROR << " First-register load test failed." << std::endl;
+        std::cout << COLOR_ERROR << "First-register load test failed." << std::endl;
         return FAIL;
     }
 
@@ -99,9 +99,9 @@ int spam::test_load() {
     y = r.load(14);
 
     if(y != x) {
-        std::cout << COLOR_ERROR << " Fourteenth-register load test failed." << std::endl;
+        std::cout << COLOR_ERROR << "Fourteenth-register load test failed." << std::endl;
         return FAIL;
     }
-    std::cout << COLOR_SUCCESS << " Load test passed." << std::endl;
+    std::cout << COLOR_SUCCESS << "Load test passed." << std::endl;
     return SUCCESS;
 }
