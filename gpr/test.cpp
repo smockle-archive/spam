@@ -339,27 +339,47 @@ int spam::TestGPR::test_gpr_bne() {
 }
 
 int spam::TestGPR::test_gpr_la() {
-  // TODO: Write tests for gpr.la().
-
   // Test negative register address.
+  if (gpr.la(-1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test negative register address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive register address outside range (>31).
-
-  // Test variable name which doesn't exist.
-
-  // Test variable name which does exist, value of variable is too big for register.
+  if (gpr.la(32, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative variable address.
+  if (gpr.la(1, -1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test negative variable address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive variable address outside range (<256 or >=512).
+  if (gpr.la(1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test positive variable address outside range (<256 or >=512)\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid variable address, value of variable fits in register for success.
+  // Test valid variable address for success.
+  if (gpr.la(1, D_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test valid variable address for success\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid variable address, value of variable fits in register, verify register contains value of variable.
+  // Test valid variable address, verify register contains value of variable.
+  gpr.registry.store(1, 1);
+  gpr.la(1, D_BASE_ADDR);
+  if (gpr.registry.load(1) != D_BASE_ADDR) {
+    std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test valid variable address for success\"." << std::endl;
+    return FAIL;
+  }
 
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_la() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  // All tests passed.
+  std::cout << COLOR_SUCCESS << "test_gpr_la() passed." << std::endl;
+  return SUCCESS;
 }
 
 int spam::TestGPR::test_gpr_lb() {
