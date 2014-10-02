@@ -52,6 +52,7 @@ int spam::GPR::addi(int rdest, int rsrc, int imm) {
 }
 
 int spam::GPR::b(int label_addr) {
+  // Verify arguments.
   if (label_addr < 512 || label_addr >= 768) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
@@ -64,7 +65,27 @@ int spam::GPR::b(int label_addr) {
 }
 
 int spam::GPR::beqz(int rsrc, int label_addr) {
-  return FAIL;
+  // Verify arguments.
+  if (rsrc < 0 || rsrc > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (label_addr < 512 || label_addr >= 768) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Branch if zero.
+  if (registry.load(rsrc) == 0) {
+    pc = label_addr;
+  }
+
+  return SUCCESS;
 }
 
 int spam::GPR::bge(int rsrc1, int rsrc2, int label_addr) {

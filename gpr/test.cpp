@@ -154,7 +154,7 @@ int spam::TestGPR::test_gpr_beqz() {
   gpr.registry.store(0, 0);
   gpr.pc = 1;
   gpr.beqz(0, T_BASE_ADDR);
-  if (gpr.pc != 1) {
+  if (gpr.pc != T_BASE_ADDR) {
     std::cerr << COLOR_ERROR << "test_gpr_beqz() failed. The failing subtest is \"Test valid label address, value at register is not zero, verify PC changed\"." << std::endl;
     return FAIL;
   }
