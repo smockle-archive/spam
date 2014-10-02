@@ -52,7 +52,15 @@ int spam::GPR::addi(int rdest, int rsrc, int imm) {
 }
 
 int spam::GPR::b(int label_addr) {
-  return FAIL;
+  if (label_addr < 512 || label_addr >= 768) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  pc = label_addr;
+  return SUCCESS;
 }
 
 int spam::GPR::beqz(int rsrc, int label_addr) {
