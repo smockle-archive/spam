@@ -261,31 +261,77 @@ int spam::TestGPR::test_gpr_bge() {
 }
 
 int spam::TestGPR::test_gpr_bne() {
-  // TODO: Write tests for gpr.bne().
-
   // Test negative register1 address.
+  if (gpr.bne(-1, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test negative register1 address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative register2 address.
+  if (gpr.bne(1, -1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test negative register2 address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive register1 address outside range (>31).
+  if (gpr.bne(32, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test positive register1 address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive register2 address outside range (>31).
+  if (gpr.bne(1, 32, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test positive register2 address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative label address.
+  if (gpr.bne(0, 1, -1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test negative label address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive label address outside range (<512 or >=768).
+  if (gpr.bne(0, 1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address, value at register1 is equal to value at register2 for success.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 10);
+  if (gpr.bne(0, 1, T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2 for success\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address, value at register1 is equal to value at register2, verify PC value didn't change.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 10);
+  gpr.pc = 1;
+  gpr.bne(0, 1, T_BASE_ADDR);
+  if (gpr.pc != 1) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2, verify PC value didn't change\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address, value at register1 is not equal to value at register2 for success.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 20);
+  if (gpr.bne(0, 1, T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test valid label address, value at register1 is not equal to value at register2 for success\"." << std::endl;
+    return FAIL;
+  }
 
   // Test valid label address, value at register1 is not equal to value at register2, verify PC value changed.
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_bne() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 20);
+  gpr.pc = 1;
+  gpr.bne(0, 1, T_BASE_ADDR);
+  if (gpr.pc != T_BASE_ADDR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bne() failed. The failing subtest is \"Test valid label address, value at register1 is not equal to value at register2, verify PC value changed\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_bne() passed." << std::endl;
