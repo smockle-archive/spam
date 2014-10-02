@@ -26,10 +26,17 @@ int spam::GPR::beqz(int rsrc, char* label) {
 }
 
 int spam::GPR::bge(int rsrc1, int rsrc2, char* label) {
+  if (rsrc1 == rsrc2) {
+    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
+  }
+
   return FAIL;
 }
 
 int spam::GPR::bne(int rsrc1, int rsrc2, char* label) {
+  if (rsrc1 == rsrc2) {
+    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
+  }
   return FAIL;
 }
 
@@ -38,6 +45,9 @@ int spam::GPR::la(int rdest, char* variable) {
 }
 
 int spam::GPR::lb(int rdest, int offset, int rsrc) {
+  if (rdest == rsrc) {
+    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
+  }
   return FAIL;
 }
 

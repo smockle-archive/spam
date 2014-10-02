@@ -48,6 +48,7 @@
   #define ARGUMENT_ERROR -10
   #define IO_ERROR -20
   #define TYPE_ERROR -30
+  #define VALUE_ERROR -40
 
 #endif
 
@@ -60,9 +61,10 @@
 
   #define COLOR_STOP "\033[0m"
 
-  #define COLOR_ERROR "\033[0;31mError:\033[0m"
-  #define COLOR_EXCEPTION "\033[0;33mError:\033[0m"
-  #define COLOR_SUCCESS "\033[0;32mSuccess:\033[0m"
+  #define COLOR_ERROR "\033[0;31mError: \033[0m"
+  #define COLOR_EXCEPTION "\033[0;33mError: \033[0m"
+  #define COLOR_WARNING "\033[0;33mWarning: \033[0m"
+  #define COLOR_SUCCESS "\033[0;32mSuccess: \033[0m"
 
 #endif
 
@@ -107,7 +109,7 @@
     inline int valueof(std::string s) {
       if (s.find(" ") == std::string::npos) {
         #ifndef TEST
-        std::cout << COLOR_EXCEPTION << " valueof() was passed a string without spaces. Data is usually in the form \"X: 3\"." << std::endl;
+        std::cout << COLOR_EXCEPTION << "valueof() was passed a string without spaces. Data is usually in the form \"X: 3\"." << std::endl;
         #endif
         return FAIL;
       }
