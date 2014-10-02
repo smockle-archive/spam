@@ -38,6 +38,9 @@
   #define OPCODE_SIZE 8
   #define ADDR_SIZE 24
 
+  #define MAX_IMMEDIATE 32767
+  #define MIN_IMMEDIATE -32768
+
 #endif
 
 #ifndef ReturnConstants
