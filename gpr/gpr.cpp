@@ -40,7 +40,7 @@ int spam::GPR::addi(int rdest, int rsrc, int imm) {
   int sum = registry.load(rsrc) + imm;
 
   // Verify sum.
-  if (sum > MAX_IMMEDIATE) {
+  if (sum > MAX_IMMEDIATE || sum < MIN_IMMEDIATE) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Sum cannot exceed " << MAX_IMMEDIATE << "." << std::endl;
     #endif
@@ -90,7 +90,41 @@ int spam::GPR::li(int rdest, int imm) {
 }
 
 int spam::GPR::subi(int rdest, int rsrc, int imm) {
-  return FAIL;
+  // Verify arguments.
+  if (rdest < 0 || rdest > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (rsrc < 0 || rsrc > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (imm < MIN_IMMEDIATE || imm > MAX_IMMEDIATE) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Immediate value must be in the range " << MIN_IMMEDIATE << " to " << MAX_IMMEDIATE << "." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Calculate difference.
+  int difference = registry.load(rsrc) - imm;
+
+  // Verify difference.
+  if (difference > MAX_IMMEDIATE || difference < MIN_IMMEDIATE) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Difference cannot exceed " << MAX_IMMEDIATE << "." << std::endl;
+    #endif
+    return VALUE_ERROR;
+  }
+
+  registry.store(rdest, difference);
+  return SUCCESS;
 }
 
 int spam::GPR::syscall() {

@@ -527,8 +527,8 @@ int spam::TestGPR::test_gpr_subi() {
   }
 
   // Test difference exceeds range.
-  gpr.registry.store(0, MAX_IMMEDIATE-1);
-  if (gpr.subi(1, 0, MAX_IMMEDIATE-1) != VALUE_ERROR) {
+  gpr.registry.store(0, MIN_IMMEDIATE);
+  if (gpr.subi(1, 0, MAX_IMMEDIATE) != VALUE_ERROR) {
     std::cerr << COLOR_ERROR << "test_gpr_subi() failed. The failing subtest is \"Test difference exceeds range\"." << std::endl;
     return FAIL;
   }
