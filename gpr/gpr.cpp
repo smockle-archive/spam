@@ -17,15 +17,15 @@ int spam::GPR::addi(int rdest, int rsrc, int imm) {
   return FAIL;
 }
 
-int spam::GPR::b(char* label) {
+int spam::GPR::b(int label_addr) {
   return FAIL;
 }
 
-int spam::GPR::beqz(int rsrc, char* label) {
+int spam::GPR::beqz(int rsrc, int label_addr) {
   return FAIL;
 }
 
-int spam::GPR::bge(int rsrc1, int rsrc2, char* label) {
+int spam::GPR::bge(int rsrc1, int rsrc2, int label_addr) {
   if (rsrc1 == rsrc2) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
@@ -33,14 +33,14 @@ int spam::GPR::bge(int rsrc1, int rsrc2, char* label) {
   return FAIL;
 }
 
-int spam::GPR::bne(int rsrc1, int rsrc2, char* label) {
+int spam::GPR::bne(int rsrc1, int rsrc2, int label_addr) {
   if (rsrc1 == rsrc2) {
     std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
   }
   return FAIL;
 }
 
-int spam::GPR::la(int rdest, char* variable) {
+int spam::GPR::la(int rdest, int variable_addr) {
   return FAIL;
 }
 
@@ -75,18 +75,11 @@ int spam::GPR::syscall() {
   return op;
 }
 
-int spam::GPR::decode_label(char* label) {
-  return FAIL;
-}
-
 int spam::GPR::run() {
   return FAIL;
 }
 
 int spam::GPR::end() {
   pc = -1;
-  #ifndef TEST
-  std::cout << "Output: " << self << std::endl;
-  #endif
   return SUCCESS;
 }

@@ -71,11 +71,15 @@ int spam::TestGPR::test_gpr_addi() {
 }
 
 int spam::TestGPR::test_gpr_b() {
-  // Test label which doesn't exist.
+  // TODO: Write tests for gpr.b().
 
-  // Test label which does exist for success.
+  // Test negative label address.
 
-  // Test label which does exist, verify PC value changed.
+  // Test positive label address outside range (<256 || >=512).
+
+  // Test valid label address for success.
+
+  // Test valid label address, verify PC value changed.
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_b() failed. Tests have not been written yet." << std::endl;
@@ -87,19 +91,31 @@ int spam::TestGPR::test_gpr_b() {
 }
 
 int spam::TestGPR::test_gpr_beqz() {
+  // TODO: Write tests for gpr.beqz().
+
   // Test negative register address.
+  if (gpr.beqz(-1, (char *) "SHIBBOLETH_missing") != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_beqz() failed. The failing subtest is \"Test negative register address\"." << std::endl;
+    return FAIL;
+  }
 
   // Test positive register address outside range (>31).
+  if (gpr.beqz(32, (char *) "SHIBBOLETH_missing") != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_beqz() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test label which doesn't exist.
+  // Test negative label address.
 
-  // Test label which does exist, value at register is not zero for success.
+  // Test positive label address outside range (<256 || >=512).
 
-  // Test label which does exist, value at register is not zero, verify PC value didn't change.
+  // Test valid label address, value at register is not zero for success.
 
-  // Test label which does exist, value at register is zero for success.
+  // Test valid label address, value at register is not zero, verify PC value didn't change.
 
-  // Test label which does exist, value at register is zero, verify PC value changed?
+  // Test valid label address, value at register is zero for success.
+
+  // Test valid label address, value at register is zero, verify PC value changed?
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_beqz() failed. Tests have not been written yet." << std::endl;
@@ -111,6 +127,8 @@ int spam::TestGPR::test_gpr_beqz() {
 }
 
 int spam::TestGPR::test_gpr_bge() {
+  // TODO: Write tests for gpr.bge().
+
   // Test negative source address.
 
   // Test negative destination address.
@@ -119,19 +137,21 @@ int spam::TestGPR::test_gpr_bge() {
 
   // Test positive destination address outside range (>31).
 
-  // Test label which doesn't exist.
+  // Test negative label address.
 
-  // Test label which does exist, value at source is less than destination for success.
+  // Test positive label address outside range (<256 || >=512).
 
-  // Test label which does exist, value at source is less than destination, verify PC value didn't change.
+  // Test valid label address, value at source is less than destination for success.
 
-  // Test label which does exist, value at source is equal to destination for success.
+  // Test valid label address, value at source is less than destination, verify PC value didn't change.
 
-  // Test label which does exist, value at source is equal to destination, verify PC value changed.
+  // Test valid label address, value at source is equal to destination for success.
 
-  // Test label which does exist, value at source is greater than destination for success.
+  // Test valid label address, value at source is equal to destination, verify PC value changed.
 
-  // Test label which does exist, value at source is greater than destination, verify PC value changed.
+  // Test valid label address, value at source is greater than destination for success.
+
+  // Test valid label address, value at source is greater than destination, verify PC value changed.
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_bge() failed. Tests have not been written yet." << std::endl;
@@ -143,6 +163,8 @@ int spam::TestGPR::test_gpr_bge() {
 }
 
 int spam::TestGPR::test_gpr_bne() {
+  // TODO: Write tests for gpr.bne().
+
   // Test negative source address with postive destination address.
 
   // Test negative destination address with postive source address.
@@ -151,15 +173,17 @@ int spam::TestGPR::test_gpr_bne() {
 
   // Test positive destination address outside range (>31).
 
-  // Test label which doesn't exist.
+  // Test negative label address.
 
-  // Test label which does exist, value at source is equal to destination for success.
+  // Test positive label address outside range (<256 || >=512).
 
-  // Test label which does exist, value at source is equal to destination, verify PC value didn't change.
+  // Test valid label address, value at source is equal to destination for success.
 
-  // Test label which does exist, value at source is not equal to destination for success.
+  // Test valid label address, value at source is equal to destination, verify PC value didn't change.
 
-  // Test label which does exist, value at source is not equal to destination, verify PC value changed.
+  // Test valid label address, value at source is not equal to destination for success.
+
+  // Test valid label address, value at source is not equal to destination, verify PC value changed.
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_bne() failed. Tests have not been written yet." << std::endl;
@@ -171,6 +195,8 @@ int spam::TestGPR::test_gpr_bne() {
 }
 
 int spam::TestGPR::test_gpr_la() {
+  // TODO: Write tests for gpr.la().
+
   // Test negative register address.
 
   // Test positive register address outside range (>31).
@@ -179,9 +205,13 @@ int spam::TestGPR::test_gpr_la() {
 
   // Test variable name which does exist, value of variable is too big for register.
 
-  // Test label which does exist, value of variable fits in register for success.
+  // Test negative variable address.
 
-  // Test label which does exist, value of variable fits in register, verify register contains value of variable.
+  // Test positive variable address outside range (<256 || >=512).
+
+  // Test valid variable address, value of variable fits in register for success.
+
+  // Test valid variable address, value of variable fits in register, verify register contains value of variable.
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_la() failed. Tests have not been written yet." << std::endl;
@@ -201,6 +231,8 @@ int spam::TestGPR::test_gpr_lb() {
 }
 
 int spam::TestGPR::test_gpr_li() {
+  // TODO: Write tests for gpr.li().
+
   // Test negative register address.
 
   // Test positive register address outside range (>31).
@@ -223,6 +255,8 @@ int spam::TestGPR::test_gpr_li() {
 }
 
 int spam::TestGPR::test_gpr_subi() {
+  // TODO: Write tests for gpr.subi().
+
   // Test negative source address with postive destination address.
 
   // Test negative destination address with positive source address.
@@ -277,18 +311,6 @@ int spam::TestGPR::test_gpr_syscall() {
   return SUCCESS;
 }
 
-int spam::TestGPR::test_gpr_decode_label() {
-  // TODO: Write tests for gpr.decode_label().
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_decode_label() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
-
-  // All tests passed.
-  std::cout << COLOR_SUCCESS << "test_gpr_decode_label() passed." << std::endl;
-  return SUCCESS;
-}
-
 int spam::TestGPR::test_gpr_end() {
   // Verify returns true.
   if (gpr.end() != SUCCESS) {
@@ -304,8 +326,8 @@ int spam::TestGPR::test_gpr_end() {
 int main(int argc, char** argv) {
   spam::TestGPR testgpr;
 
-  int tests_run = 12;
-  int tests_passed = 12;
+  int tests_run = 11;
+  int tests_passed = 11;
 
   tests_passed += testgpr.test_gpr_addi();
   tests_passed += testgpr.test_gpr_b();
@@ -317,7 +339,6 @@ int main(int argc, char** argv) {
   tests_passed += testgpr.test_gpr_li();
   tests_passed += testgpr.test_gpr_subi();
   tests_passed += testgpr.test_gpr_syscall();
-  tests_passed += testgpr.test_gpr_decode_label();
   tests_passed += testgpr.test_gpr_end();
 
   int tests_failed = tests_run - tests_passed;
@@ -340,6 +361,4 @@ int main(int argc, char** argv) {
   }
 
   return (tests_failed == 0) ? SUCCESS: FAIL;
-}
-;
 }
