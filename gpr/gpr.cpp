@@ -224,7 +224,24 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
 }
 
 int spam::GPR::li(int rdest, int imm) {
-  return FAIL;
+  // Verify arguments.
+  if (rdest < 0 || rdest > 31) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  if (imm < MIN_IMMEDIATE || imm > MAX_IMMEDIATE) {
+    #ifndef TEST
+    std::cout << COLOR_ERROR << "Immediate value must be in the range " << MIN_IMMEDIATE << " to " << MAX_IMMEDIATE << "." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  registry.store(rdest, imm);
+
+  return SUCCESS;
 }
 
 int spam::GPR::subi(int rdest, int rsrc, int imm) {
