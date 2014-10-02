@@ -121,9 +121,9 @@ int spam::TestGPR::test_gpr_beqz() {
     return FAIL;
   }
 
-  // Test positive label address outside range (<512 || >=768).
+  // Test positive label address outside range (<512 or >=768).
   if (gpr.beqz(0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_gpr_beqz() failed. The failing subtest is \"Test positive label address outside range (<512 || >=768)\"." << std::endl;
+    std::cerr << COLOR_ERROR << "test_gpr_beqz() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
     return FAIL;
   }
 
@@ -165,35 +165,95 @@ int spam::TestGPR::test_gpr_beqz() {
 }
 
 int spam::TestGPR::test_gpr_bge() {
-  // TODO: Write tests for gpr.bge().
+  // Test negative register1 address.
+  if (gpr.bge(-1, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test negative register1 address\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test negative source address.
+  // Test negative register2 address.
+  if (gpr.bge(1, -1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test negative register2 address\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test negative destination address.
+  // Test positive register1 address outside range (>31).
+  if (gpr.bge(32, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test positive register1 address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test positive source address outside range (>31).
-
-  // Test positive destination address outside range (>31).
+  // Test positive register2 address outside range (>31).
+  if (gpr.bge(1, 32, T_BASE_ADDR) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test positive register2 address outside range (>31)\"." << std::endl;
+    return FAIL;
+  }
 
   // Test negative label address.
+  if (gpr.bge(0, 1, -1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test negative label address\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test positive label address outside range (<512 || >=768).
+  // Test positive label address outside range (<512 or >=768).
+  if (gpr.bge(0, 1, 1) != ARGUMENT_ERROR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is less than destination for success.
+  // Test valid label address, value at register1 is less than value at register2 for success.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 20);
+  if (gpr.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is less than value at register2 for success\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is less than destination, verify PC value didn't change.
+  // Test valid label address, value at register1 is less than value at register2, verify PC value didn't change.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 20);
+  gpr.pc = 1;
+  gpr.bge(0, 1, T_BASE_ADDR);
+  if (gpr.pc != 1) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is less than value at register2, verify PC value didn't change\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is equal to destination for success.
+  // Test valid label address, value at register1 is equal to value at register2 for success.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 10);
+  if (gpr.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2 for success\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is equal to destination, verify PC value changed.
+  // Test valid label address, value at register1 is equal to value at register2, verify PC value changed.
+  gpr.registry.store(0, 10);
+  gpr.registry.store(1, 10);
+  gpr.pc = 1;
+  gpr.bge(0, 1, T_BASE_ADDR);
+  if (gpr.pc != T_BASE_ADDR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2, verify PC value changed\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is greater than destination for success.
+  // Test valid label address, value at register1 is greater than value at register2 for success.
+  gpr.registry.store(0, 20);
+  gpr.registry.store(1, 10);
+  if (gpr.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is greater than value at register2 for success\"." << std::endl;
+    return FAIL;
+  }
 
-  // Test valid label address, value at source is greater than destination, verify PC value changed.
-
-  // Tests failed. Tests have not been written yet.
-  std::cout << COLOR_ERROR << "test_gpr_bge() failed. Tests have not been written yet." << std::endl;
-  return FAIL;
+  // Test valid label address, value at register1 is greater than value at register2, verify PC value changed.
+  gpr.registry.store(0, 20);
+  gpr.registry.store(1, 10);
+  gpr.pc = 1;
+  gpr.bge(0, 1, T_BASE_ADDR);
+  if (gpr.pc != T_BASE_ADDR) {
+    std::cerr << COLOR_ERROR << "test_gpr_bge() failed. The failing subtest is \"Test valid label address, value at register1 is greater than value at register2, verify PC value changed\"." << std::endl;
+    return FAIL;
+  }
 
   // All tests passed.
   std::cout << COLOR_SUCCESS << "test_gpr_bge() passed." << std::endl;
@@ -203,25 +263,25 @@ int spam::TestGPR::test_gpr_bge() {
 int spam::TestGPR::test_gpr_bne() {
   // TODO: Write tests for gpr.bne().
 
-  // Test negative source address with postive destination address.
+  // Test negative register1 address.
 
-  // Test negative destination address with postive source address.
+  // Test negative register2 address.
 
-  // Test positive source address outside range (>31).
+  // Test positive register1 address outside range (>31).
 
-  // Test positive destination address outside range (>31).
+  // Test positive register2 address outside range (>31).
 
   // Test negative label address.
 
-  // Test positive label address outside range (<512 || >=768).
+  // Test positive label address outside range (<512 or >=768).
 
-  // Test valid label address, value at source is equal to destination for success.
+  // Test valid label address, value at register1 is equal to value at register2 for success.
 
-  // Test valid label address, value at source is equal to destination, verify PC value didn't change.
+  // Test valid label address, value at register1 is equal to value at register2, verify PC value didn't change.
 
-  // Test valid label address, value at source is not equal to destination for success.
+  // Test valid label address, value at register1 is not equal to value at register2 for success.
 
-  // Test valid label address, value at source is not equal to destination, verify PC value changed.
+  // Test valid label address, value at register1 is not equal to value at register2, verify PC value changed.
 
   // Tests failed. Tests have not been written yet.
   std::cout << COLOR_ERROR << "test_gpr_bne() failed. Tests have not been written yet." << std::endl;
@@ -245,7 +305,7 @@ int spam::TestGPR::test_gpr_la() {
 
   // Test negative variable address.
 
-  // Test positive variable address outside range (<256 || >=512).
+  // Test positive variable address outside range (<256 or >=512).
 
   // Test valid variable address, value of variable fits in register for success.
 
@@ -295,9 +355,9 @@ int spam::TestGPR::test_gpr_li() {
 int spam::TestGPR::test_gpr_subi() {
   // TODO: Write tests for gpr.subi().
 
-  // Test negative source address with postive destination address.
+  // Test negative source address.
 
-  // Test negative destination address with positive source address.
+  // Test negative destination address.
 
   // Test positive source address outside range (>31).
 
