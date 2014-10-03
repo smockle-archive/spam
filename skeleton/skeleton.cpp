@@ -37,7 +37,10 @@ int spam::Skeleton::do_memory(std::string filename) {
 
     // if it's got an octothorpe, it's a comment
     int index = line.find('#');
-    if (index >= 0) continue;
+    if (index == 0) continue;
+    else if (index > 0) {
+        line = line.substr(0, index);
+    }
 
     // if it's got a colon, it's a label
     index = line.find(':');
@@ -94,6 +97,7 @@ int spam::Skeleton::do_memory(std::string filename) {
         // Light cigs behind the bulletin board by that statue of the mascot.
         // Remember what it's like to be a punk.
         if(index < 0) continue;
+        if(instruction.at(index + itr->first.length()) != ':') continue;
 
         char addr_cp[256] = {};
         std::sprintf(addr_cp, "%d", itr->second);
@@ -117,7 +121,11 @@ int spam::Skeleton::do_memory(std::string filename) {
         // Light cigs behind the bulletin board by that statue of the mascot.
         // Remember what it's like to be a punk.
         if(index < 0) continue;
-        
+        if(index + itr->first.length() < instruction.length()) {
+            char c = instruction.at(index + itr->first.length());
+            if(c != ' ' && c != ',') continue;
+        }
+
         char addr_cp[256] = {};
         std::sprintf(addr_cp, "%d", itr->second);
 
@@ -128,12 +136,15 @@ int spam::Skeleton::do_memory(std::string filename) {
     }
   }
 
+  
+  #ifdef TEST
   for(int z = D_BASE_ADDR; z < mem_d_addr; z++) {
     std::cout << memory->read(z) << std::endl;
   }
   for(int i = T_BASE_ADDR; i < mem_t_addr; i++) {
     std::cout << memory->read(i) << std::endl;
   }
+  #endif
   return SUCCESS;
 }
 

@@ -283,8 +283,15 @@ int spam::GPR::subi(int rdest, int rsrc, int imm) {
 
 int spam::GPR::syscall() {
   int op = registry.load(V0_ADDR);
+  std::cout << "Syscall opcode: " << op << std::endl;
   switch (op) {
     case SYSCALL_CIN:
+      {
+        std::cout << "SYSCALL_CIN" << std::endl;
+        std::string input;
+        std::cin >> input;
+        memory.store(registry.load(A0_ADDR), (char*)input.c_str());
+      }
       break;
     case SYSCALL_COUT:
       break;
@@ -298,6 +305,7 @@ int spam::GPR::syscall() {
 }
 
 int spam::GPR::run() {
+   
   return FAIL;
 }
 
