@@ -289,7 +289,12 @@ int spam::GPR::syscall() {
       {
         std::cout << "SYSCALL_CIN" << std::endl;
         std::string input;
+        #ifndef TEST
         std::cin >> input;
+        #endif
+        #ifdef TEST
+        input = "4";
+        #endif
         memory.store(registry.load(A0_ADDR), (char*)input.c_str());
       }
       break;

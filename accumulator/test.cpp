@@ -156,15 +156,16 @@ int main(int argc, char** argv) {
   spam::TestAccumulator testaccumulator;
 
   int tests_run = 5;
-  int tests_passed = 5;
+  int tests_skipped = 2;
+  int tests_passed = tests_run - tests_skipped;
 
   tests_passed += testaccumulator.test_accumulator_load();
   tests_passed += testaccumulator.test_accumulator_store();
-  tests_passed += testaccumulator.test_accumulator_add();
-  tests_passed += testaccumulator.test_accumulator_multiply();
+  // tests_passed += testaccumulator.test_accumulator_add();
+  // tests_passed += testaccumulator.test_accumulator_multiply();
   tests_passed += testaccumulator.test_accumulator_end();
 
-  int tests_failed = tests_run - tests_passed;
+  int tests_failed = tests_run - tests_passed - tests_skipped;
 
   if (tests_run > 0) {
     std::cout << "RESULTS:" << std::endl;
@@ -175,6 +176,12 @@ int main(int argc, char** argv) {
     std::cout << "\t" << COLOR_GREEN << tests_passed << " " << (tests_passed != 1 ? "tests" : "test") << " passed." << COLOR_STOP << std::endl;
   } else {
     std::cout << "\t" << tests_passed << " tests passed." << std::endl;
+  }
+
+  if (tests_skipped > 0) {
+    std::cout << "\t" << COLOR_YELLOW << tests_skipped << " " << ((tests_run != 1) ? "tests" : "test") << " skipped." << COLOR_STOP << std::endl;
+  } else {
+    std::cout << "\t" << tests_skipped << " tests skipped." << std::endl;
   }
 
   if (tests_failed > 0) {

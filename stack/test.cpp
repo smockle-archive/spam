@@ -17,12 +17,12 @@ int main(int argc, char ** argv){
   if(argc > 1 && strcmp(argv[1], "-v") == 0) isVerbose = true;
 
   int tests_run = 6;
-  int tests_skipped = 3;
+  int tests_skipped = 5;
   int tests_passed = tests_run - tests_skipped;
   int tests_failed;
 
-  tests_passed += spam::test_init();
-  tests_passed += spam::test_push();
+  // tests_passed += spam::test_init();
+  // tests_passed += spam::test_push();
   // tests_passed += spam::test_pop ();
   // tests_passed += spam::test_add ();
   // tests_passed += spam::test_mul ();
