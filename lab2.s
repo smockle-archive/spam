@@ -16,7 +16,7 @@
 ## $a0 - syscall parameters.
 ## $a1 - syscall parameters.
 
-	.text
+.text
 main:
 	
 ## read the string S:
@@ -71,7 +71,7 @@ exit:				# exit the program
 	syscall			# make the system call.
 
 
-	.data
+.data
 is_palin_msg: .asciiz "The string is a palindrome.\n"
 not_palin_msg: .asciiz "The string is not a palindrome.\n"
 string_space: .space 1024	# reserve 1024 bytes for the string.

@@ -30,78 +30,30 @@ int spam::Skeleton::do_memory(std::string filename) {
   int mem_t_addr = T_BASE_ADDR;
   int mem_d_addr = D_BASE_ADDR;
   char buffer = 'z';
+  std::map <std::string, int> conversion_table;
 
   for (std::string line; getline(input, line);) {
     line = trim(tolower(line));
 
-    if (std::regex_match(line, std::regex("[a-zA-Z0-9][:]+"))) {
+    // if it's got an octothorpe, it's a comment
+    int index = line.find('#');
+    if (index >= 0) continue;
+
+    // if it's got a colon, it's a label
+    index = line.find(':');
+    if (index >= 0) {
       int stop = line.find(' ');
-      int label_address = memory->lineCount;
-      int current_location = input.tellg();
       std::string label;
 
       label = line.substr(0, (stop >= 0) ? stop : std::string::npos);
+      label = label.substr(0, label.length() - 1);
 
+      if      (buffer == 'd') conversion_table[label] = mem_d_addr;
+      else if (buffer == 't') conversion_table[label] = mem_t_addr;
 
-
-      // Loop through the entire program, replacing all instances of `label`
-      // with the current lineCount
-      // Note: we must also check already-processed memory.
-
-      // Checking memory!
-      for(int x = D_BASE_ADDR; x < mem_d_addr; x++) {
-        std::string ins(memory->read(x));
-        // If it has a colon, it's a label.
-        int index = ins.find(label);
-        int length = label.length();
-        // If we couldn't find the given label, let's walk to the sky.
-        // Vary the lines our sparklers make spelling our names in the air.
-        // Remember what it's like to be a kid.
-        if (index < 0) continue;
-        // Convert the label_address to a string...
-        char* addr_charp;
-        std::sprintf(addr_charp, "%d", label_address);
-        std::string addr_str(addr_charp);
-        // ...and then replace all instances of the label with the address.
-        ins.replace(index, length, addr_str);
-        memory->store(x, (char*)ins.c_str());
-      }
-      for(int x = T_BASE_ADDR; x < mem_t_addr; x++) {
-        std::string ins(memory->read(x));
-        // If it has a colon, it's a label.
-        int index = ins.find(label);
-        int length = label.length();
-        // If we couldn't find the given label, let's ditch school.
-        // Light cigs behind the bulletin board by that statue of the mascot.
-        // Remember what it's like to be a punk.
-        if (index < 0) continue;
-        // Convert the label_address to a string...
-        char* addr_charp;
-        std::sprintf(addr_charp, "%d", label_address);
-        std::string addr_str(addr_charp);
-        // ...and then replace all instances of the label with the address.
-        ins.replace(index, length, addr_str);
-        memory->store(x, (char*)ins.c_str());
-      }
-      // // Checking ahead in the program!
-      // for(std::string replacer; getline(input, replacer);) {
-      //   // If it has a colon, it's a label.
-      //   int index = replacer.find(label);
-      //   int length = label.length();
-      //   // If we couldn't find the given label, let's have a sleepover.
-      //   // Fight fires with dreams and fly cars in video games.
-      //   // Remember what it's like to have fun.
-      //   if (index < 0) continue;
-      //   // Convert the label_address to a string...
-      //   char* addr_charp;
-      //   std::sprintf(addr_charp, "%d", label_address);
-      //   std::string addr_str(addr_charp);
-      //   // ...and then replace all instances of the label with the address.
-      //   replacer.replace(index, length, addr_str);
-      //   memory->store(x, (char*)replacer.c_str());
-      // }
-      // Set the input stream back to where it was when we hit this label.
-      input.seekg(current_location, input.beg);
+      // if it has a space, we want to use the below code
+      // to add it to the data section
+      if(stop < 0) continue;
     }
     else if (line.compare(".data") == 0) {
       buffer = 'd';
@@ -124,6 +76,64 @@ int spam::Skeleton::do_memory(std::string filename) {
     }
   }
 
+  // Loop through the entire program, replacing all instances of `label`
+  // with the proper address
+  // Note: we must also check already-processed memory.
+  for(auto itr = conversion_table.begin(); itr != conversion_table.end(); ++itr) {
+    for(int x = D_BASE_ADDR; x < mem_d_addr; x++) {
+        std::string instruction(memory->read(x));
+
+        int index = instruction.find(itr->first);
+        // If we couldn't find the given label, let's have a sleepover.
+        // Fight fires with dreams and fly cars in video games.
+        // Remember what it's like to have fun.
+        // If we couldn't find the given label, let's walk to the sky.
+        // Vary the lines our sparklers make spelling our names in the air.
+        // Remember what it's like to be a kid.
+        // If we couldn't find the given label, let's ditch school.
+        // Light cigs behind the bulletin board by that statue of the mascot.
+        // Remember what it's like to be a punk.
+        if(index < 0) continue;
+
+        char addr_cp[256] = {};
+        std::sprintf(addr_cp, "%d", itr->second);
+
+        std::string addr_str(addr_cp);
+
+        instruction.replace(index, itr->first.length(), addr_str);
+        memory->store(x, (char*)instruction.c_str());
+    }
+    for(int y = T_BASE_ADDR; y < mem_t_addr; y++) {
+        std::string instruction(memory->read(y));
+
+        int index = instruction.find(itr->first);
+        // If we couldn't find the given label, let's have a sleepover.
+        // Fight fires with dreams and fly cars in video games.
+        // Remember what it's like to have fun.
+        // If we couldn't find the given label, let's walk to the sky.
+        // Vary the lines our sparklers make spelling our names in the air.
+        // Remember what it's like to be a kid.
+        // If we couldn't find the given label, let's ditch school.
+        // Light cigs behind the bulletin board by that statue of the mascot.
+        // Remember what it's like to be a punk.
+        if(index < 0) continue;
+        
+        char addr_cp[256] = {};
+        std::sprintf(addr_cp, "%d", itr->second);
+
+        std::string addr_str(addr_cp);
+
+        instruction.replace(index, itr->first.length(), addr_str);
+        memory->store(y, (char*)instruction.c_str());
+    }
+  }
+
+  for(int z = D_BASE_ADDR; z < mem_d_addr; z++) {
+    std::cout << memory->read(z) << std::endl;
+  }
+  for(int i = T_BASE_ADDR; i < mem_t_addr; i++) {
+    std::cout << memory->read(i) << std::endl;
+  }
   return SUCCESS;
 }
 

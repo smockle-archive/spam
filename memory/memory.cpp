@@ -13,8 +13,7 @@ bool Memory::store(int address, char* line) {
   }
   else if(address >= D_BASE_ADDR) {
     std::string ln = line;
-    if(ln.find(" ") == std::string::npos) return true;
-    ln = spam::trim(ln.substr(ln.find(" ")));
+    if(ln.find(" ") == std::string::npos) return false;
     d[address - D_BASE_ADDR].assign((char *)ln.c_str());
     return true;
   }

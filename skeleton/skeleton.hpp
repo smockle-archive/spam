@@ -5,6 +5,8 @@
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+#include <regex>
+#include <map>
 #include "../utilities.hpp"
 #include "../memory/memory.hpp"
 #include "../registry/registry.hpp"

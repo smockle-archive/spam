@@ -17,7 +17,7 @@ travis: clean test
 test: test-memory test-accumulator test-stack test-registry test-gpr test-skeleton
 
 spam:
-	$(CC) skeleton/skeleton.cpp memory/memory.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o spam
+	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o spam
 
 test-memory:
 	$(CC) -D TEST memory/test.cpp memory/memory.cpp -o memory/test
