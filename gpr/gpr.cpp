@@ -357,6 +357,7 @@ int spam::GPR::run() {
     // Prepare for next command
     command = "";
     argument = "";
+    arguments.clear();
     pc++;
   }
 
