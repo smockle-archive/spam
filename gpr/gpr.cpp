@@ -305,8 +305,58 @@ int spam::GPR::syscall() {
 }
 
 int spam::GPR::run() {
-   
-  return FAIL;
+  // Process Memory.t (commands)
+  std::string command = "";
+  std::string argument = "";
+  std::vector<std::string> arguments;
+
+  pc = T_BASE_ADDR;
+  while (pc >= T_BASE_ADDR) {
+    // Get MIPS command string from Memory.t at position pc.
+    command = trim(tolower(memory.read(pc)));
+
+    // Split MIPS command string into MIPS command and MIPS argument.
+    if (command.find(" ") != std::string::npos) {
+      argument = trim(command.substr(command.find(" ")).c_str());
+      command = command.substr(0, command.find(" ")).c_str();
+    }
+
+    // Split MIPS string of one or more spam::GPR arguments (as ints)
+    split(argument, ',', arguments);
+
+    // Match MIPS command with spam::GPR command
+    if (command.compare("addi") == 0) {
+      addi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+    } else if (command.compare("b") == 0) {
+      b(atoi(arguments[0].c_str()));
+    } else if (command.compare("beqz") == 0) {
+      beqz(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+    } else if (command.compare("bge") == 0) {
+      bge(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+    } else if (command.compare("bne") == 0) {
+      bne(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+    } else if (command.compare("la") == 0) {
+      la(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+    } else if (command.compare("lb") == 0) {
+      lb(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+    } else if (command.compare("li") == 0) {
+      li(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+    } else if (command.compare("subi") == 0) {
+      subi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+    } else if (command.compare("syscall") == 0) {
+      syscall();
+    } else if (command.compare("end") == 0) {
+      end();
+    }
+
+    // Prepare for next command
+    command = "";
+    argument = "";
+    pc++;
+  }
+
+  // All commands have executed
+  return SUCCESS;
 }
 
 int spam::GPR::end() {

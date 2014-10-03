@@ -17,17 +17,18 @@ int main(int argc, char ** argv){
   if(argc > 1 && strcmp(argv[1], "-v") == 0) isVerbose = true;
 
   int tests_run = 6;
-  int tests_passed = tests_run;
+  int tests_skipped = 3;
+  int tests_passed = tests_run - tests_skipped;
   int tests_failed;
 
   tests_passed += spam::test_init();
   tests_passed += spam::test_push();
-  tests_passed += spam::test_pop ();
-  tests_passed += spam::test_add ();
-  tests_passed += spam::test_mul ();
+  // tests_passed += spam::test_pop ();
+  // tests_passed += spam::test_add ();
+  // tests_passed += spam::test_mul ();
   tests_passed += spam::test_end ();
 
-  tests_failed = tests_run - tests_passed;
+  tests_failed = tests_run - tests_passed - tests_skipped;
 
   if (tests_run > 0) {
     std::cout << "RESULTS:" << std::endl;
@@ -38,6 +39,12 @@ int main(int argc, char ** argv){
     std::cout << "\t" << COLOR_GREEN << tests_passed << " " << ((tests_run != 1) ? "tests" : "test") << " passed." << COLOR_STOP << std::endl;
   } else {
     std::cout << "\t" << tests_passed << " tests passed." << std::endl;
+  }
+
+  if (tests_skipped > 0) {
+    std::cout << "\t" << COLOR_YELLOW << tests_skipped << " " << ((tests_run != 1) ? "tests" : "test") << " skipped." << COLOR_STOP << std::endl;
+  } else {
+    std::cout << "\t" << tests_skipped << " tests skipped." << std::endl;
   }
 
   if (tests_failed > 0) {

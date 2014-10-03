@@ -365,8 +365,9 @@ int spam::TestSkeleton::test_pluralize_test() {
 int main(int argc, char** argv) {
   spam::TestSkeleton testskeleton;
 
-  int tests_run = 5;
-  int tests_passed = 5;
+  int tests_run = 7;
+  int tests_skipped = 2;
+  int tests_passed = tests_run - tests_skipped;
 
   tests_passed += testskeleton.test_file_exists();
   tests_passed += testskeleton.test_do_memory();
@@ -376,7 +377,7 @@ int main(int argc, char** argv) {
   tests_passed += testskeleton.test_do_help();
   tests_passed += testskeleton.test_pluralize_test();
 
-  int tests_failed = tests_run - tests_passed;
+  int tests_failed = tests_run - tests_passed - tests_skipped;
 
   if (tests_run > 0) {
     std::cout << "RESULTS:" << std::endl;
@@ -387,6 +388,12 @@ int main(int argc, char** argv) {
     std::cout << "\t" << COLOR_GREEN << tests_passed << " " << spam::pluralize_test(tests_passed) << " passed." << COLOR_STOP << std::endl;
   } else {
     std::cout << "\t" << tests_passed << " tests passed." << std::endl;
+  }
+
+  if (tests_skipped > 0) {
+    std::cout << "\t" << COLOR_YELLOW << tests_skipped << " " << spam::pluralize_test(tests_skipped) << " skipped." << COLOR_STOP << std::endl;
+  } else {
+    std::cout << "\t" << tests_skipped << " tests skipped." << std::endl;
   }
 
   if (tests_failed > 0) {

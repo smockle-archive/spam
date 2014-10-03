@@ -48,6 +48,7 @@
 
   #define SUCCESS 0
   #define FAIL -1
+
   #define ARGUMENT_ERROR -10
   #define IO_ERROR -20
   #define TYPE_ERROR -30
@@ -80,6 +81,8 @@
   #include <locale>
   #include <iostream>
   #include <string>
+  #include <sstream>
+  #include <vector>
 
   namespace spam {
     // SOURCE: http://stackoverflow.com/a/217605/1923134
@@ -117,6 +120,24 @@
         return FAIL;
       }
       return atoi(s.substr(s.find(" ")).c_str());
+    }
+
+    //SOURCE: http://stackoverflow.com/a/236803
+    inline std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+      std::stringstream ss(s);
+      std::string item;
+      while (std::getline(ss, item, delim)) {
+        if (!item.empty() && !trim(item).empty()) {
+          elems.push_back(trim(item));
+        }
+      }
+      return elems;
+    }
+
+    inline std::vector<std::string> split(const std::string &s, char delim) {
+      std::vector<std::string> elems;
+      split(s, delim, elems);
+      return elems;
     }
   }
 
