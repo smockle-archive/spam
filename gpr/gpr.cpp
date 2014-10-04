@@ -221,7 +221,7 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
   std::string s(memory.read(sum));
   std::cout << "lb(" << rdest << ", " << offset << ", " << rsrc << "), loading: " << s << std::endl;
 
-  registry.store(rdest, (char*)s.c_str());
+  registry.store(rdest, atoi(s.c_str()));
   return SUCCESS;
 }
 
@@ -302,7 +302,7 @@ int spam::GPR::syscall() {
             // add 2 to skip past the ': '
             std::string new_ins = previous.substr(0, index + 2) + input;
             memory.store(registry.load(A0_ADDR), (char*)new_ins.c_str());
-        } 
+        }
         else {
             memory.store(registry.load(A0_ADDR), (char*)input.c_str());
         }
