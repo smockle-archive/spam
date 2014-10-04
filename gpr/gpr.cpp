@@ -219,7 +219,6 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
   }
 
   std::string s(memory.read(sum));
-  std::cout << "lb(" << rdest << ", " << offset << ", " << rsrc << "), loading: " << s << std::endl;
 
   registry.store(rdest, atoi(memory.read(sum)));
   return SUCCESS;
@@ -330,6 +329,9 @@ int spam::GPR::run() {
   std::string argument = "";
   std::vector<std::string> arguments;
 
+  int ic = 0;
+  int cycles = 0;
+
   pc = T_BASE_ADDR;
   while (pc >= T_BASE_ADDR) {
     // Get MIPS command string from Memory.t at position pc.
@@ -350,28 +352,39 @@ int spam::GPR::run() {
     // Match MIPS command with spam::GPR command
     if (command.compare("addi") == 0) {
       addi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+      cycles += 6;
     } else if (command.compare("b") == 0) {
       b(atoi(arguments[0].c_str()));
+      cycles += 4;
     } else if (command.compare("beqz") == 0) {
       beqz(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+      cycles += 5;
     } else if (command.compare("bge") == 0) {
       bge(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+      cycles += 5;
     } else if (command.compare("bne") == 0) {
       bne(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+      cycles += 5;
     } else if (command.compare("la") == 0) {
       la(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+      cycles += 5;
     } else if (command.compare("lb") == 0) {
       lb(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+      cycles += 6;
     } else if (command.compare("li") == 0) {
       li(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()));
+      cycles += 3;
     } else if (command.compare("subi") == 0) {
       subi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
+      cycles += 6;
     } else if (command.compare("syscall") == 0) {
       syscall();
+      cycles += 8;
     } else if (command.compare("end") == 0) {
       end();
-    }
-
+    } else continue;
+ 
+    ic++;
     // Prepare for next command
     command = "";
     argument = "";
@@ -379,6 +392,11 @@ int spam::GPR::run() {
     // If we didn't successfully branch, increment.
     if(pc_clone == pc) pc++;
   }
+
+  std::cout << "RESULTS: " << std::endl;
+  std::cout << "\t" << "Instructions run (IC): " << ic << std::endl;
+  std::cout << "\t" << "Clock cycles taken (C): " << cycles << std::endl;
+  std::cout << "\t" << "Speedup (8 * IC / C): " << (8 * (float)ic / (float)cycles) << std::endl;
 
   // All commands have executed
   return SUCCESS;
