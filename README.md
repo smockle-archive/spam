@@ -11,7 +11,7 @@ Dr. Qin
 
 Jacob Harris (Jake) (jch0039) & Clayton Miller (Clay) (cdm0025)
 
-Project 2
+Project 1
 
 
 Compilation
@@ -29,19 +29,25 @@ To run the accumulator simulator, run `./spam accumulator accumulator/quadratic_
 
 To run the stack simulator, run `./spam stack stack/quadratic_eval.s`.
 
-To run the general purpose register simulator, run `./spam gpr palindrome.s`.
-
 To run our tests, run `make travis`.
 
 
 Design Issues
 =============
-* C++ doesn't have a method that splits a string by a delimeter and stores the
-output in a vector, so I added one.
+* C++ doesn't have trim or tolower functions in std::string. This was surprising and
+required a couple extra functions.
 
-* We thought we had to programatically swap labels with addresses, so we wrote
-code to do that. Turns out we could have manually swapped them when we rewrote
-the assembly file.
+* Our original memory implementation could only store one thing at a time. We discovered
+this late and had to do some refactoring.
 
-* We originally wrote code to access memory chunk by chunk instead of byte by
-byte--that came back to byte us.
+* C++ segfaults (with no stack trace or anything useful for debugging) when you address
+anything outside of an array, or access anything undecalared. This cost us lots of time
+debugging.
+
+* We had lots of issues with including the correct header files and with setting up our
+Makefile properly. We added `#ifndef TEST` in several places to prevent duplicate main
+functions. We added references to cpp files to the Makefile to prevent missing symbol
+errors.
+
+* The version of g++ on Travis CI was 4.6, which caused errors (we were using 4.8). We
+had to figure out how to install g++ 4.8 in the Travis CI environment.
