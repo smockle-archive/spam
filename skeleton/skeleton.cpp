@@ -122,9 +122,7 @@ int spam::Skeleton::do_memory(std::string filename) {
         // Remember what it's like to be a punk.
         if(index < 0) continue;
         if(index + itr->first.length() < instruction.length()) {
-            std::cout << "This is what is breaking " << std::endl;
             char c = instruction.at(index + itr->first.length());
-            std::cout << "I disagree." << std::endl;
             if(c != ' ' && c != ',') continue;
         }
 

@@ -8,7 +8,7 @@
 
 class Memory {
 private:
-  char* d[DBUF_SIZE] = {}; /* Data buffer */
+  std::string d[DBUF_SIZE] = {}; /* Data buffer */
   std::string t[TBUF_SIZE] = {}; /* Text buffer */
   std::string s[STCK_SIZE] = {}; /* Stack buffer */
 public:
