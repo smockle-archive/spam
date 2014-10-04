@@ -221,7 +221,7 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
   std::string s(memory.read(sum));
   std::cout << "lb(" << rdest << ", " << offset << ", " << rsrc << "), loading: " << s << std::endl;
 
-  registry.store(rdest, (char*)s.c_str());
+  registry.store(rdest, atoi(memory.read(sum)));
   return SUCCESS;
 }
 
