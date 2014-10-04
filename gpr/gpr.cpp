@@ -302,7 +302,7 @@ int spam::GPR::syscall() {
             // add 2 to skip past the ': '
             std::string new_ins = previous.substr(0, index + 2) + input;
             memory.store(registry.load(A0_ADDR), (char*)new_ins.c_str());
-        } 
+        }
         else {
             memory.store(registry.load(A0_ADDR), (char*)input.c_str());
         }
