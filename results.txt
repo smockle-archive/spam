@@ -1,0 +1,3 @@
+Instructions run (IC): 16
+Clock cycles taken (C): 82
+Speedup (8 * IC / C): 1.56089
