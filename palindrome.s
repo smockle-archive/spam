@@ -38,7 +38,7 @@ main:
 	la 1, string_space
 
 length_loop:			
-	lb 2, 1		# load the byte at addr B into $t3.
+	lb 2, 0, 1
 	beqz 2, end_length_loop # if $t3 == 0, branch out of loop.
 
 	addi 1, 1, 1	# otherwise, increment B,
@@ -51,14 +51,15 @@ end_length_loop:
 
 test_loop:
 	bge 0, 1, is_palin
-	lb 2, 0		# load the byte at addr A into $t3,
-	lb 3, 1		# load the byte at addr B into $t4.
+	lb 2, 0, 0		# load the byte at addr A into $t3,
+	lb 3, 0, 1		# load the byte at addr B into $t4.
 	bne 2, 3, not_palin
 
 # Otherwise,
 
 	addi 0, 0, 1	# increment A,
 	subi 1, 1, 1	# decrement B,
+    syscall
 	b test_loop
 
 is_palin:
@@ -81,4 +82,4 @@ exit:
 .data
 is_palin_msg: "The string is a palindrome.\n"
 not_palin_msg: "The string is not a palindrome.\n"
-string_space: " "	# reserve 1024 bytes for the string.
+string_space: ""

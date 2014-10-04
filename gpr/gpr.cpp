@@ -175,7 +175,7 @@ int spam::GPR::la(int rdest, int variable_addr) {
     #endif
     return ARGUMENT_ERROR;
   }
-  registry.store(rdest, *memory.read(variable_addr));
+  registry.store(rdest, atoi(memory.read(variable_addr)));
   return SUCCESS;
 }
 
@@ -218,7 +218,10 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
     return VALUE_ERROR;
   }
 
-  registry.store(rdest, *memory.read(sum));
+  std::string s(memory.read(sum));
+  std::cout << "lb(" << rdest << ", " << offset << ", " << rsrc << "), loading: " << s << std::endl;
+
+  registry.store(rdest, (char*)s.c_str());
   return SUCCESS;
 }
 
@@ -283,11 +286,9 @@ int spam::GPR::subi(int rdest, int rsrc, int imm) {
 
 int spam::GPR::syscall() {
   int op = registry.load(V0_ADDR);
-  std::cout << "Syscall opcode: " << op << std::endl;
   switch (op) {
     case SYSCALL_CIN:
       {
-        std::cout << "SYSCALL_CIN" << std::endl;
         std::string input;
         #ifndef TEST
         std::cin >> input;
@@ -295,10 +296,24 @@ int spam::GPR::syscall() {
         #ifdef TEST
         input = "4";
         #endif
-        memory.store(registry.load(A0_ADDR), (char*)input.c_str());
+        std::string previous = memory.read(registry.load(A0_ADDR));
+        int index = previous.find(':');
+        if(index > 0) {
+            // add 2 to skip past the ': '
+            std::string new_ins = previous.substr(0, index + 2) + input;
+            memory.store(registry.load(A0_ADDR), (char*)new_ins.c_str());
+        } 
+        else {
+            memory.store(registry.load(A0_ADDR), (char*)input.c_str());
+        }
       }
       break;
     case SYSCALL_COUT:
+      {
+        std::string s = memory.read(registry.load(A0_ADDR));
+        s = s.substr(s.find(':') + 1);
+        std::cout << s << std::endl;
+      }
       break;
     case SYSCALL_END:
       end();
@@ -329,6 +344,9 @@ int spam::GPR::run() {
     // Split MIPS string of one or more spam::GPR arguments (as ints)
     split(argument, ',', arguments);
 
+    // Used to check if pc has changed.
+    int pc_clone = pc;
+
     // Match MIPS command with spam::GPR command
     if (command.compare("addi") == 0) {
       addi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
@@ -358,7 +376,8 @@ int spam::GPR::run() {
     command = "";
     argument = "";
     arguments.clear();
-    pc++;
+    // If we didn't successfully branch, increment.
+    if(pc_clone == pc) pc++;
   }
 
   // All commands have executed
