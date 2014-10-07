@@ -14,7 +14,11 @@ bool Memory::store(int address, char* line) {
   else if(address >= D_BASE_ADDR) {
     std::string ln = line;
     if(ln.find(" ") == std::string::npos) return false;
-    d[address - D_BASE_ADDR].assign((char *)ln.c_str());
+    int offset = 0;
+    for(char& c : ln) {
+      d[address + offset - D_BASE_ADDR] = c;
+      offset++;
+    }
     return true;
   }
   else return false;
@@ -34,7 +38,9 @@ char* Memory::read(int address) {
     return (char *)t[address - T_BASE_ADDR].c_str();
   }
   if(address >= D_BASE_ADDR) {
-    return (char *)d[address - D_BASE_ADDR].c_str();
+    char c = d[address - D_BASE_ADDR];
+    std::string sd(1, c);
+    return (char *)sd.c_str();
   }
   return (char*)'\n';
 }

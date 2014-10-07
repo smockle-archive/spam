@@ -56,7 +56,10 @@ int spam::TestSkeleton::test_do_memory() {
   }
 
   // Test that we read in and stored the lines we thought we did.
+  std::cout << "We're testing x..." << std::endl;
 
+  std::string x_str = "";
+  std::string y_str = "";
 
   if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "256: 3") != 0
    || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "257: 4") != 0
