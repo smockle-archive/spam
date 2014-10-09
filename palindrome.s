@@ -38,16 +38,14 @@ main:
 	la 1, string_space
 
 length_loop:			
-	lb 2, offset, 1
+	lb 2, 0, 1
 	beqz 2, end_length_loop # if $t3 == 0, branch out of loop.
 
 	addi 1, 1, 1	# otherwise, increment B,
 	b length_loop
 
 end_length_loop:
-	subi 1, 1, 2	# subtract 2 to move B back past
-    
-# the '\0' and '\n'.
+	subi 1, 1, 1	# subtract 1 to move B back past \0
 
 test_loop:
 	bge 0, 1, is_palin
@@ -59,7 +57,6 @@ test_loop:
 
 	addi 0, 0, 1	# increment A,
 	subi 1, 1, 1	# decrement B,
-    syscall
 	b test_loop
 
 is_palin:
@@ -80,7 +77,6 @@ exit:
 
 
 .data
-is_palin_msg: "The string is a palindrome.\n"
-not_palin_msg: "The string is not a palindrome.\n"
+is_palin_msg: The string is a palindrome.
+not_palin_msg: The string is not a palindrome.
 string_space: ""
-offset: 0

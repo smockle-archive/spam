@@ -41,6 +41,8 @@
   #define MAX_IMMEDIATE 32767
   #define MIN_IMMEDIATE -32768
 
+  #define MAX_DATA_SIZE 64
+
 #endif
 
 #ifndef ReturnConstants

@@ -175,7 +175,18 @@ int spam::GPR::la(int rdest, int variable_addr) {
     #endif
     return ARGUMENT_ERROR;
   }
-  registry.store(rdest, atoi(memory.read(variable_addr)));
+
+  std::string variable = "";
+  int i = variable_addr;
+  char c = *memory.read(i);
+
+  while(c != '\0' && c != '\n') {
+    variable += c;
+    i++;
+    c = *memory.read(i);
+  }
+
+  registry.store(rdest, variable_addr);
   return SUCCESS;
 }
 
@@ -218,9 +229,9 @@ int spam::GPR::lb(int rdest, int offset, int rsrc) {
     return VALUE_ERROR;
   }
 
-  std::string s(memory.read(sum));
+  char c = *memory.read(sum);
 
-  registry.store(rdest, atoi(memory.read(sum)));
+  registry.store(rdest, c);
   return SUCCESS;
 }
 
@@ -290,28 +301,35 @@ int spam::GPR::syscall() {
       {
         std::string input;
         #ifndef TEST
+        std::cout << "Enter a string to test for palindromicity: ";
         std::cin >> input;
         #endif
         #ifdef TEST
-        input = "4";
+        input = "4\n";
+        registry.store(A0_ADDR, 256);
+        memory.store(256, (char*)"x: 99");
         #endif
-        std::string previous = memory.read(registry.load(A0_ADDR));
-        int index = previous.find(':');
-        if(index > 0) {
-            // add 2 to skip past the ': '
-            std::string new_ins = previous.substr(0, index + 2) + input;
-            memory.store(registry.load(A0_ADDR), (char*)new_ins.c_str());
-        }
-        else {
-            memory.store(registry.load(A0_ADDR), (char*)input.c_str());
-        }
+
+        input += '\0';
+        memory.store(registry.load(A0_ADDR), (char*)input.c_str());
       }
       break;
     case SYSCALL_COUT:
       {
-        std::string s = memory.read(registry.load(A0_ADDR));
-        s = s.substr(s.find(':') + 1);
+        std::string s = "";
+        int i = registry.load(A0_ADDR);
+        char c = *memory.read(i);
+
+        while(c != '\0' && c != '\n') {
+            s += c;
+            i++;
+            c = *memory.read(i);
+        }
+        #ifndef TEST
+        if(s.find(": ") >= 0) s = s.substr(s.find(": ") + 2);
         std::cout << s << std::endl;
+        #endif
+        break;
       }
       break;
     case SYSCALL_END:
@@ -349,6 +367,7 @@ int spam::GPR::run() {
     // Used to check if pc has changed.
     int pc_clone = pc;
 
+
     // Match MIPS command with spam::GPR command
     if (command.compare("addi") == 0) {
       addi(atoi(arguments[0].c_str()), atoi(arguments[1].c_str()), atoi(arguments[2].c_str()));
@@ -382,7 +401,7 @@ int spam::GPR::run() {
       cycles += 8;
     } else if (command.compare("end") == 0) {
       end();
-    } else continue;
+    } else { };
  
     ic++;
     // Prepare for next command
@@ -392,12 +411,12 @@ int spam::GPR::run() {
     // If we didn't successfully branch, increment.
     if(pc_clone == pc) pc++;
   }
-
+  #ifndef TEST
   std::cout << "RESULTS: " << std::endl;
   std::cout << "\t" << "Instructions run (IC): " << ic << std::endl;
   std::cout << "\t" << "Clock cycles taken (C): " << cycles << std::endl;
   std::cout << "\t" << "Speedup (8 * IC / C): " << (8 * (float)ic / (float)cycles) << std::endl;
-
+  #endif
   // All commands have executed
   return SUCCESS;
 }

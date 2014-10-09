@@ -72,7 +72,7 @@ int spam::Skeleton::do_memory(std::string filename) {
 
     if (buffer == 'd') {
       memory->store(mem_d_addr, &line[0]);
-      mem_d_addr += 32;
+      mem_d_addr += MAX_DATA_SIZE;
     } else if (buffer == 't') {
       memory->store(mem_t_addr, &line[0]);
       mem_t_addr++;
@@ -83,18 +83,16 @@ int spam::Skeleton::do_memory(std::string filename) {
   // with the proper address
   // Note: we must also check already-processed memory.
   for(auto itr = conversion_table.begin(); itr != conversion_table.end(); ++itr) {
-    for(int x = D_BASE_ADDR; x < mem_d_addr; x += 32) {
+    for(int x = D_BASE_ADDR; x < mem_d_addr; x += MAX_DATA_SIZE) {
         std::string instruction = "";
 
         int inc = x;
         char c = *memory->read(inc);
-        while(c != '\0') {
+        while(c != '\0' && c != '\n') {
           instruction += c;
           inc++;
           c = *memory->read(inc);
         }
-
-        std::cout << "Label: " << itr->first << ", Instruction from memory: " << instruction << std::endl;
 
         int index = instruction.find(itr->first);
         // If we couldn't find the given label, let's have a sleepover.
@@ -107,7 +105,6 @@ int spam::Skeleton::do_memory(std::string filename) {
         // Light cigs behind the bulletin board by that statue of the mascot.
         // Remember what it's like to be a punk.
         if(index < 0) continue;
-        std::cout << "Index: " << index << std::endl;
         if(instruction.at(index + itr->first.length()) != ':') continue;
 
         char addr_cp[256] = {};
@@ -147,16 +144,6 @@ int spam::Skeleton::do_memory(std::string filename) {
     }
   }
 
-  
-  #ifdef TEST
-  std::cout << "Label swapping step complete, now printing all lines of memory..." << std::endl;
-  for(int z = D_BASE_ADDR; z < mem_d_addr; z++) {
-    std::cout << memory->read(z) << std::endl;
-  }
-  for(int i = T_BASE_ADDR; i < mem_t_addr; i++) {
-    std::cout << memory->read(i) << std::endl;
-  }
-  #endif
   return SUCCESS;
 }
 

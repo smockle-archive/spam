@@ -13,12 +13,12 @@ bool Memory::store(int address, char* line) {
   }
   else if(address >= D_BASE_ADDR) {
     std::string ln = line;
-    if(ln.find(" ") == std::string::npos) return false;
     int offset = 0;
     for(char& c : ln) {
       d[address + offset - D_BASE_ADDR] = c;
       offset++;
     }
+    d[address + offset - D_BASE_ADDR] = '\0';
     return true;
   }
   else return false;

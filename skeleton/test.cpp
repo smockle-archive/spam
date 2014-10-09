@@ -56,15 +56,31 @@ int spam::TestSkeleton::test_do_memory() {
   }
 
   // Test that we read in and stored the lines we thought we did.
-  std::cout << "We're testing x..." << std::endl;
+  int pos;
+  char c;
 
   std::string x_str = "";
-  std::string y_str = "";
+  pos = D_BASE_ADDR;
+  c = *skeleton.memory->read(pos);
+  while(c != '\0') {
+    x_str += c;
+    pos++;
+    c = *skeleton.memory->read(pos);
+  }
 
-  if (strcmp(skeleton.memory->read(D_BASE_ADDR),     "256: 3") != 0
-   || strcmp(skeleton.memory->read(D_BASE_ADDR + 1), "257: 4") != 0
+  std::string y_str = "";
+  pos = D_BASE_ADDR + MAX_DATA_SIZE;
+  c = *skeleton.memory->read(pos);
+  while(c != '\0') {
+    y_str += c;
+    pos++;
+    c = *skeleton.memory->read(pos);
+  }
+
+  if (strcmp((char*)x_str.c_str(),                   "256: 3") != 0
+   || strcmp((char*)y_str.c_str(),                   "320: 4") != 0
    || strcmp(skeleton.memory->read(T_BASE_ADDR),     "push 256") != 0
-   || strcmp(skeleton.memory->read(T_BASE_ADDR + 1), "push 257") != 0
+   || strcmp(skeleton.memory->read(T_BASE_ADDR + 1), "push 320") != 0
    || strcmp(skeleton.memory->read(T_BASE_ADDR + 2), "pop 256") != 0) {
      std::cerr << COLOR_ERROR << "test_do_memory() failed. The failing subtest is \"Test that we read in and stored the lines we thought we did\"." << std::endl;
      return FAIL;
@@ -76,8 +92,6 @@ int spam::TestSkeleton::test_do_memory() {
 }
 
 int spam::TestSkeleton::test_do_stack() {
-
-  std::cout << "We're beginning the do_stack tests. " << std::endl;
 
   // Test zero arguments.
   //
@@ -103,8 +117,6 @@ int spam::TestSkeleton::test_do_stack() {
     return FAIL;
   }
 
-  std::cout << "We're failing at the three-arguments test." << std::endl;
-
   // Test three arguments.
   // spam stack "SHIBBOLETH_input.s"
   char* argj[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_input.s" };
@@ -112,8 +124,6 @@ int spam::TestSkeleton::test_do_stack() {
     std::cerr << COLOR_ERROR << "test_do_stack() failed. The failing subtest is \"Test three arguments\"." << std::endl;
     return FAIL;
   }
-
-  std::cout << "We're failing at the incorrect first argument test." << std::endl;
 
   // Test incorrect first argument.
   // spam missing ""
@@ -123,8 +133,6 @@ int spam::TestSkeleton::test_do_stack() {
     return FAIL;
   }
 
-  std::cout << "We're failing at the correct first argument test." << std::endl;
-
   // Test correct first argument.
   // spam stack ""
   char* argl[] = { (char*) "spam", (char*) "stack", (char*) "" };
@@ -133,8 +141,6 @@ int spam::TestSkeleton::test_do_stack() {
     return FAIL;
   }
 
-  std::cout << "We're failing at the missing file." << std::endl;
-
   // Test with missing file.
   // spam stack "SHIBBOLETH_missing.s"
   char* argm[] = { (char*) "spam", (char*) "stack", (char*) "SHIBBOLETH_missing.s" };
@@ -142,8 +148,6 @@ int spam::TestSkeleton::test_do_stack() {
     std::cerr << COLOR_ERROR << "test_do_stack() failed. The failing subtest is \"Test with missing file\"." << std::endl;
     return FAIL;
   }
-
-  std::cout << "We're failing at the weird file." << std::endl;
 
   // Test with non-missing file.
   // spam stack "SHIBBOLETH_input.s"
@@ -244,7 +248,6 @@ int spam::TestSkeleton::test_do_accumulator() {
 
 int spam::TestSkeleton::test_do_gpr() {
   // Test zero arguments.
-  //
   char* argv[0];
   if (skeleton.do_gpr(0, argv) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << " test_do_gpr() failed. The failing subtest is \"Test zero arguments\"." << std::endl;

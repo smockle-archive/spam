@@ -373,7 +373,8 @@ int spam::TestGPR::test_gpr_la() {
   gpr.registry.store(1, 1);
   gpr.memory.store(D_BASE_ADDR, (char *) "10");
   gpr.la(1, D_BASE_ADDR);
-  if (gpr.registry.load(1) != *gpr.memory.read(D_BASE_ADDR)) {
+  if (*gpr.memory.read(gpr.registry.load(1)) != '1'
+   && *gpr.memory.read(gpr.registry.load(1) + 1) != '0') {
     std::cerr << COLOR_ERROR << "test_gpr_la() failed. The failing subtest is \"Test valid variable address, verify register contains value of variable\"." << std::endl;
     return FAIL;
   }
