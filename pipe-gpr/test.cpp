@@ -82,19 +82,77 @@ int spam::TestPipeGPR::test_decode() {
 
   // Ensure we properly handle branching instructions
   // TODO: fill this in.
-  
+  rs = 33;
+  rt = 34;
+  p.registry.store(1, rs);
+  p.registry.store(2, rt);
+  p.if_id_new.instruction = (char*)"bge 1, 2, 100";
+  p.decode();
+ 
+  if(p.id_ex_new.rs != rs
+  || p.id_ex_new.rt != rt) {
+    std::cerr << COLOR_ERROR << "Decode failed to grab the proper register values." << std::endl;
+    std::cerr << "\t" << "Expected: (" << rs << ", " << rt << "), ";
+    std::cerr << "received: (" << p.id_ex_new.rs << ", " << p.id_ex_new.rt << ")" << std::endl;
+    return FAIL;
+  }
+  if(p.pc != 100) {
+    std::cerr << COLOR_ERROR << "Decode failed to set the program counter to the proper value." << std::endl;
+    std::cerr << "\t" << "Expected: 100, received: " << p.pc << std::endl;
+    return FAIL;
+  }
+
   std::cout << COLOR_SUCCESS << "Decode test passed." << std::endl;
-  std::cout << "\t" << COLOR_WARNING << "Branching subtest unwritten." << std::endl;
 
   return SUCCESS;
 }
 int spam::TestPipeGPR::test_execute() {
   std::cerr << COLOR_WARNING << "Execute test is unwritten." << std::endl;
+
+  // Basically needs to test the original GPR run() code.
+
   return UNWRITTEN;
 }
 int spam::TestPipeGPR::test_access_memory() {
-  std::cerr << COLOR_WARNING << "Memory access test is unwritten." << std::endl;
-  return UNWRITTEN;
+
+  PipeGPR p;
+
+  // Ensure we don't update the mem_wb_new latch
+  // if the instruction isn't a memory access.
+  p.if_id_new.instruction = (char*)"bge 1, 2, 100";
+  int result = p.mem_wb_new.result;
+  p.access_memory();
+
+  if(p.mem_wb_new.result != result) {
+    std::cerr << COLOR_ERROR << "Memory access inappropriately edited the mem_wb latch." << std::endl;
+    return FAIL;
+  }
+
+  // Ensure we do update the mem_wb_new latch
+  // if the instruction is a load instruction.
+  p.if_id_new.instruction = (char*)"li 1, 200";
+  p.registry.store(1, 100);
+  p.access_memory();
+
+  if(p.mem_wb_new.result != 200) {
+    std::cerr << COLOR_ERROR << "Memory access failed to set the proper value in the mem_wb latch." << std::endl;
+    return FAIL;
+  }
+
+  // Ensure we pass the ex_mem result on to
+  // the mem_wb latch for R-type instructions.
+  p.if_id_new.instruction = (char*)"add 0, 1, 2";
+  p.ex_mem_new.result = 300;
+  p.access_memory();
+
+  if(p.mem_wb_new.result != 300) {
+    std::cerr << COLOR_ERROR << "Memory access failed to pass on the result of ex_mem to mem_wb." << std::endl;
+    return FAIL;
+  }
+
+  std::cout << COLOR_SUCCESS << "Memory access test passed." << std::endl;
+  std::cout << "\t" << COLOR_WARNING << "Store (syscall) subtest yet unwritten." << std::endl;
+  return SUCCESS;
 }
 int spam::TestPipeGPR::test_cache() {
   std::cerr << COLOR_WARNING << "Cache test is unwritten." << std::endl;

@@ -1,0 +1,1 @@
+#include "latchmemwb.hpp"

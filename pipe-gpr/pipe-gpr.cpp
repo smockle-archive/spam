@@ -51,6 +51,10 @@ int spam::PipeGPR::decode() {
     int address = atoi(instruction.substr(instruction.find(' ') + 1).c_str());
     id_ex_new.rs = registry.load(address);
     id_ex_new.rt = -1;
+
+    instruction = instruction.substr(instruction.find(", ") + 2);
+    address = atoi(instruction.c_str());
+    pc = address;
   }
   else if(
           instruction.find("bge") != std::string::npos
@@ -60,8 +64,12 @@ int spam::PipeGPR::decode() {
     id_ex_new.rs = registry.load(address);
 
     instruction = instruction.substr(instruction.find(", ") + 2);
-    address = atoi(instruction.c_str());
+    address = atoi(instruction.substr(0, instruction.find(", ")).c_str());
     id_ex_new.rt = registry.load(address);
+
+    instruction = instruction.substr(instruction.find(", ") + 2);
+    address = atoi(instruction.c_str());
+    pc = address;
   }
   else if (
            instruction.find("addi") != std::string::npos
@@ -85,7 +93,15 @@ int spam::PipeGPR::decode() {
   else if (instruction.find("syscall") != std::string::npos) {
     // do nothing
   }
+  else if (instruction.find("b ") != std::string::npos) {
+    int address = atoi(instruction.substr(instruction.find(' ') + 1).c_str());
+    pc = address;
+  }
   else return FAIL;
 
   return SUCCESS;
+}
+
+int spam::PipeGPR::access_memory() {
+  return UNWRITTEN;
 }
