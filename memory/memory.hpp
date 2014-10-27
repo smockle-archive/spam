@@ -16,6 +16,7 @@ public:
 
   bool store (int address, char* line);
   char* read (int address);
+  char* readInstruction (int address);
   void  dump ();
 };
 

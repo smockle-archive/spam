@@ -1,5 +1,6 @@
 # Compiler
 CC = g++ --std=c++11
+CCT = g++ --std=c++11 -D TEST
 ##CC = clang --std=c++11
 
 default: clean spam
@@ -20,22 +21,25 @@ spam:
 	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o spam
 
 test-memory:
-	$(CC) -D TEST memory/test.cpp memory/memory.cpp -o memory/test
+	$(CCT) memory/test.cpp memory/memory.cpp -o memory/test
 
 test-accumulator:
-	$(CC) -D TEST accumulator/test.cpp accumulator/accumulator.cpp memory/memory.cpp -o accumulator/test
+	$(CCT) accumulator/test.cpp accumulator/accumulator.cpp memory/memory.cpp -o accumulator/test
 
 test-stack:
-	$(CC) -D TEST stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
+	$(CCT) stack/test.cpp stack/stack.cpp memory/memory.cpp -o stack/test
 
 test-gpr:
-	$(CC) -D TEST gpr/test.cpp gpr/gpr.cpp memory/memory.cpp registry/registry.cpp -o gpr/test
+	$(CCT) gpr/test.cpp gpr/gpr.cpp memory/memory.cpp registry/registry.cpp -o gpr/test
+
+test-pipe-gpr:
+	$(CCT) pipe-gpr/test.cpp pipe-gpr/pipe-gpr.cpp pipe-gpr/latches/latchifid.cpp pipe-gpr/latches/latchidex.cpp memory/memory.cpp registry/registry.cpp -o pipe-gpr/test
 
 test-registry:
-	$(CC) -D TEST registry/test.cpp registry/registry.cpp -o registry/test
+	$(CCT) registry/test.cpp registry/registry.cpp -o registry/test
 
 test-skeleton:
-	$(CC) -D TEST skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o skeleton/test
+	$(CCT) skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o skeleton/test
 
 clean:
 	rm -Rf *.o spam test */test SHIBBOLETH*

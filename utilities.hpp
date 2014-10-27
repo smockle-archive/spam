@@ -50,6 +50,7 @@
 
   #define SUCCESS 0
   #define FAIL -1
+  #define UNWRITTEN -1
 
   #define ARGUMENT_ERROR -10
   #define IO_ERROR -20

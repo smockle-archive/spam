@@ -45,6 +45,31 @@ char* Memory::read(int address) {
   return (char*)'\n';
 }
 
+char* Memory::readInstruction(int address) {
+  if(address < 0) {
+    std::cout << COLOR_ERROR << "Negative addresses are not allowed." << std::endl;
+    std::cout << "Address given was " << address << std::endl;
+    return (char*)'\n';
+  }
+  if(address < T_BASE_ADDR || address >= S_BASE_ADDR) {
+    std::cout << COLOR_ERROR << "Given address must reference an instruction";
+    std::cout << "(addresses " << T_BASE_ADDR << "-" << (S_BASE_ADDR - 1) << ")." << std::endl;
+    std::cout << "Address given was " << address << std::endl;
+    return (char*)'\n';
+  }
+
+  std::string s = "";
+  int i = 0;
+  char c = t[address - T_BASE_ADDR].c_str()[i];
+
+  while(c != '\0' && c != '\n') {
+    s += c;
+    i++;
+    c = t[address - T_BASE_ADDR].c_str()[i];
+  }
+  return (char*)s.c_str();
+}
+
 void Memory::dump() {
   cout << "d:" << d << endl;
   cout << "t:" << t << endl;
