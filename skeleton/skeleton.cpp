@@ -267,6 +267,44 @@ int spam::Skeleton::do_gpr(int argc, char** argv) {
   return SUCCESS;
 }
 
+int spam::Skeleton::do_pipe_gpr(int argc, char** argv) {
+  // Verify number of arguments.
+  if (argc < 3) {
+    #ifndef TEST
+    std::cerr << COLOR_ERROR << " Not enough arguments. Correct syntax is \"spam pipe-gpr <input_file>\"." << std::endl;
+    #endif
+    return ARGUMENT_ERROR;
+  }
+
+  // Verify correctness of first argument,
+  // i.e. was the pipe-gpr method called?
+  if (strcmp(argv[1], "pipe-gpr") != 0
+   && strcmp(argv[1], "pipe") != 0
+   && strcmp(argv[1], "p" != 0
+   && strcmp(argv[1], "pg" != 0) {
+     #ifndef TEST
+     std::cerr << COLOR_ERROR << " Invalid arguments. Correct syntax is \"spam pipe-gpr <input_file>\"." << std::endl;
+     #endif
+     return ARGUMENT_ERROR;
+  }
+
+  // Verify correctness of second argument.
+  // i.e. verify file exists.
+  if(!file_exists(argv[2])) {
+    #ifndef TEST
+    std::cerr << COLOR_ERROR << " File not found. Check that the input file exists." << std::endl;
+    #endif
+    return IO_ERROR;
+
+  // Load file into memory.
+  do_memory(argv[2]);
+  do_registry();
+
+  PipeGPR p(registry, memory);
+  p.run();
+  return SUCCESS;
+}
+
 int spam::Skeleton::do_help() {
   #ifndef TEST
   std::cout << "Commands:" << std::endl;
@@ -296,6 +334,12 @@ int main(int argc, char** argv) {
     else if (strcmp(argv[1], "gpr") == 0
           || strcmp(argv[1], "g") == 0) {
       skeleton.do_gpr(argc, argv);
+    }
+    else if (strcmp(argv[1], "pipe-gpr") == 0
+          || strcmp(argv[1], "pipe") == 0
+          || strcmp(argv[1], "p") == 0
+          || strcmp(argv[1], "pg" == 0) {
+      skeleton.do_pipe_gpr(argc, argv);
     }
     else if (strcmp(argv[1], "help") == 0
           || strcmp(argv[1], "-h") == 0

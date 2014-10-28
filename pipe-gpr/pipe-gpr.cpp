@@ -182,3 +182,7 @@ int spam::PipeGPR::cache() {
 
   return SUCCESS;
 }
+
+int main(int argc, char** argv) {
+  
+}
