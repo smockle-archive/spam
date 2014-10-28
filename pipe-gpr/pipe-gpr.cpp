@@ -194,7 +194,7 @@ int spam::PipeGPR::syscall() {
             c = *memory.read(i);
         }
         #ifndef TEST
-        if(s.find(": ") >= 0) s = s.substr(s.find(": ") + 2);
+        if(s.find(": ") != std::string::npos) s = s.substr(s.find(": ") + 2);
         std::cout << s << std::endl;
         #endif
         break;
