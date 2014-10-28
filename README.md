@@ -31,17 +31,10 @@ To run the stack simulator, run `./spam stack stack/quadratic_eval.s`.
 
 To run the general purpose register simulator, run `./spam gpr palindrome.s`.
 
+To run the pipelined datapath with interlocks and forwarding simulator, run `./spam pipe lab3a.s`.
+
 To run our tests, run `make travis`.
 
 
 Design Issues
 =============
-* C++ doesn't have a method that splits a string by a delimeter and stores the
-output in a vector, so I added one.
-
-* We thought we had to programatically swap labels with addresses, so we wrote
-code to do that. Turns out we could have manually swapped them when we rewrote
-the assembly file.
-
-* We originally wrote code to access memory chunk by chunk instead of byte by
-byte--that came back to byte us.

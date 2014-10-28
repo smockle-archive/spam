@@ -1,5 +1,8 @@
 #include "pipe-gpr.hpp"
 
+spam::PipeGPR::PipeGPR() {
+};
+
 spam::PipeGPR::PipeGPR(Registry * r, Memory * m) {
   memory = *m;
   registry = *r;

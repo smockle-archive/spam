@@ -33,6 +33,7 @@ namespace spam {
       LatchMemWB mem_wb_old;
       LatchMemWB mem_wb_new;
 
+      PipeGPR();
       PipeGPR(Registry * r, Memory * m);
 
       int fetch();
