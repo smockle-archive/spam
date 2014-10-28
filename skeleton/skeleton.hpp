@@ -13,6 +13,7 @@
 #include "../stack/stack.hpp"
 #include "../accumulator/accumulator.hpp"
 #include "../gpr/gpr.hpp"
+#include "../pipe-gpr/pipe-gpr.hpp"
 
 namespace spam {
   class Skeleton {
@@ -26,6 +27,7 @@ namespace spam {
       int do_stack(int argc, char** argv);
       int do_accumulator(int argc, char** argv);
       int do_gpr(int argc, char** argv);
+      int do_pipe_gpr(int argc, char** argv);
       int do_help();
   };
 }

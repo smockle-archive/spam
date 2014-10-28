@@ -16,7 +16,6 @@
 
 namespace spam {
   class PipeGPR {
-    int lol = 0;
     public:
       int pc = 0;
       Memory memory;
@@ -30,6 +29,8 @@ namespace spam {
       LatchExMem ex_mem_new;
       LatchMemWB mem_wb_old;
       LatchMemWB mem_wb_new;
+
+      PipeGPR(Registry * r, Memory * m);
 
       int fetch();
       int decode();

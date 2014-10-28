@@ -1,5 +1,10 @@
 #include "pipe-gpr.hpp"
 
+spam::PipeGPR::PipeGPR(Registry * r, Memory * m) {
+  memory = *m;
+  registry = *r;
+}
+
 int spam::PipeGPR::add(int rdest, int rsrc1, int rsrc2) {
   // Verify arguments.
   if (rdest < 0 || rdest > 31) {

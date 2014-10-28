@@ -2,6 +2,7 @@
 CC = g++ --std=c++11
 CCT = g++ --std=c++11 -D TEST
 ##CC = clang --std=c++11
+LATCHES = pipe-gpr/latches/latchifid.cpp pipe-gpr/latches/latchidex.cpp pipe-gpr/latches/latchexmem.cpp pipe-gpr/latches/latchmemwb.cpp
 
 default: clean spam
 
@@ -15,10 +16,10 @@ travis: clean test
 	./gpr/test
 	./skeleton/test
 
-test: test-memory test-accumulator test-stack test-registry test-gpr test-skeleton
+test: test-memory test-accumulator test-stack test-registry test-gpr test-pipe-gpr test-skeleton
 
 spam:
-	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o spam
+	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) -o spam
 
 test-memory:
 	$(CCT) memory/test.cpp memory/memory.cpp -o memory/test
@@ -33,13 +34,13 @@ test-gpr:
 	$(CCT) gpr/test.cpp gpr/gpr.cpp memory/memory.cpp registry/registry.cpp -o gpr/test
 
 test-pipe-gpr:
-	$(CCT) pipe-gpr/test.cpp pipe-gpr/pipe-gpr.cpp pipe-gpr/latches/latchifid.cpp pipe-gpr/latches/latchidex.cpp memory/memory.cpp registry/registry.cpp -o pipe-gpr/test
+	$(CCT) pipe-gpr/test.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) memory/memory.cpp registry/registry.cpp -o pipe-gpr/test
 
 test-registry:
 	$(CCT) registry/test.cpp registry/registry.cpp -o registry/test
 
 test-skeleton:
-	$(CCT) skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp -o skeleton/test
+	$(CCT) skeleton/test.cpp skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) -o skeleton/test
 
 clean:
 	rm -Rf *.o spam test */test SHIBBOLETH*
