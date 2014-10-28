@@ -217,6 +217,9 @@ int spam::PipeGPR::end() {
 
 
 int spam::PipeGPR::fetch() {
+
+  cycles++;
+
   char* instruction = memory.readInstruction(T_BASE_ADDR + pc);
   if_id_old.instruction = if_id_new.instruction;
   if_id_new.instruction = instruction;
@@ -319,9 +322,11 @@ int spam::PipeGPR::decode() {
     id_ex_new.pc = address;
   }
   else if (instruction.find("nop") != std::string::npos) {
+    nops++;
     pc = id_ex_old.pc;
   }
   else return FAIL;
+
 
   return SUCCESS;
 }
@@ -369,6 +374,7 @@ int spam::PipeGPR::execute() {
     end();
   } else { };
 
+  instructions_executed++;
   // All commands have executed
   return SUCCESS;
 }
@@ -452,13 +458,19 @@ int spam::PipeGPR::cache() {
 
 int spam::PipeGPR::run() {
 
+  pc = T_BASE_ADDR;
   while(pc >= T_BASE_ADDR){
     fetch();
     decode();
-    //execute();
+    execute();
     access_memory();
     cache();
   }
+
+  std::cout << "RESULTS:" << std::endl;
+  std::cout << "\t" << "Total clock cycles: " << cycles << std::endl;
+  std::cout << "\t" << "Total instructions executed: " << instructions_executed << std::endl;
+  std::cout << "\t" << "NOP count: " << nops << std::endl;
 
   return SUCCESS;
 }

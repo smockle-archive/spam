@@ -18,6 +18,9 @@ namespace spam {
   class PipeGPR {
     public:
       int pc = 0;
+      int cycles = 0;
+      int instructions_executed = 0;
+      int nops = 0;
       Memory memory;
       Registry registry;
 
