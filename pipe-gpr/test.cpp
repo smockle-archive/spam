@@ -24,7 +24,7 @@ int spam::TestPipeGPR::test_decode() {
   PipeGPR p; 
 
   // Ensure we properly decode an instruction that doesn't read from the registers
-  p.if_id_new.instruction = (char*)"syscall";
+  p.if_id_old.instruction = (char*)"syscall";
   p.decode();
 
   if(p.id_ex_new.rs != -1
@@ -42,7 +42,7 @@ int spam::TestPipeGPR::test_decode() {
   // Ensure we properly decode a 1-register-read instruction
   int rs = 10;
   p.registry.store(1, rs);
-  p.if_id_new.instruction = (char*)"addi 0, 1, 2";
+  p.if_id_old.instruction = (char*)"addi 0, 1, 2";
   p.decode();
 
   if(p.id_ex_new.rs != rs
@@ -64,7 +64,7 @@ int spam::TestPipeGPR::test_decode() {
   int rt = 21;
   p.registry.store(1, rs);
   p.registry.store(2, rt);
-  p.if_id_new.instruction = (char*)"add 0, 1, 2";
+  p.if_id_old.instruction = (char*)"add 0, 1, 2";
   p.decode();
   
   if(p.id_ex_new.rs != rs
@@ -81,12 +81,11 @@ int spam::TestPipeGPR::test_decode() {
   }
 
   // Ensure we properly handle branching instructions
-  // TODO: fill this in.
   rs = 33;
   rt = 34;
   p.registry.store(1, rs);
   p.registry.store(2, rt);
-  p.if_id_new.instruction = (char*)"bge 1, 2, 100";
+  p.if_id_old.instruction = (char*)"bge 1, 2, 100";
   p.decode();
  
   if(p.id_ex_new.rs != rs
@@ -119,7 +118,7 @@ int spam::TestPipeGPR::test_access_memory() {
 
   // Ensure we don't update the mem_wb_new latch
   // if the instruction isn't a memory access.
-  p.if_id_new.instruction = (char*)"bge 1, 2, 100";
+  p.ex_mem_old.instruction = (char*)"bge 1, 2, 100";
   int result = p.mem_wb_new.result;
   p.access_memory();
 
@@ -130,7 +129,7 @@ int spam::TestPipeGPR::test_access_memory() {
 
   // Ensure we do update the mem_wb_new latch
   // if the instruction is a load instruction.
-  p.if_id_new.instruction = (char*)"li 1, 200";
+  p.ex_mem_old.instruction = (char*)"li 1, 200";
   p.registry.store(1, 100);
   p.access_memory();
 
@@ -141,7 +140,7 @@ int spam::TestPipeGPR::test_access_memory() {
 
   // Ensure we pass the ex_mem result on to
   // the mem_wb latch for R-type instructions.
-  p.if_id_new.instruction = (char*)"add 0, 1, 2";
+  p.ex_mem_old.instruction = (char*)"add 0, 1, 2";
   p.ex_mem_new.result = 300;
   p.access_memory();
 
@@ -160,7 +159,7 @@ int spam::TestPipeGPR::test_cache() {
 
   // Ensure that R-type instructions write to cache
   // properly.
-  p.if_id_new.instruction = (char*)"add 0, 1, 2";
+  p.mem_wb_old.instruction = (char*)"add 0, 1, 2";
   p.registry.store(0, 100);
   p.mem_wb_new.result = 400;
   p.cache();
@@ -173,7 +172,7 @@ int spam::TestPipeGPR::test_cache() {
 
   // Ensure that load-type instructions write to
   // cache properly.
-  p.if_id_new.instruction = (char*)"li 0, 500";
+  p.mem_wb_old.instruction = (char*)"li 0, 500";
   p.registry.store(0, 100);
   p.mem_wb_new.result = 500;
   p.cache();

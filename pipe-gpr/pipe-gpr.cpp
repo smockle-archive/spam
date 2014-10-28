@@ -12,9 +12,12 @@ int spam::PipeGPR::fetch() {
 int spam::PipeGPR::decode() {
   
   id_ex_old.rs = id_ex_new.rs;
-  id_ex_old.rt = id_ex_new.rt;  
+  id_ex_old.rt = id_ex_new.rt;
+  id_ex_old.instruction = id_ex_new.instruction;
 
-  std::string instruction = std::string(if_id_new.instruction);
+  id_ex_new.instruction = if_id_old.instruction;
+
+  std::string instruction = id_ex_new.instruction;
 
   // Instructions list:
   //
@@ -104,9 +107,12 @@ int spam::PipeGPR::decode() {
 
 int spam::PipeGPR::access_memory() {
   
-  std::string instruction = if_id_new.instruction;
-
   mem_wb_old.result = mem_wb_new.result;
+  mem_wb_old.instruction = mem_wb_new.instruction;
+
+  mem_wb_new.instruction = ex_mem_old.instruction;
+
+  std::string instruction = mem_wb_new.instruction;;
 
   if(instruction.find("la") != std::string::npos
   || instruction.find("lb") != std::string::npos
@@ -154,7 +160,7 @@ int spam::PipeGPR::access_memory() {
 
 int spam::PipeGPR::cache() {
 
-  std::string instruction = if_id_new.instruction;
+  std::string instruction = mem_wb_old.instruction;
 
   if(instruction.find("add") != std::string::npos
   || instruction.find("addi") != std::string::npos

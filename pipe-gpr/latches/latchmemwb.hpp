@@ -5,6 +5,8 @@ namespace spam {
   class LatchMemWB {
     public:
       int result;
+
+      char* instruction = (char*)"";
   };
 }
 

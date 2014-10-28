@@ -7,6 +7,7 @@ namespace spam {
       int rs = -1;
       int rt = -1;
 
+      char* instruction = (char*)"";
   };
 }
 
