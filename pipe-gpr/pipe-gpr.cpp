@@ -479,6 +479,53 @@ int spam::PipeGPR::decode() {
   return SUCCESS;
 }
 
+int spam::PipeGPR::execute() {
+  ex_mem_old.result = ex_mem_new.result;
+  ex_mem_old.instruction = ex_mem_new.instruction;
+  ex_mem_new.instruction = id_ex_old.instruction;
+
+  // Get MIPS instruction from ex_mem_new.instruction
+  std::string instruction = trim(tolower(ex_mem_new.instruction));
+
+  // Extract MIPS command from MIPS instruction
+  std::string command = "";
+  if (instruction.find(" ") != std::string::npos) {
+    command = instruction.substr(0, instruction.find(" ")).c_str();
+  }
+
+  // Match MIPS command with spam::PipeGPR command
+  if (command.compare("add") == 0) {
+    add(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("addi") == 0) {
+    addi(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("b") == 0) {
+    b(id_ex_old.rs);
+  } else if (command.compare("beqz") == 0) {
+    beqz(id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("bge") == 0) {
+    bge(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("bne") == 0) {
+    bne(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("la") == 0) {
+    la(id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("lb") == 0) {
+    lb(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("li") == 0) {
+    li(id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("subi") == 0) {
+    subi(0, id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("syscall") == 0) {
+    syscall();
+  } else if (command.compare("nop") == 0) {
+    nop();
+  } else if (command.compare("end") == 0) {
+    end();
+  } else { };
+
+  // All commands have executed
+  return SUCCESS;
+}
+
 int spam::PipeGPR::access_memory() {
 
   mem_wb_old.result = mem_wb_new.result;
