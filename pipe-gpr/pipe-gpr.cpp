@@ -452,8 +452,11 @@ int spam::PipeGPR::cache() {
   || instruction.find("lb") != std::string::npos
   || instruction.find("li") != std::string::npos) {
 
+    std::cout << "\tOriginal instruction: " << instruction << std::endl;
     instruction = instruction.substr(instruction.find(' ') + 1);
-    int reg = atoi(instruction.substr(instruction.find(", ")).c_str());
+    std::cout << "\tAfter substr: " << instruction << std::endl;
+    int reg = atoi(instruction.substr(0, instruction.find(", ")).c_str());
+    std::cout << "\tRegister: " << reg << std::endl;
     registry.store(reg, mem_wb_new.result);
 
   }
