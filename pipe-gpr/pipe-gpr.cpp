@@ -5,15 +5,8 @@ spam::PipeGPR::PipeGPR(Registry * r, Memory * m) {
   registry = *r;
 }
 
-int spam::PipeGPR::add(int rdest, int rsrc1, int rsrc2) {
+int spam::PipeGPR::add(int rsrc1, int rsrc2) {
   // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (rsrc1 < 0 || rsrc1 > 31 || rsrc2 < 0 || rsrc2 > 31) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
@@ -32,19 +25,12 @@ int spam::PipeGPR::add(int rdest, int rsrc1, int rsrc2) {
     return VALUE_ERROR;
   }
 
-  registry.store(rdest, sum);
+  ex_mem_new.result = sum;
   return SUCCESS;
 }
 
-int spam::PipeGPR::addi(int rdest, int rsrc, int imm) {
+int spam::PipeGPR::addi(int rsrc, int imm) {
   // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (rsrc < 0 || rsrc > 31) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
@@ -70,128 +56,12 @@ int spam::PipeGPR::addi(int rdest, int rsrc, int imm) {
     return VALUE_ERROR;
   }
 
-  registry.store(rdest, sum);
+  ex_mem_new.result = sum;
   return SUCCESS;
 }
 
-int spam::PipeGPR::b(int label_addr) {
+int spam::PipeGPR::la(int variable_addr) {
   // Verify arguments.
-  if (label_addr < 512 || label_addr >= 768) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  pc = label_addr;
-  return SUCCESS;
-}
-
-int spam::PipeGPR::beqz(int rsrc, int label_addr) {
-  // Verify arguments.
-  if (rsrc < 0 || rsrc > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  if (label_addr < 512 || label_addr >= 768) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  // Branch if zero.
-  if (registry.load(rsrc) == 0) {
-    pc = label_addr;
-  }
-
-  return SUCCESS;
-}
-
-int spam::PipeGPR::bge(int rsrc1, int rsrc2, int label_addr) {
-  // Warn on identical addresses.
-  if (rsrc1 == rsrc2) {
-    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
-  }
-
-  // Verify arguments.
-  if (rsrc1 < 0 || rsrc1 > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  if (rsrc2 < 0 || rsrc2 > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  if (label_addr < 512 || label_addr >= 768) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  // Branch if greater than or equal to.
-  if (registry.load(rsrc1) >= registry.load(rsrc2)) {
-    pc = label_addr;
-  }
-
-  return SUCCESS;
-}
-
-int spam::PipeGPR::bne(int rsrc1, int rsrc2, int label_addr) {
-  // Warn on identical addresses.
-  if (rsrc1 == rsrc2) {
-    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
-  }
-
-  // Verify arguments.
-  if (rsrc1 < 0 || rsrc1 > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  if (rsrc2 < 0 || rsrc2 > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  if (label_addr < 512 || label_addr >= 768) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Label address must be in the range 512 to 768." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
-  // Branch if not equal to.
-  if (registry.load(rsrc1) != registry.load(rsrc2)) {
-    pc = label_addr;
-  }
-
-  return SUCCESS;
-}
-
-int spam::PipeGPR::la(int rdest, int variable_addr) {
-  // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (variable_addr < 256 || variable_addr >= 512) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Variable address must be in the range 256 to 512." << std::endl;
@@ -209,24 +79,12 @@ int spam::PipeGPR::la(int rdest, int variable_addr) {
     c = *memory.read(i);
   }
 
-  registry.store(rdest, variable_addr);
+  ex_mem_new.result = variable_addr;
   return SUCCESS;
 }
 
-int spam::PipeGPR::lb(int rdest, int offset, int rsrc) {
-  // Warn on identical addresses.
-  if (rdest == rsrc) {
-    std::cout << COLOR_WARNING << "Destination and source register addresses are identical. It's more common to compare two different registers." << std::endl;
-  }
-
+int spam::PipeGPR::lb(int offset, int rsrc) {
   // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (offset < MIN_IMMEDIATE || offset > MAX_IMMEDIATE) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Immediate value must be in the range " << MIN_IMMEDIATE << " to " << MAX_IMMEDIATE << "." << std::endl;
@@ -253,20 +111,12 @@ int spam::PipeGPR::lb(int rdest, int offset, int rsrc) {
   }
 
   char c = *memory.read(sum);
-
-  registry.store(rdest, c);
+  ex_mem_new.result = c;
   return SUCCESS;
 }
 
-int spam::PipeGPR::li(int rdest, int imm) {
+int spam::PipeGPR::li(int imm) {
   // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (imm < MIN_IMMEDIATE || imm > MAX_IMMEDIATE) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Immediate value must be in the range " << MIN_IMMEDIATE << " to " << MAX_IMMEDIATE << "." << std::endl;
@@ -274,20 +124,12 @@ int spam::PipeGPR::li(int rdest, int imm) {
     return ARGUMENT_ERROR;
   }
 
-  registry.store(rdest, imm);
-
+  ex_mem_new.result = imm;
   return SUCCESS;
 }
 
-int spam::PipeGPR::subi(int rdest, int rsrc, int imm) {
+int spam::PipeGPR::subi(int rsrc, int imm) {
   // Verify arguments.
-  if (rdest < 0 || rdest > 31) {
-    #ifndef TEST
-    std::cout << COLOR_ERROR << "Destination register address must be in the range 0 to 31." << std::endl;
-    #endif
-    return ARGUMENT_ERROR;
-  }
-
   if (rsrc < 0 || rsrc > 31) {
     #ifndef TEST
     std::cout << COLOR_ERROR << "Source register address must be in the range 0 to 31." << std::endl;
@@ -313,7 +155,7 @@ int spam::PipeGPR::subi(int rdest, int rsrc, int imm) {
     return VALUE_ERROR;
   }
 
-  registry.store(rdest, difference);
+  ex_mem_new.result = difference;
   return SUCCESS;
 }
 
@@ -502,31 +344,23 @@ int spam::PipeGPR::execute() {
 
   // MEM hazard checking
   // TODO: fill this in
-  
+
   // EXE hazard checking
   // TODO: fill this in
 
   // Match MIPS command with spam::PipeGPR command
   if (command.compare("add") == 0) {
-    add(0, id_ex_old.rs, id_ex_old.rt);
+    add(id_ex_old.rs, id_ex_old.rt);
   } else if (command.compare("addi") == 0) {
-    addi(0, id_ex_old.rs, id_ex_old.rt);
-  } else if (command.compare("b") == 0) {
-    b(id_ex_old.rs);
-  } else if (command.compare("beqz") == 0) {
-    beqz(id_ex_old.rs, id_ex_old.rt);
-  } else if (command.compare("bge") == 0) {
-    bge(0, id_ex_old.rs, id_ex_old.rt);
-  } else if (command.compare("bne") == 0) {
-    bne(0, id_ex_old.rs, id_ex_old.rt);
+    addi(id_ex_old.rs, id_ex_old.rt);
   } else if (command.compare("la") == 0) {
-    la(id_ex_old.rs, id_ex_old.rt);
+    la(id_ex_old.rs);
   } else if (command.compare("lb") == 0) {
-    lb(0, id_ex_old.rs, id_ex_old.rt);
+    lb(id_ex_old.rs, id_ex_old.rt);
   } else if (command.compare("li") == 0) {
-    li(id_ex_old.rs, id_ex_old.rt);
+    li(id_ex_old.rs);
   } else if (command.compare("subi") == 0) {
-    subi(0, id_ex_old.rs, id_ex_old.rt);
+    subi(id_ex_old.rs, id_ex_old.rt);
   } else if (command.compare("syscall") == 0) {
     syscall();
   } else if (command.compare("nop") == 0) {
@@ -617,7 +451,7 @@ int spam::PipeGPR::cache() {
 }
 
 int spam::PipeGPR::run() {
-  
+
   while(pc >= T_BASE_ADDR){
     fetch();
     decode();
