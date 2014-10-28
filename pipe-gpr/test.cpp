@@ -155,8 +155,37 @@ int spam::TestPipeGPR::test_access_memory() {
   return SUCCESS;
 }
 int spam::TestPipeGPR::test_cache() {
-  std::cerr << COLOR_WARNING << "Cache test is unwritten." << std::endl;
-  return UNWRITTEN;
+
+  PipeGPR p;
+
+  // Ensure that R-type instructions write to cache
+  // properly.
+  p.if_id_new.instruction = (char*)"add 0, 1, 2";
+  p.registry.store(0, 100);
+  p.mem_wb_new.result = 400;
+  p.cache();
+
+  if(p.registry.load(0) != 400) {
+    std::cerr << COLOR_ERROR << "Cache failed to store result in proper register." << std::endl;
+    std::cerr << "\t" << "Expected: 400, received: " << p.registry.load(0) << std::endl;
+    return FAIL;
+  }
+
+  // Ensure that load-type instructions write to
+  // cache properly.
+  p.if_id_new.instruction = (char*)"li 0, 500";
+  p.registry.store(0, 100);
+  p.mem_wb_new.result = 500;
+  p.cache();
+
+  if(p.registry.load(0) != 500) {
+    std::cerr << COLOR_ERROR << "Cache failed to load value into proper register." << std::endl;
+    std::cerr << "\t" << "Expected: 500, received: " << p.registry.load(0) << std::endl;
+    return FAIL;
+  }
+
+  std::cout << COLOR_SUCCESS << "Cache test passed." << std::endl;
+  return SUCCESS;
 }
 
 // Instruction methods

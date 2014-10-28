@@ -103,5 +103,71 @@ int spam::PipeGPR::decode() {
 }
 
 int spam::PipeGPR::access_memory() {
-  return UNWRITTEN;
+  
+  std::string instruction = if_id_new.instruction;
+
+  mem_wb_old.result = mem_wb_new.result;
+
+  if(instruction.find("la") != std::string::npos
+  || instruction.find("lb") != std::string::npos
+  || instruction.find("li") != std::string::npos) {
+    // LA rd, lb
+    // load value at label's address
+    //
+    // LB rd, rs, of
+    // load byte at address stored in rs, plus the offset of
+    //
+    // LI rd, im
+    // load immediate
+    if(instruction.find("la") != std::string::npos) {
+      std::string label = instruction.substr(instruction.find(", ") + 2);
+      int address = atoi(label.c_str());
+      int result = atoi(memory.read(address));
+      mem_wb_new.result = result;
+    }
+    else if(instruction.find("lb") != std::string::npos) {
+      std::string grepper = instruction.substr(instruction.find(", ") + 2);
+      int reg = atoi(grepper.substr(0, grepper.find(",")).c_str());
+      reg = registry.load(reg);
+
+      grepper = grepper.substr(grepper.find(", ") + 2);
+      int offset = atoi(grepper.c_str());
+
+      int result = atoi(memory.read(reg + offset));
+      mem_wb_new.result = result;
+    }
+    else if(instruction.find("li") != std::string::npos) {
+      std::string imm_str = instruction.substr(instruction.find(", ") + 2);
+      int imm = atoi(imm_str.c_str());
+      mem_wb_new.result = imm;
+    }
+  }
+  
+  else if(instruction.find("add") != std::string::npos
+       || instruction.find("addi") != std::string::npos
+       || instruction.find("subi") != std::string::npos) {
+    mem_wb_new.result = ex_mem_new.result;
+  }
+
+  return SUCCESS;
+}
+
+int spam::PipeGPR::cache() {
+
+  std::string instruction = if_id_new.instruction;
+
+  if(instruction.find("add") != std::string::npos
+  || instruction.find("addi") != std::string::npos
+  || instruction.find("subi") != std::string::npos
+  || instruction.find("la") != std::string::npos
+  || instruction.find("lb") != std::string::npos
+  || instruction.find("li") != std::string::npos) {
+
+    instruction = instruction.substr(instruction.find(' ') + 1);
+    int reg = atoi(instruction.substr(instruction.find(", ")).c_str());
+    registry.store(reg, mem_wb_new.result);
+
+  }
+
+  return SUCCESS;
 }

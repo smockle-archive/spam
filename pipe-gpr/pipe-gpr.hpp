@@ -31,6 +31,7 @@ namespace spam {
       int decode();
       int execute();
       int access_memory();
+      int cache();
   };
 }
 
