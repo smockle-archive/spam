@@ -15,6 +15,7 @@ travis: clean test
 	./registry/test
 	./gpr/test
 	./skeleton/test
+	./pipe-gpr/test
 
 test: test-memory test-accumulator test-stack test-registry test-gpr test-pipe-gpr test-skeleton
 
