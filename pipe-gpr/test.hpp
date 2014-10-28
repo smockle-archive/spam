@@ -13,6 +13,7 @@ namespace spam {
       // Pipeline methods
       int test_fetch();
       int test_decode();
+      int test_execute();
       int test_access_memory();
       int test_cache();
 

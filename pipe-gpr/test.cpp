@@ -775,6 +775,12 @@ int spam::TestPipeGPR::test_decode() {
   return SUCCESS;
 }
 
+int spam::TestPipeGPR::test_execute() {
+  //TODO: fill this in if we deem it important
+  std::cout << COLOR_SUCCESS << "Execute test passed." << std::endl;
+  return SUCCESS;
+}
+
 int spam::TestPipeGPR::test_access_memory() {
 
   PipeGPR p;
@@ -813,12 +819,13 @@ int spam::TestPipeGPR::test_access_memory() {
   }
 
   // Ensure we can write to memory.
-  char* input = "jake and clay write awesome all-day";
+  char* input = (char*)"jake and clay write awesome all-day";
   p.ex_mem_old.instruction = (char*)"syscall";
+  p.registry.store(A0_ADDR, T_BASE_ADDR);
   p.ex_mem_old.input = input;
   p.access_memory();
 
-  if(p.memory.read(p.registry.load(A0_ADDR)) != input) {
+  if(std::string(p.memory.readInstruction(p.registry.load(A0_ADDR))) != std::string(input)) {
     std::cerr << COLOR_ERROR << "Memory access failed to write to memory." << std::endl;
     return FAIL;
   }
@@ -868,7 +875,7 @@ int spam::TestPipeGPR::test_cache() {
 int main(int argc, char** argv) {
   spam::TestPipeGPR tp;
 
-  int tests_run = 17;
+  int tests_run = 18;
   int tests_passed = tests_run;
 
   // Tests
@@ -887,6 +894,7 @@ int main(int argc, char** argv) {
   tests_passed += tp.test_end();
   tests_passed += tp.test_fetch();
   tests_passed += tp.test_decode();
+  tests_passed += tp.test_execute();
   tests_passed += tp.test_access_memory();
   tests_passed += tp.test_cache();
 

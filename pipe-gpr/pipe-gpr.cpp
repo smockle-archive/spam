@@ -493,6 +493,14 @@ int spam::PipeGPR::execute() {
     command = instruction.substr(0, instruction.find(" ")).c_str();
   }
 
+  /* Data hazard handling */
+
+  // MEM hazard checking
+  // TODO: fill this in
+  
+  // EXE hazard checking
+  // TODO: fill this in
+
   // Match MIPS command with spam::PipeGPR command
   if (command.compare("add") == 0) {
     add(0, id_ex_old.rs, id_ex_old.rt);
@@ -574,6 +582,10 @@ int spam::PipeGPR::access_memory() {
        || instruction.find("addi") != std::string::npos
        || instruction.find("subi") != std::string::npos) {
     mem_wb_new.result = ex_mem_old.result;
+  }
+
+  else if(instruction.find("syscall") != std::string::npos) {
+    memory.store(registry.load(A0_ADDR), ex_mem_old.input);
   }
 
   return SUCCESS;
