@@ -37,6 +37,8 @@ namespace spam {
       int access_memory();
       int cache();
 
+      int run();
+
       int add(int rdest, int rsrc1, int rsrc2);
       int addi(int rdest, int rsrc, int imm);
       int b(int label_addr);

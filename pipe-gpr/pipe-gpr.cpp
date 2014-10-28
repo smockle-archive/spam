@@ -526,7 +526,7 @@ int spam::PipeGPR::access_memory() {
   else if(instruction.find("add") != std::string::npos
        || instruction.find("addi") != std::string::npos
        || instruction.find("subi") != std::string::npos) {
-    mem_wb_new.result = ex_mem_new.result;
+    mem_wb_new.result = ex_mem_old.result;
   }
 
   return SUCCESS;
@@ -552,6 +552,15 @@ int spam::PipeGPR::cache() {
   return SUCCESS;
 }
 
-int main(int argc, char** argv) {
+int spam::PipeGPR::run() {
   
+  while(pc >= T_BASE_ADDR){
+    fetch();
+    decode();
+    //execute();
+    access_memory();
+    cache();
+  }
+
+  return SUCCESS;
 }

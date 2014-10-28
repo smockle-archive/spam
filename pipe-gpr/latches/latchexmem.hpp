@@ -7,6 +7,7 @@ namespace spam {
       int result;
 
       char* instruction = (char*)"";
+      char* input = (char*)""; // from syscall
   };
 }
 

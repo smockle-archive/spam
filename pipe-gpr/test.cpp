@@ -804,7 +804,7 @@ int spam::TestPipeGPR::test_access_memory() {
   // Ensure we pass the ex_mem result on to
   // the mem_wb latch for R-type instructions.
   p.ex_mem_old.instruction = (char*)"add 0, 1, 2";
-  p.ex_mem_new.result = 300;
+  p.ex_mem_old.result = 300;
   p.access_memory();
 
   if(p.mem_wb_new.result != 300) {
@@ -812,14 +812,18 @@ int spam::TestPipeGPR::test_access_memory() {
     return FAIL;
   }
 
-  //p.ex_mem_old.instruction = (char*)"syscall";
-  //p.registry.store(,);
-  //p.access_memory();
+  // Ensure we can write to memory.
+  char* input = "jake and clay write awesome all-day";
+  p.ex_mem_old.instruction = (char*)"syscall";
+  p.ex_mem_old.input = input;
+  p.access_memory();
 
-  //if()
+  if(p.memory.read(p.registry.load(A0_ADDR)) != input) {
+    std::cerr << COLOR_ERROR << "Memory access failed to write to memory." << std::endl;
+    return FAIL;
+  }
 
   std::cout << COLOR_SUCCESS << "Memory access test passed." << std::endl;
-  std::cout << "\t" << COLOR_WARNING << "Store (syscall) subtest yet unwritten." << std::endl;
   return SUCCESS;
 }
 int spam::TestPipeGPR::test_cache() {
