@@ -52,7 +52,7 @@ int spam::TestPipeGPR::test_decode() {
     std::cerr << "received: (" << p.id_ex_new.rs << ", " << p.id_ex_new.rt << ")" << std::endl;
     return FAIL;
   }
-  if(p.pc != 0) {
+  if(p.id_ex_new.pc != 0) {
     std::cerr << COLOR_ERROR << "Decode updated the program counter when it should not have. (1-register instruction)" << std::endl;
     std::cerr << "\t" << "Expected: 0, received: " << p.pc << std::endl;
   }
@@ -74,7 +74,7 @@ int spam::TestPipeGPR::test_decode() {
     std::cerr << "received: (" << p.id_ex_new.rs << ", " << p.id_ex_new.rt << ")" << std::endl;
     return FAIL;
   }
-  if(p.pc != 0) {
+  if(p.id_ex_new.pc != 0) {
     std::cerr << COLOR_ERROR << "Decode updated the program counter when it should not have. (2-register instruction)" << std::endl;
     std::cerr << "\t" << "Expected: 0, received: " << p.pc << std::endl;
     return FAIL;
@@ -95,7 +95,7 @@ int spam::TestPipeGPR::test_decode() {
     std::cerr << "received: (" << p.id_ex_new.rs << ", " << p.id_ex_new.rt << ")" << std::endl;
     return FAIL;
   }
-  if(p.pc != 100) {
+  if(p.id_ex_new.pc != 100) {
     std::cerr << COLOR_ERROR << "Decode failed to set the program counter to the proper value." << std::endl;
     std::cerr << "\t" << "Expected: 100, received: " << p.pc << std::endl;
     return FAIL;
@@ -148,6 +148,12 @@ int spam::TestPipeGPR::test_access_memory() {
     std::cerr << COLOR_ERROR << "Memory access failed to pass on the result of ex_mem to mem_wb." << std::endl;
     return FAIL;
   }
+
+  //p.ex_mem_old.instruction = (char*)"syscall";
+  //p.registry.store(,);
+  //p.access_memory();
+
+  //if()
 
   std::cout << COLOR_SUCCESS << "Memory access test passed." << std::endl;
   std::cout << "\t" << COLOR_WARNING << "Store (syscall) subtest yet unwritten." << std::endl;

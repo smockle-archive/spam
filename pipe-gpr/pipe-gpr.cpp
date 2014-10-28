@@ -6,6 +6,7 @@ int spam::PipeGPR::fetch() {
   if_id_new.instruction = instruction;
 
   if(if_id_new.instruction != instruction) return VALUE_ERROR;
+
   return SUCCESS;
 }
 
@@ -13,6 +14,7 @@ int spam::PipeGPR::decode() {
   
   id_ex_old.rs = id_ex_new.rs;
   id_ex_old.rt = id_ex_new.rt;
+  id_ex_old.pc = id_ex_new.pc;
   id_ex_old.instruction = id_ex_new.instruction;
 
   id_ex_new.instruction = if_id_old.instruction;
@@ -57,7 +59,7 @@ int spam::PipeGPR::decode() {
 
     instruction = instruction.substr(instruction.find(", ") + 2);
     address = atoi(instruction.c_str());
-    pc = address;
+    id_ex_new.pc = address;
   }
   else if(
           instruction.find("bge") != std::string::npos
@@ -72,7 +74,7 @@ int spam::PipeGPR::decode() {
 
     instruction = instruction.substr(instruction.find(", ") + 2);
     address = atoi(instruction.c_str());
-    pc = address;
+    id_ex_new.pc = address;
   }
   else if (
            instruction.find("addi") != std::string::npos
@@ -98,7 +100,10 @@ int spam::PipeGPR::decode() {
   }
   else if (instruction.find("b ") != std::string::npos) {
     int address = atoi(instruction.substr(instruction.find(' ') + 1).c_str());
-    pc = address;
+    id_ex_new.pc = address;
+  }
+  else if (instruction.find("nop") != std::string::npos) {
+    pc = id_ex_old.pc;
   }
   else return FAIL;
 
@@ -112,7 +117,7 @@ int spam::PipeGPR::access_memory() {
 
   mem_wb_new.instruction = ex_mem_old.instruction;
 
-  std::string instruction = mem_wb_new.instruction;;
+  std::string instruction = mem_wb_new.instruction;
 
   if(instruction.find("la") != std::string::npos
   || instruction.find("lb") != std::string::npos
