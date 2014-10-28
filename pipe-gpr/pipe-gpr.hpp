@@ -10,6 +10,10 @@
 #include "latches/latchexmem.hpp"
 #include "latches/latchmemwb.hpp"
 
+#define SYSCALL_CIN 8
+#define SYSCALL_COUT 4
+#define SYSCALL_END 10
+
 namespace spam {
   class PipeGPR {
     int lol = 0;
@@ -32,6 +36,20 @@ namespace spam {
       int execute();
       int access_memory();
       int cache();
+
+      int add(int rdest, int rsrc1, int rsrc2);
+      int addi(int rdest, int rsrc, int imm);
+      int b(int label_addr);
+      int beqz(int rsrc, int label_addr);
+      int bge(int rsrc1, int rsrc2, int label_addr);
+      int bne(int rsrc1, int rsrc2, int label_addr);
+      int la(int rdest, int variable_addr);
+      int lb(int rdest, int offset, int rsrc);
+      int li(int rdest, int imm);
+      int subi(int rdest, int rsrc, int imm);
+      int syscall();
+      int nop();
+      int end();
   };
 }
 
