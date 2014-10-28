@@ -223,7 +223,8 @@ int spam::PipeGPR::fetch() {
 
   cycles++;
 
-  char* instruction = memory.readInstruction(T_BASE_ADDR + pc);
+  char* instruction = memory.readInstruction(pc);
+  std::cout << "Instruction fetched: " << instruction << std::endl;
   if_id_old.instruction = if_id_new.instruction;
   if_id_new.instruction = instruction;
 
@@ -405,6 +406,7 @@ int spam::PipeGPR::access_memory() {
     if(instruction.find("la") != std::string::npos) {
       std::string label = instruction.substr(instruction.find(", ") + 2);
       int address = atoi(label.c_str());
+      la(address);
       int result = atoi(memory.read(address));
       mem_wb_new.result = result;
     }
@@ -468,6 +470,7 @@ int spam::PipeGPR::run() {
     execute();
     access_memory();
     cache();
+    pc++;
   }
 
   std::cout << "RESULTS:" << std::endl;

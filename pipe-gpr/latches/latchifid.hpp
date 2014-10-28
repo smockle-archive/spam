@@ -4,7 +4,7 @@
 namespace spam {
   class LatchIFID {
     public:
-      char* instruction;
+      char* instruction = (char*)"";
   };
 }
 
