@@ -20,10 +20,6 @@ namespace spam {
       // Instruction methods
       int test_add();
       int test_addi();
-      int test_b();
-      int test_beqz();
-      int test_bge();
-      int test_bne();
       int test_la();
       int test_lb();
       int test_li();

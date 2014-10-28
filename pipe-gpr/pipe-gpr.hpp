@@ -36,19 +36,14 @@ namespace spam {
       int execute();
       int access_memory();
       int cache();
-
       int run();
 
-      int add(int rdest, int rsrc1, int rsrc2);
-      int addi(int rdest, int rsrc, int imm);
-      int b(int label_addr);
-      int beqz(int rsrc, int label_addr);
-      int bge(int rsrc1, int rsrc2, int label_addr);
-      int bne(int rsrc1, int rsrc2, int label_addr);
-      int la(int rdest, int variable_addr);
-      int lb(int rdest, int offset, int rsrc);
-      int li(int rdest, int imm);
-      int subi(int rdest, int rsrc, int imm);
+      int add(int rsrc1, int rsrc2);
+      int addi(int rsrc, int imm);
+      int la(int variable_addr);
+      int lb(int offset, int rsrc);
+      int li(int imm);
+      int subi(int rsrc, int imm);
       int syscall();
       int nop();
       int end();

@@ -2,45 +2,33 @@
 
 int spam::TestPipeGPR::test_add() {
   // Test negative source1 address.
-  if (p.add(0, -1, 1) != ARGUMENT_ERROR) {
+  if (p.add(-1, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test negative source1 address\"." << std::endl;
     return FAIL;
   }
 
   // Test negative source2 address.
-  if (p.add(0, 1, -1) != ARGUMENT_ERROR) {
+  if (p.add(1, -1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test negative source2 address\"." << std::endl;
     return FAIL;
   }
 
-  // Test negative destination address.
-  if (p.add(-1, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test negative destination address\"." << std::endl;
-    return FAIL;
-  }
-
   // Test positive source1 address outside range (>31).
-  if (p.add(0, 32, 1) != ARGUMENT_ERROR) {
+  if (p.add(32, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test positive source1 address outside range (>31)\"." << std::endl;
     return FAIL;
   }
 
   // Test positive source2 address outside range (>31).
-  if (p.add(0, 1, 32) != ARGUMENT_ERROR) {
+  if (p.add(1, 32) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test positive source2 address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive destination address outside range (>31).
-  if (p.add(32, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test positive destination address outside range (>31)\"." << std::endl;
     return FAIL;
   }
 
   // Test sum exceeds range.
   p.registry.store(0, MAX_IMMEDIATE-1);
   p.registry.store(1, MAX_IMMEDIATE-1);
-  if (p.add(2, 0, 1) != VALUE_ERROR) {
+  if (p.add(0, 1) != VALUE_ERROR) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test sum exceeds range\"." << std::endl;
     return FAIL;
   }
@@ -48,7 +36,7 @@ int spam::TestPipeGPR::test_add() {
   // Test sum in range for success.
   p.registry.store(0, 1);
   p.registry.store(1, 1);
-  if (p.add(2, 0, 1) != SUCCESS) {
+  if (p.add(0, 1) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test sum in range for success\"." << std::endl;
     return FAIL;
   }
@@ -56,8 +44,8 @@ int spam::TestPipeGPR::test_add() {
   // Test sum in range for correctness.
   p.registry.store(0, 1);
   p.registry.store(1, 1);
-  p.add(2, 0, 1);
-  if (p.registry.load(2) != 2) {
+  p.add(0, 1);
+  if (p.ex_mem_new.result != 2) {
     std::cerr << COLOR_ERROR << "test_add() failed. The failing subtest is \"Test sum in range for correctness\"." << std::endl;
     return FAIL;
   }
@@ -69,59 +57,47 @@ int spam::TestPipeGPR::test_add() {
 
 int spam::TestPipeGPR::test_addi() {
   // Test negative source address.
-  if (p.addi(0, -1, 1) != ARGUMENT_ERROR) {
+  if (p.addi(-1, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test negative source address\"." << std::endl;
     return FAIL;
   }
 
-  // Test negative destination address.
-  if (p.addi(-1, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test negative destination address\"." << std::endl;
-    return FAIL;
-  }
-
   // Test positive source address outside range (>31).
-  if (p.addi(0, 32, 1) != ARGUMENT_ERROR) {
+  if (p.addi(32, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test positive source address outside range (>31)\"." << std::endl;
     return FAIL;
   }
 
-  // Test positive destination address outside range (>31).
-  if (p.addi(32, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test positive destination address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test negative immediate value outside range (<-32,768).
-  if (p.addi(0, 0, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
+  if (p.addi(0, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
     return FAIL;
   }
 
   // Test positive immediate value outside range (>32,767).
-  if (p.addi(0, 0, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
+  if (p.addi(0, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test negative immediate value outside range (>32,769)\"." << std::endl;
     return FAIL;
   }
 
   // Test sum exceeds range.
   p.registry.store(0, MAX_IMMEDIATE-1);
-  if (p.addi(1, 0, MAX_IMMEDIATE-1) != VALUE_ERROR) {
+  if (p.addi(0, MAX_IMMEDIATE-1) != VALUE_ERROR) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test sum exceeds range\"." << std::endl;
     return FAIL;
   }
 
   // Test sum in range for success.
   p.registry.store(0, 1);
-  if (p.addi(1, 0, 1) != SUCCESS) {
+  if (p.addi(0, 1) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test sum in range for success\"." << std::endl;
     return FAIL;
   }
 
   // Test sum in range for correctness.
   p.registry.store(0, 1);
-  p.addi(1, 0, 1);
-  if (p.registry.load(1) != 2) {
+  p.addi(0, 1);
+  if (p.ex_mem_new.result != 2) {
     std::cerr << COLOR_ERROR << "test_addi() failed. The failing subtest is \"Test sum in range for correctness\"." << std::endl;
     return FAIL;
   }
@@ -131,301 +107,21 @@ int spam::TestPipeGPR::test_addi() {
   return SUCCESS;
 }
 
-int spam::TestPipeGPR::test_b() {
-  // Test negative label address.
-  if (p.b(-1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_b() failed. The failing subtest is \"Test negative label address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive label address outside range (<512 or >=768).
-  if (p.b(1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_b() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address for success.
-  if (p.b(T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_b() failed. The failing subtest is \"Test valid label address for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, verify PC value changed.
-  p.pc = 1;
-  p.b(T_BASE_ADDR);
-  if (p.pc != T_BASE_ADDR) {
-    std::cerr << COLOR_ERROR << "test_b() failed. The failing subtest is \"Test valid label address, verify PC value changed\"." << std::endl;
-    return FAIL;
-  }
-
-  // All tests passed.
-  std::cout << COLOR_SUCCESS << "test_b() passed." << std::endl;
-  return SUCCESS;
-}
-
-int spam::TestPipeGPR::test_beqz() {
-  // Test negative register address.
-  if (p.beqz(-1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test negative register address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register address outside range (>31).
-  if (p.beqz(32, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test negative label address.
-  if (p.beqz(0, -1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test negative label address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive label address outside range (<512 or >=768).
-  if (p.beqz(0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register is not zero for success.
-  p.registry.store(0, 1);
-  if (p.beqz(0, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test valid label address, value at register is not zero for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register is not zero, verify PC value didn't change.
-  p.registry.store(0, 1);
-  p.pc = 1;
-  p.beqz(0, T_BASE_ADDR);
-  if (p.pc != 1) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test valid label address, value at register is not zero, verify PC value didn't change\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register is zero for success.
-  p.registry.store(0, 0);
-  if (p.beqz(0, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test valid label address, value at register is zero for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register is zero, verify PC value changed.
-  p.registry.store(0, 0);
-  p.pc = 1;
-  p.beqz(0, T_BASE_ADDR);
-  if (p.pc != T_BASE_ADDR) {
-    std::cerr << COLOR_ERROR << "test_beqz() failed. The failing subtest is \"Test valid label address, value at register is not zero, verify PC changed\"." << std::endl;
-    return FAIL;
-  }
-
-  // All tests passed.
-  std::cout << COLOR_SUCCESS << "test_beqz() passed." << std::endl;
-  return SUCCESS;
-}
-
-int spam::TestPipeGPR::test_bge() {
-  // Test negative register1 address.
-  if (p.bge(-1, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test negative register1 address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test negative register2 address.
-  if (p.bge(1, -1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test negative register2 address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register1 address outside range (>31).
-  if (p.bge(32, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test positive register1 address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register2 address outside range (>31).
-  if (p.bge(1, 32, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test positive register2 address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test negative label address.
-  if (p.bge(0, 1, -1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test negative label address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive label address outside range (<512 or >=768).
-  if (p.bge(0, 1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is less than value at register2 for success.
-  p.registry.store(0, 10);
-  p.registry.store(1, 20);
-  if (p.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is less than value at register2 for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is less than value at register2, verify PC value didn't change.
-  p.registry.store(0, 10);
-  p.registry.store(1, 20);
-  p.pc = 1;
-  p.bge(0, 1, T_BASE_ADDR);
-  if (p.pc != 1) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is less than value at register2, verify PC value didn't change\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is equal to value at register2 for success.
-  p.registry.store(0, 10);
-  p.registry.store(1, 10);
-  if (p.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2 for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is equal to value at register2, verify PC value changed.
-  p.registry.store(0, 10);
-  p.registry.store(1, 10);
-  p.pc = 1;
-  p.bge(0, 1, T_BASE_ADDR);
-  if (p.pc != T_BASE_ADDR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2, verify PC value changed\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is greater than value at register2 for success.
-  p.registry.store(0, 20);
-  p.registry.store(1, 10);
-  if (p.bge(0, 1, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is greater than value at register2 for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is greater than value at register2, verify PC value changed.
-  p.registry.store(0, 20);
-  p.registry.store(1, 10);
-  p.pc = 1;
-  p.bge(0, 1, T_BASE_ADDR);
-  if (p.pc != T_BASE_ADDR) {
-    std::cerr << COLOR_ERROR << "test_bge() failed. The failing subtest is \"Test valid label address, value at register1 is greater than value at register2, verify PC value changed\"." << std::endl;
-    return FAIL;
-  }
-
-  // All tests passed.
-  std::cout << COLOR_SUCCESS << "test_bge() passed." << std::endl;
-  return SUCCESS;
-}
-
-int spam::TestPipeGPR::test_bne() {
-  // Test negative register1 address.
-  if (p.bne(-1, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test negative register1 address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test negative register2 address.
-  if (p.bne(1, -1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test negative register2 address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register1 address outside range (>31).
-  if (p.bne(32, 1, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test positive register1 address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register2 address outside range (>31).
-  if (p.bne(1, 32, T_BASE_ADDR) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test positive register2 address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test negative label address.
-  if (p.bne(0, 1, -1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test negative label address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive label address outside range (<512 or >=768).
-  if (p.bne(0, 1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test positive label address outside range (<512 or >=768)\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is equal to value at register2 for success.
-  p.registry.store(0, 10);
-  p.registry.store(1, 10);
-  if (p.bne(0, 1, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2 for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is equal to value at register2, verify PC value didn't change.
-  p.registry.store(0, 10);
-  p.registry.store(1, 10);
-  p.pc = 1;
-  p.bne(0, 1, T_BASE_ADDR);
-  if (p.pc != 1) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test valid label address, value at register1 is equal to value at register2, verify PC value didn't change\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is not equal to value at register2 for success.
-  p.registry.store(0, 10);
-  p.registry.store(1, 20);
-  if (p.bne(0, 1, T_BASE_ADDR) != SUCCESS) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test valid label address, value at register1 is not equal to value at register2 for success\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test valid label address, value at register1 is not equal to value at register2, verify PC value changed.
-  p.registry.store(0, 10);
-  p.registry.store(1, 20);
-  p.pc = 1;
-  p.bne(0, 1, T_BASE_ADDR);
-  if (p.pc != T_BASE_ADDR) {
-    std::cerr << COLOR_ERROR << "test_bne() failed. The failing subtest is \"Test valid label address, value at register1 is not equal to value at register2, verify PC value changed\"." << std::endl;
-    return FAIL;
-  }
-
-  // All tests passed.
-  std::cout << COLOR_SUCCESS << "test_bne() passed." << std::endl;
-  return SUCCESS;
-}
-
 int spam::TestPipeGPR::test_la() {
-  // Test negative register address.
-  if (p.la(-1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test negative register address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register address outside range (>31).
-  if (p.la(32, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test negative variable address.
-  if (p.la(1, -1) != ARGUMENT_ERROR) {
+  if (p.la(-1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test negative variable address\"." << std::endl;
     return FAIL;
   }
 
   // Test positive variable address outside range (<256 or >=512).
-  if (p.la(1, 1) != ARGUMENT_ERROR) {
+  if (p.la(1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test positive variable address outside range (<256 or >=512)\"." << std::endl;
     return FAIL;
   }
 
   // Test valid variable address for success.
-  if (p.la(1, D_BASE_ADDR) != SUCCESS) {
+  if (p.la(D_BASE_ADDR) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test valid variable address for success\"." << std::endl;
     return FAIL;
   }
@@ -433,9 +129,9 @@ int spam::TestPipeGPR::test_la() {
   // Test valid variable address, verify register contains value of variable.
   p.registry.store(1, 1);
   p.memory.store(D_BASE_ADDR, (char *) "10");
-  p.la(1, D_BASE_ADDR);
-  if (*p.memory.read(p.registry.load(1)) != '1'
-   && *p.memory.read(p.registry.load(1) + 1) != '0') {
+  p.la(D_BASE_ADDR);
+  if (*p.memory.read(p.ex_mem_new.result) != '1'
+   && *p.memory.read(p.ex_mem_new.result + 1) != '0') {
     std::cerr << COLOR_ERROR << "test_la() failed. The failing subtest is \"Test valid variable address, verify register contains value of variable\"." << std::endl;
     return FAIL;
   }
@@ -447,51 +143,39 @@ int spam::TestPipeGPR::test_la() {
 
 int spam::TestPipeGPR::test_lb() {
   // Test negative source register address.
-  if (p.lb(1, 1, -1) != ARGUMENT_ERROR) {
+  if (p.lb(1, -1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test negative source register address\"." << std::endl;
     return FAIL;
   }
 
-  // Test negative destination register address.
-  if (p.lb(-1, 1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test negative destination register address\"." << std::endl;
-    return FAIL;
-  }
-
   // Test positive source register address outside range (>31).
-  if (p.lb(1, 1, 32) != ARGUMENT_ERROR) {
+  if (p.lb(1, 32) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test positive source register address (>31)\"." << std::endl;
     return FAIL;
   }
 
-  // Test positive destination register address outside range (>31).
-  if (p.lb(32, 1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test positive destination register address (>31)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test negative offset outside range (<-32,768).
-  if (p.lb(1, MIN_IMMEDIATE-1, 2) != ARGUMENT_ERROR) {
+  if (p.lb(MIN_IMMEDIATE-1, 2) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
     return FAIL;
   }
 
   // Test positive offset outside range (>32,767).
-  if (p.lb(1, MAX_IMMEDIATE+1, 2) != ARGUMENT_ERROR) {
+  if (p.lb(MAX_IMMEDIATE+1, 2) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test positive immediate value outside range (>32,767)\"." << std::endl;
     return FAIL;
   }
 
   // Test sum of offset and value of source register isn't a valid memory address (<256 or >=768).
   p.registry.store(2, 500);
-  if (p.lb(1, 500, 2) != VALUE_ERROR) {
+  if (p.lb(500, 2) != VALUE_ERROR) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test sum of offset and value of source register isn't a valid memory address (<256 or >=768)\"." << std::endl;
     return FAIL;
   }
 
   // Test valid memory address for success.
   p.registry.store(2, 500);
-  if (p.lb(1, 5, 2) != SUCCESS) {
+  if (p.lb(5, 2) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test valid memory address for success\"." << std::endl;
     return FAIL;
   }
@@ -499,8 +183,8 @@ int spam::TestPipeGPR::test_lb() {
   // Test valid memory address, verify register contains value at address.
   p.memory.store(505, (char *) "10");
   p.registry.store(2, 500);
-  p.lb(1, 5, 2);
-  if (p.registry.load(1) != *p.memory.read(505)) {
+  p.lb(5, 2);
+  if (p.ex_mem_new.result != *p.memory.read(505)) {
     std::cerr << COLOR_ERROR << "test_lb() failed. The failing subtest is \"Test valid memory address, verify register contains value at address\"." << std::endl;
     return FAIL;
   }
@@ -511,40 +195,28 @@ int spam::TestPipeGPR::test_lb() {
 }
 
 int spam::TestPipeGPR::test_li() {
-  // Test negative register address.
-  if (p.li(-1, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test negative register address\"." << std::endl;
-    return FAIL;
-  }
-
-  // Test positive register address outside range (>31).
-  if (p.li(32, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test positive register address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test negative immediate value outside range (<-32,768).
-  if (p.li(1, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
+  if (p.li(MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
     return FAIL;
   }
 
   // Test positive immediate value outside range (>32,767).
-  if (p.li(1, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
+  if (p.li(MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test positive immediate value outside range (>32,767)\"." << std::endl;
     return FAIL;
   }
 
   // Test valid register address, immediate value fits in register for success.
-  if (p.li(1, 10) != SUCCESS) {
+  if (p.li(10) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test valid register address, immediate value fits in register for success\"." << std::endl;
     return FAIL;
   }
 
   // Test valid register address, immediate value fits in register, verify register contains immediate value.
-  p.registry.store(1, 1);
-  p.li(1, 10);
-  if (p.registry.load(1) != 10) {
+  p.ex_mem_new.result = 1;
+  p.li(10);
+  if (p.ex_mem_new.result != 10) {
     std::cerr << COLOR_ERROR << "test_li() failed. The failing subtest is \"Test valid register address, immediate value fits in register, verify register contains immediate value\"." << std::endl;
     return FAIL;
   }
@@ -556,59 +228,47 @@ int spam::TestPipeGPR::test_li() {
 
 int spam::TestPipeGPR::test_subi() {
   // Test negative source address.
-  if (p.subi(0, -1, 1) != ARGUMENT_ERROR) {
+  if (p.subi(-1, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test negative source address\"." << std::endl;
     return FAIL;
   }
 
-  // Test negative destination address.
-  if (p.subi(-1, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test negative destination address\"." << std::endl;
-    return FAIL;
-  }
-
   // Test positive source address outside range (>31).
-  if (p.subi(0, 32, 1) != ARGUMENT_ERROR) {
+  if (p.subi(32, 1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test positive source address outside range (>31)\"." << std::endl;
     return FAIL;
   }
 
-  // Test positive destination address outside range (>31).
-  if (p.subi(32, 0, 1) != ARGUMENT_ERROR) {
-    std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test positive destination address outside range (>31)\"." << std::endl;
-    return FAIL;
-  }
-
   // Test negative immediate value outside range (<-32,768).
-  if (p.subi(0, 0, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
+  if (p.subi(0, MIN_IMMEDIATE-1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test negative immediate value outside range (<-32,768)\"." << std::endl;
     return FAIL;
   }
 
   // Test positive immediate value outside range (>32,767).
-  if (p.subi(0, 0, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
+  if (p.subi(0, MAX_IMMEDIATE+1) != ARGUMENT_ERROR) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test negative immediate value outside range (>32,769)\"." << std::endl;
     return FAIL;
   }
 
   // Test difference exceeds range.
   p.registry.store(0, MIN_IMMEDIATE);
-  if (p.subi(1, 0, MAX_IMMEDIATE) != VALUE_ERROR) {
+  if (p.subi(0, MAX_IMMEDIATE) != VALUE_ERROR) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test difference exceeds range\"." << std::endl;
     return FAIL;
   }
 
   // Test difference in range for success.
   p.registry.store(0, 1);
-  if (p.subi(1, 0, 1) != SUCCESS) {
+  if (p.subi(0, 1) != SUCCESS) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test difference in range for success\"." << std::endl;
     return FAIL;
   }
 
   // Test difference in range for correctness.
   p.registry.store(0, 3);
-  p.subi(1, 0, 1);
-  if (p.registry.load(1) != 2) {
+  p.subi(0, 1);
+  if (p.ex_mem_new.result != 2) {
     std::cerr << COLOR_ERROR << "test_subi() failed. The failing subtest is \"Test difference in range for correctness\"." << std::endl;
     return FAIL;
   }
@@ -875,16 +535,12 @@ int spam::TestPipeGPR::test_cache() {
 int main(int argc, char** argv) {
   spam::TestPipeGPR tp;
 
-  int tests_run = 18;
+  int tests_run = 13;
   int tests_passed = tests_run;
 
   // Tests
   tests_passed += tp.test_add();
   tests_passed += tp.test_addi();
-  tests_passed += tp.test_b();
-  tests_passed += tp.test_beqz();
-  tests_passed += tp.test_bge();
-  tests_passed += tp.test_bne();
   tests_passed += tp.test_la();
   tests_passed += tp.test_lb();
   tests_passed += tp.test_li();
