@@ -335,7 +335,8 @@ int spam::TestPipeGPR::test_fetch() {
 
   char* instruction = (char*)"fetchable";
 
-  p.memory.store(T_BASE_ADDR, instruction);
+  p.pc = T_BASE_ADDR;
+  p.memory.store(p.pc, instruction);
   p.fetch();
 
   std::string ins_str = instruction;

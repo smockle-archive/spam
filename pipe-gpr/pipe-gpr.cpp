@@ -224,8 +224,9 @@ int spam::PipeGPR::fetch() {
   cycles++;
 
   char* instruction = memory.readInstruction(pc);
+  char* old = if_id_new.instruction;
   std::cout << "Instruction fetched: " << instruction << std::endl;
-  if_id_old.instruction = if_id_new.instruction;
+  if_id_old.instruction = old;
   if_id_new.instruction = instruction;
 
   if(if_id_new.instruction != instruction) return VALUE_ERROR;
@@ -240,10 +241,13 @@ int spam::PipeGPR::decode() {
   id_ex_old.pc = id_ex_new.pc;
   id_ex_old.instruction = id_ex_new.instruction;
 
-  id_ex_new.instruction = if_id_old.instruction;
+  char* old = if_id_old.instruction;
+
+  id_ex_new.instruction = old;
 
   std::string instruction = id_ex_new.instruction;
-
+  std::cout << "Instruction decoded: " << instruction << std::endl;
+  std::cout << "Old instruction (should differ): " << old << std::endl;
   // Instructions list:
   //
   // ADD  rd, rs, rt
@@ -329,6 +333,11 @@ int spam::PipeGPR::decode() {
     nops++;
     pc = id_ex_old.pc;
   }
+  else if (instruction.find("la") != std::string::npos) {
+    int address = atoi(instruction.substr(instruction.find(", ") + 1).c_str());
+    std::cout << COLOR_SUCCESS << "We are setting id_ex_new to be " << address << "." << std::endl;
+    id_ex_new.rs = address;
+  }
   else return FAIL;
 
 
@@ -342,6 +351,7 @@ int spam::PipeGPR::execute() {
 
   // Get MIPS instruction from ex_mem_new.instruction
   std::string instruction = trim(tolower(ex_mem_new.instruction));
+  std::cout << "Instruction executed: " << instruction << std::endl;
 
   // Extract MIPS command from MIPS instruction
   std::string command = "";
@@ -391,6 +401,7 @@ int spam::PipeGPR::access_memory() {
   mem_wb_new.instruction = ex_mem_old.instruction;
 
   std::string instruction = mem_wb_new.instruction;
+  std::cout << "Instruction for which we accessed memory: " << instruction << std::endl;
 
   if(instruction.find("la") != std::string::npos
   || instruction.find("lb") != std::string::npos
@@ -406,6 +417,7 @@ int spam::PipeGPR::access_memory() {
     if(instruction.find("la") != std::string::npos) {
       std::string label = instruction.substr(instruction.find(", ") + 2);
       int address = atoi(label.c_str());
+      std::cout << COLOR_SUCCESS << "We made it to the proper la call. (address value: " << address << ")" << std::endl;
       la(address);
       int result = atoi(memory.read(address));
       mem_wb_new.result = result;
@@ -444,6 +456,7 @@ int spam::PipeGPR::access_memory() {
 int spam::PipeGPR::cache() {
 
   std::string instruction = mem_wb_old.instruction;
+  std::cout << "Instruction for which we cached: " << instruction << std::endl;
 
   if(instruction.find("add") != std::string::npos
   || instruction.find("addi") != std::string::npos
@@ -468,11 +481,18 @@ int spam::PipeGPR::run() {
 
   pc = T_BASE_ADDR;
   while(pc >= T_BASE_ADDR){
+    std::cout << "CYCLE START ===== " << std::endl;
+    std::cout << "Fetching..." << std::endl;
     fetch();
+    std::cout << "Decoding..." << std::endl;
     decode();
+    std::cout << "Executing..." << std::endl;
     execute();
+    std::cout << "Accessing memory..." << std::endl;
     access_memory();
+    std::cout << "Caching..." << std::endl;
     cache();
+    std::cout << "CYCLE END   ===== " << std::endl << std::endl;
     pc++;
   }
 
