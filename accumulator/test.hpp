@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TEST_SKELETON_H
 #define TEST_SKELETON_H
 

@@ -32,6 +32,7 @@ main:
 	la 30, string_space
 	li 31, 1024
 	li 29, 8		# load "read_string" code into $v0.
+    nop
 	syscall
 
 	la 0, string_space
@@ -62,19 +63,22 @@ test_loop:
 is_palin:
 	la 30, is_palin_msg
 	li 29, 4
+    nop
 	syscall
 	b exit
 
 not_palin:
 	la 30, not_palin_msg 
 	li 29, 4
+    nop
 	syscall
 	b exit
 
 exit:				
 	li 29, 10		# load "exit" code into $v0.
+    nop
 	syscall			# make the system call.
-
+    end
 
 .data
 is_palin_msg: The string is a palindrome.

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GPR_H
 #define GPR_H
 

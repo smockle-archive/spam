@@ -1,4 +1,5 @@
 #include "pipe-gpr.hpp"
+#include <string.h>
 
 spam::PipeGPR::PipeGPR() {
 };
@@ -164,6 +165,7 @@ int spam::PipeGPR::subi(int rsrc, int imm) {
 
 int spam::PipeGPR::syscall() {
   int op = registry.load(V0_ADDR);
+  std::cout << "\tsyscall, op: " << op << " (CIN: " << SYSCALL_CIN << ", COUT: " << SYSCALL_COUT << ")" << std::endl;
   switch (op) {
     case SYSCALL_CIN:
       {
@@ -185,6 +187,8 @@ int spam::PipeGPR::syscall() {
     case SYSCALL_COUT:
       {
         std::string s = "";
+        std::cout << "Syscall/cout directive. A0_ADDR: " << A0_ADDR;
+        std::cout << ", A0 contents: " << registry.load(A0_ADDR) << std::endl;
         int i = registry.load(A0_ADDR);
         char c = *memory.read(i);
 
@@ -197,6 +201,7 @@ int spam::PipeGPR::syscall() {
         if(s.find(": ") != std::string::npos) s = s.substr(s.find(": ") + 2);
         std::cout << s << std::endl;
         #endif
+        std::cout << "memory @ " << registry.load(A0_ADDR) << ": " << s << std::endl;
         break;
       }
       break;
@@ -210,6 +215,7 @@ int spam::PipeGPR::syscall() {
 }
 
 int spam::PipeGPR::nop() {
+  
   return SUCCESS;
 }
 
@@ -223,11 +229,11 @@ int spam::PipeGPR::fetch() {
 
   cycles++;
 
-  char* instruction = memory.readInstruction(pc);
-  char* old = if_id_new.instruction;
-  std::cout << "Instruction fetched: " << instruction << std::endl;
-  if_id_old.instruction = old;
+  std::string instruction = std::string(memory.readInstruction(pc));
+  if_id_old.instruction = if_id_new.instruction;
   if_id_new.instruction = instruction;
+
+  std::cout << instruction << std::endl;
 
   if(if_id_new.instruction != instruction) return VALUE_ERROR;
 
@@ -236,18 +242,18 @@ int spam::PipeGPR::fetch() {
 
 int spam::PipeGPR::decode() {
 
+  std::string instruction = std::string(if_id_old.instruction);
+  std::string old = std::string(id_ex_new.instruction);
+
   id_ex_old.rs = id_ex_new.rs;
   id_ex_old.rt = id_ex_new.rt;
   id_ex_old.pc = id_ex_new.pc;
-  id_ex_old.instruction = id_ex_new.instruction;
+  id_ex_old.instruction = (char*)old.c_str();
+  id_ex_new.instruction = (char*)instruction.c_str();
+  id_ex_new.pc = -1;
 
-  char* old = if_id_old.instruction;
+  std::cout << instruction << std::endl;
 
-  id_ex_new.instruction = old;
-
-  std::string instruction = id_ex_new.instruction;
-  std::cout << "Instruction decoded: " << instruction << std::endl;
-  std::cout << "Old instruction (should differ): " << old << std::endl;
   // Instructions list:
   //
   // ADD  rd, rs, rt
@@ -309,7 +315,10 @@ int spam::PipeGPR::decode() {
         || instruction.find("lb")   != std::string::npos
           ) {
     instruction = instruction.substr(instruction.find(", ") + 2);
+    instruction = instruction.substr(0, instruction.find(", "));
+    std::cout << "\tSource register address: " << instruction << std::endl; 
     int address = atoi(instruction.c_str());
+    std::cout << "\tSource register address converted to an integer: " << address << std::endl;
     id_ex_new.rs = registry.load(address);
     id_ex_new.rt = -1;
   }
@@ -331,11 +340,10 @@ int spam::PipeGPR::decode() {
   }
   else if (instruction.find("nop") != std::string::npos) {
     nops++;
-    pc = id_ex_old.pc;
+    if(id_ex_old.pc >= 0) pc = id_ex_old.pc;
   }
   else if (instruction.find("la") != std::string::npos) {
     int address = atoi(instruction.substr(instruction.find(", ") + 1).c_str());
-    std::cout << COLOR_SUCCESS << "We are setting id_ex_new to be " << address << "." << std::endl;
     id_ex_new.rs = address;
   }
   else return FAIL;
@@ -351,13 +359,13 @@ int spam::PipeGPR::execute() {
 
   // Get MIPS instruction from ex_mem_new.instruction
   std::string instruction = trim(tolower(ex_mem_new.instruction));
-  std::cout << "Instruction executed: " << instruction << std::endl;
+  std::cout << instruction << std::endl;
 
   // Extract MIPS command from MIPS instruction
   std::string command = "";
   if (instruction.find(" ") != std::string::npos) {
     command = instruction.substr(0, instruction.find(" ")).c_str();
-  }
+  } else command = instruction;
 
   /* Data hazard handling */
 
@@ -372,10 +380,9 @@ int spam::PipeGPR::execute() {
     add(id_ex_old.rs, id_ex_old.rt);
   } else if (command.compare("addi") == 0) {
     addi(id_ex_old.rs, id_ex_old.rt);
-  } else if (command.compare("la") == 0) {
-    la(id_ex_old.rs);
-  } else if (command.compare("lb") == 0) {
-    lb(id_ex_old.rs, id_ex_old.rt);
+  } else if (command.compare("la") == 0
+          || command.compare("lb") == 0){
+    // Do nothing; load operations happen in the MEM stage.
   } else if (command.compare("li") == 0) {
     li(id_ex_old.rs);
   } else if (command.compare("subi") == 0) {
@@ -401,7 +408,7 @@ int spam::PipeGPR::access_memory() {
   mem_wb_new.instruction = ex_mem_old.instruction;
 
   std::string instruction = mem_wb_new.instruction;
-  std::cout << "Instruction for which we accessed memory: " << instruction << std::endl;
+  std::cout << instruction << std::endl;
 
   if(instruction.find("la") != std::string::npos
   || instruction.find("lb") != std::string::npos
@@ -417,10 +424,7 @@ int spam::PipeGPR::access_memory() {
     if(instruction.find("la") != std::string::npos) {
       std::string label = instruction.substr(instruction.find(", ") + 2);
       int address = atoi(label.c_str());
-      std::cout << COLOR_SUCCESS << "We made it to the proper la call. (address value: " << address << ")" << std::endl;
-      la(address);
-      int result = atoi(memory.read(address));
-      mem_wb_new.result = result;
+      mem_wb_new.result = address;
     }
     else if(instruction.find("lb") != std::string::npos) {
       std::string grepper = instruction.substr(instruction.find(", ") + 2);
@@ -430,7 +434,7 @@ int spam::PipeGPR::access_memory() {
       grepper = grepper.substr(grepper.find(", ") + 2);
       int offset = atoi(grepper.c_str());
 
-      int result = atoi(memory.read(reg + offset));
+      int result = lb(reg, offset);
       mem_wb_new.result = result;
     }
     else if(instruction.find("li") != std::string::npos) {
@@ -447,7 +451,7 @@ int spam::PipeGPR::access_memory() {
   }
 
   else if(instruction.find("syscall") != std::string::npos) {
-    memory.store(registry.load(A0_ADDR), ex_mem_old.input);
+    memory.store(registry.load(A0_ADDR), (char*)ex_mem_old.input.c_str());
   }
 
   return SUCCESS;
@@ -456,7 +460,7 @@ int spam::PipeGPR::access_memory() {
 int spam::PipeGPR::cache() {
 
   std::string instruction = mem_wb_old.instruction;
-  std::cout << "Instruction for which we cached: " << instruction << std::endl;
+  std::cout << instruction << std::endl;
 
   if(instruction.find("add") != std::string::npos
   || instruction.find("addi") != std::string::npos
@@ -470,7 +474,8 @@ int spam::PipeGPR::cache() {
     std::cout << "\tAfter substr: " << instruction << std::endl;
     int reg = atoi(instruction.substr(0, instruction.find(", ")).c_str());
     std::cout << "\tRegister: " << reg << std::endl;
-    registry.store(reg, mem_wb_new.result);
+    registry.store(reg, mem_wb_old.result);
+    std::cout << "\tStored " << registry.load(reg) << " in register " << reg << "." << std::endl;
 
   }
 
@@ -481,19 +486,22 @@ int spam::PipeGPR::run() {
 
   pc = T_BASE_ADDR;
   while(pc >= T_BASE_ADDR){
-    std::cout << "CYCLE START ===== " << std::endl;
-    std::cout << "Fetching..." << std::endl;
+    std::cout << "CYCLE START =====" << std::endl;
+
+    std::cout << "Fetching ";
     fetch();
-    std::cout << "Decoding..." << std::endl;
+    std::cout << "Decoding ";
     decode();
-    std::cout << "Executing..." << std::endl;
+    std::cout << "Executing ";
     execute();
-    std::cout << "Accessing memory..." << std::endl;
+    std::cout << "Accessing memory for instruction ";
     access_memory();
-    std::cout << "Caching..." << std::endl;
+    std::cout << "Caching for instruction ";
     cache();
-    std::cout << "CYCLE END   ===== " << std::endl << std::endl;
+
+    std::cout << "CYCLE END   =====" << std::endl << std::endl;
     pc++;
+    if(pc >= T_BASE_ADDR + 50) pc = -1;
   }
 
   std::cout << "RESULTS:" << std::endl;

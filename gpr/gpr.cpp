@@ -176,16 +176,6 @@ int spam::GPR::la(int rdest, int variable_addr) {
     return ARGUMENT_ERROR;
   }
 
-  std::string variable = "";
-  int i = variable_addr;
-  char c = *memory.read(i);
-
-  while(c != '\0' && c != '\n') {
-    variable += c;
-    i++;
-    c = *memory.read(i);
-  }
-
   registry.store(rdest, variable_addr);
   return SUCCESS;
 }

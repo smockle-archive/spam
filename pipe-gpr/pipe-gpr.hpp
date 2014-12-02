@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PIPE_GPR_H
 #define PIPE_GPR_H
 
@@ -5,10 +6,7 @@
 
 #include "../memory/memory.hpp"
 #include "../registry/registry.hpp"
-#include "latches/latchifid.hpp"
-#include "latches/latchidex.hpp"
-#include "latches/latchexmem.hpp"
-#include "latches/latchmemwb.hpp"
+#include "latches.hpp"
 
 #define SYSCALL_CIN 8
 #define SYSCALL_COUT 4

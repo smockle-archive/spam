@@ -2,7 +2,7 @@
 CC = g++ --std=c++11
 CCT = g++ --std=c++11 -D TEST
 ##CC = clang --std=c++11
-LATCHES = pipe-gpr/latches/latchifid.cpp pipe-gpr/latches/latchidex.cpp pipe-gpr/latches/latchexmem.cpp pipe-gpr/latches/latchmemwb.cpp
+LATCHES = pipe-gpr/latches.cpp
 
 default: clean spam
 
@@ -20,7 +20,7 @@ travis: clean test
 test: test-memory test-accumulator test-stack test-registry test-gpr test-pipe-gpr test-skeleton
 
 spam:
-	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) -o spam
+	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) -g -o spam
 
 test-memory:
 	$(CCT) memory/test.cpp memory/memory.cpp -o memory/test

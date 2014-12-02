@@ -6,7 +6,7 @@ namespace spam {
     public:
       int result;
 
-      char* instruction = (char*)"";
+      std::string instruction = "";
       char* input = (char*)""; // from syscall
   };
 }

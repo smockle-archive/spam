@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ACCUMULATOR_H
 #define ACCUMULATOR_H
 
