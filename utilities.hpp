@@ -1,5 +1,12 @@
+#ifndef ScoreboardConstants
+#define ScoreboardConstants
+
+  #define MAX_INSTRUCTION_COUNT 3 // as detailed in Lab4-DesignIssues.pdf
+
+#endif
+
 #ifndef BufferConstants
-#define BufferConstants 1
+#define BufferConstants
 
   // Data spec
   #define DBUF_SIZE 256
@@ -46,7 +53,7 @@
 #endif
 
 #ifndef ReturnConstants
-#define ReturnConstants 1
+#define ReturnConstants
 
   #define SUCCESS 0
   #define FAIL -1
@@ -60,7 +67,7 @@
 #endif
 
 #ifndef ColorConstants
-#define ColorConstants 1
+#define ColorConstants
 
   #define COLOR_RED "\033[0;31m"
   #define COLOR_GREEN "\033[0;32m"
@@ -76,7 +83,7 @@
 #endif
 
 #ifndef Utilities
-#define Utilities 1
+#define Utilities
 
   #include <algorithm>
   #include <functional>
