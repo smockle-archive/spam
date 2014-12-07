@@ -36,7 +36,7 @@ namespace spam {
     mb.pc = T_BASE_ADDR;
     mb.memory.store(mb.pc, (char*)"li 0, 30");
     mb.memory.store(mb.pc + 1, (char*)"li 1, 20");
-    mb.sold = mb.s;
+
     mb.fetch();
     mb.sold = mb.s;
     mb.pc++;
@@ -45,7 +45,7 @@ namespace spam {
 
     // Assumedly, FP_MEM will handle load operations, so we need to count
     // it as busy if it's been issued the above command.
-    if(!mb.s.isBusy(FP_MEM)) {
+    if(!mb.s.isFUBusy()) {
       std::cerr << COLOR_ERROR << "Didn't properly mark FP_MEM as busy when it was previously not busy and issued an LI instruction." << std::endl;
       return FAIL;
     }
@@ -77,8 +77,57 @@ namespace spam {
   }
 
   int TestMicroboard::test_read_operands() {
-    std::cerr << COLOR_WARNING << "Read operands test is unwritten." << std::endl;
-    return UNWRITTEN;
+
+    // Source registers aren't available if an
+    // earlier-issued active instruction is
+    // going to write to that register.
+
+    // Source registers also aren't available
+    // if a currently-active functional unit is
+    // writing to that register.
+
+    // Ensure if everything is peachy-keen,
+    // we progress.
+
+    Memory m;
+    Registry r;
+    Microboard mb(m, r);
+
+    mb.pc = T_BASE_ADDR;
+    mb.memory.store(mb.pc, (char *)"li 0, 30");
+    mb.memory.store(mb.pc + 1, (char *)"la 1, 2");
+    mb.memory.store(mb.pc + 2, (char *)"add 3, 1, 2");
+
+    mb.fetch();
+    mb.sold = mb.s;
+    mb.pc++;
+    mb.fetch();
+    mb.issue();
+    mb.sold = mb.s;
+    mb.pc++;
+    mb.fetch();
+    mb.issue();
+    mb.sold = mb.s;
+
+    if(mb.read_operands() != SUCCESS) {
+      std::cerr << COLOR_ERROR << "Failed to read operands when it should've been able to." << std::endl;
+    }
+
+    mb.sold = mb.s;
+    mb.read_operands();
+    mb.sold = mb.s;
+
+    if(mb.read_operands() != FAIL) {
+      std::cerr << COLOR_ERROR << "Read operands that it shouldn't have due to failing to detect a RAW hazard." << std::endl;
+      return FAIL;
+    }
+
+    // Ensure if source registers aren't available
+    // due to earlier-issued active instructions,
+    // we delay.
+
+    std::cout << COLOR_SUCCESS << "Read operands test passed." << std::endl;
+    return SUCCESS;
   }
   int TestMicroboard::test_execute() {
     std::cerr << COLOR_WARNING << "Execute test is unwritten." << std::endl;
