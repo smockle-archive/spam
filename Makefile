@@ -17,7 +17,7 @@ travis: clean test
 	./skeleton/test
 	./pipe-gpr/test
 
-test: test-memory test-accumulator test-stack test-registry test-gpr test-pipe-gpr test-skeleton
+test: test-memory test-accumulator test-stack test-registry test-gpr test-pipe-gpr test-microboard test-skeleton
 
 spam:
 	$(CC) skeleton/skeleton.cpp memory/memory.cpp registry/registry.cpp accumulator/accumulator.cpp stack/stack.cpp gpr/gpr.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) -g -o spam
@@ -36,6 +36,9 @@ test-gpr:
 
 test-pipe-gpr:
 	$(CCT) pipe-gpr/test.cpp pipe-gpr/pipe-gpr.cpp $(LATCHES) memory/memory.cpp registry/registry.cpp -o pipe-gpr/test
+
+test-microboard:
+	$(CCT) microboard/test.cpp microboard/microboard.cpp microboard/scoreboard.cpp memory/memory.cpp registry/registry.cpp -o microboard/test
 
 test-registry:
 	$(CCT) registry/test.cpp registry/registry.cpp -o registry/test

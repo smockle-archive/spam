@@ -2,6 +2,12 @@
 #define ScoreboardConstants
 
   #define MAX_INSTRUCTION_COUNT 3 // as detailed in Lab4-DesignIssues.pdf
+  #define FUNCTIONAL_UNIT_COUNT 4
+
+  #define INT_FU 1
+  #define FP_ADD 2
+  #define FP_MUL 3
+  #define FP_MEM 4
 
 #endif
 
