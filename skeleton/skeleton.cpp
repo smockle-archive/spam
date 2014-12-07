@@ -149,7 +149,7 @@ int spam::Skeleton::do_memory(std::string filename) {
 
 int spam::Skeleton::do_registry() {
    registry = new Registry();
-   
+
    return SUCCESS;
 }
 
@@ -312,6 +312,7 @@ int spam::Skeleton::do_help() {
   std::cout << "\tspam stack <input_file>" << std::endl;
   std::cout << "\tspam accumulator <input_file>" << std::endl;
   std::cout << "\tspam gpr <input_file>" << std::endl;
+  std::cout << "\tspam pipe-gpr <input_file>" << std::endl;
   std::cout << "\tspam help" << std::endl;
   #endif
 
