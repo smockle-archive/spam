@@ -6,8 +6,29 @@ namespace spam {
     return busy[fuid];
   }
   bool Scoreboard::isWAW() {
-    std::string instruction = peek();
+    std::string instruction = ipeek();
 
+    if(instruction.find(' ') == -1) return false; // e.g. syscall, end, nop can't cause WAW
+
+    int rd = atoi((char*)instruction.substr(instruction.find(' ')).substr(0, instruction.find(' ')).c_str());
+    for(int x = 0; x < MAX_INSTRUCTION_COUNT; x++) {
+
+      if( (head + x > tail && head <= tail)
+      ||  (head + x > tail + MAX_INSTRUCTION_COUNT && head >= tail) ) break; // if we hit an empty instruction
+
+      int index = (head + x) % MAX_INSTRUCTION_COUNT;
+
+      if(index == thorax) continue; // so we don't compare to the instruction in question
+
+      if(instructions[index].second == EMPTY) break;
+
+      int rdt = atoi((char*)instructions[index].first.substr(instructions[index].first.find(' ')).substr(0, instructions[index].first.find(' ')).c_str());
+
+      if(rd == rdt) {
+        return true;
+      }
+    }
+    return false;
   }
   bool Scoreboard::isFull() {
     return tail != -1 //if tail = -1, then we're empty, so we're certainly not full
@@ -23,9 +44,10 @@ namespace spam {
     }
 
     if(tail == MAX_INSTRUCTION_COUNT) tail = 0;
+    else if (tail == EMPTY) tail = head;
     else tail++;
 
-    instructions[tail] = instruction;
+    instructions[tail] = std::make_pair(instruction, ISSUE);
 
     return SUCCESS;
   }
@@ -33,12 +55,12 @@ namespace spam {
     if(isEmpty()) {
       return "";
     }
-    std::string instruction = instructions[head];
-    instructions[head] = "";
+    std::string instruction = instructions[head].first;
+    instructions[head].first = "";
+    instructions[head].second = EMPTY;
 
-    if(head == tail) tail = -1; // we just popped the last element, so we're empty
-
-    if(head == MAX_INSTRUCTION_COUNT) head = 0;
+    if(head == tail) tail = EMPTY; // we just popped the last element, so we're empty
+    else if(head == MAX_INSTRUCTION_COUNT) head = 0;
     else head++;
 
     return instruction;
@@ -47,7 +69,7 @@ namespace spam {
     if(isEmpty()) {
       return "";
     }
-    return instructions[head];
+    return instructions[head].first;
   }
   int Scoreboard::issue(std::string instr) {
 
@@ -85,6 +107,8 @@ namespace spam {
       return FAIL;
     }
 
+
+
     busy[fuid] = true;
     // TODO: other data updates
     if(thorax == 3) thorax = 0;
@@ -96,7 +120,7 @@ namespace spam {
     if(isEmpty()) {
       return "";
     }
-    return instructions[thorax];
+    return instructions[thorax].first;
   }
 
 }

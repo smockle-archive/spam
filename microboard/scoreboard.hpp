@@ -6,7 +6,8 @@
 
 namespace spam {
   class Scoreboard {
-    std::string instructions[MAX_INSTRUCTION_COUNT] = { "" };
+    friend class TestMicroboard;
+    std::pair<std::string, int> instructions[MAX_INSTRUCTION_COUNT]; // first is instruction, second is state
     int head = 0;    // increments when instruction has been completed
     int tail = -1;   // increments when instruction has been fetched; is -1 when empty
     int thorax = 0;  // increments when instruction has been issued

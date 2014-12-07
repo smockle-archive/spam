@@ -52,7 +52,7 @@ namespace spam {
 
     // Ensure if functional unit is busy for the current command type, we delay.
     mb.sold = mb.s;
-    if(mb.issue()) {
+    if(mb.issue() != FAIL) {
       std::cerr << COLOR_ERROR << "Didn't delay when functional unit FP_MEM was busy and an LI instruction was issued." << std::endl;
       return FAIL;
     }
@@ -64,7 +64,9 @@ namespace spam {
     mb.pc--;
     mb.fetch();
     mb.sold = mb.s;
-    if(mb.issue()) {
+    mb.sold.thorax--;
+    mb.sold.busy[FP_MEM] = false;
+    if(mb.issue() != FAIL) {
       std::cerr << COLOR_ERROR << "Didn't delay when WAW would occur." << std::endl;
       return FAIL;
     }
