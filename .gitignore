@@ -4,3 +4,5 @@ spam
 test
 SHIBBOLETH*
 microboard/libstdc++-6.dll
+*.exe
+microboard/*.exe
